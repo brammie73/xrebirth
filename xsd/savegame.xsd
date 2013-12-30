@@ -1,0 +1,1415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           jxb:version="2.1" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+        >
+    <xs:annotation>
+        <xs:appinfo>
+            <jxb:bindings node="//xs:complexType[@name='animationType']/xs:attribute[@name='part']">
+                <jxb:property name="animationTypePart"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:complexType[@name='skillType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+                <jxb:property name="skillTypeValue"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:complexType[@name='paramType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+                <jxb:property name="paramTypeValue"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:complexType[@name='groupType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+                <jxb:property name="groupTypeValue"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:complexType[@name='persistentType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+                <jxb:property name="persistentTypeValue"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:complexType[@name='statType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+                <jxb:property name="statTypeValue"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:complexType[@name='volatileType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+                <jxb:property name="volatileTypeValue"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:complexType[@name='hullType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+                <jxb:property name="hullTypeValue"/>
+            </jxb:bindings>
+        </xs:appinfo>
+    </xs:annotation>
+    <xs:element name="savegame" type="savegameType"/>
+    <xs:complexType name="saveType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name"/>
+                <xs:attribute type="xs:int" name="date"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="gameType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="version"/>
+                <xs:attribute type="xs:string" name="build"/>
+                <xs:attribute type="xs:float" name="time"/>
+                <xs:attribute type="xs:string" name="start"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="playerType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name"/>
+                <xs:attribute type="xs:string" name="location"/>
+                <xs:attribute type="xs:int" name="money"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="patchType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="extension" use="optional"/>
+                <xs:attribute type="xs:byte" name="version" use="optional"/>
+                <xs:attribute type="xs:string" name="name" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="patchesType">
+        <xs:sequence>
+            <xs:element type="patchType" name="patch" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="infoType">
+        <xs:sequence>
+            <xs:element type="saveType" name="save"/>
+            <xs:element type="gameType" name="game"/>
+            <xs:element type="playerType" name="player"/>
+            <xs:element type="patchesType" name="patches"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="relationType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="faction" use="optional"/>
+                <xs:attribute type="xs:float" name="relation" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="relationsType" mixed="true">
+        <xs:sequence>
+            <xs:element type="relationType" name="relation" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="locked" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="factionType">
+        <xs:sequence>
+            <xs:element type="relationsType" name="relations"/>
+            <xs:element type="licencesType" name="licences" minOccurs="0"/>
+            <xs:element type="accountType" name="account" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:byte" name="known" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="licenceType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+                <xs:attribute type="xs:string" name="factions" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="licencesType">
+        <xs:sequence>
+            <xs:element type="licenceType" name="licence" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="accountType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id" use="optional"/>
+                <xs:attribute type="xs:int" name="amount" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="factionsType">
+        <xs:sequence>
+            <xs:element type="factionType" name="faction" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="controltextureType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:short" name="id" use="optional"/>
+                <xs:attribute type="xs:float" name="starttime" use="optional"/>
+                <xs:attribute type="xs:float" name="endtime" use="optional"/>
+                <xs:attribute type="xs:float" name="startvalue" use="optional"/>
+                <xs:attribute type="xs:float" name="endvalue" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="controltexturesType">
+        <xs:sequence>
+            <xs:element type="controltextureType" name="controltexture" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="positionType" mixed="true">
+        <xs:sequence>
+            <xs:element type="readType" name="read" minOccurs="0"/>
+            <xs:element type="writeType" name="write" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:float" name="x" use="optional"/>
+        <xs:attribute type="xs:float" name="z" use="optional"/>
+        <xs:attribute type="xs:float" name="y" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="offsetType">
+        <xs:sequence>
+            <xs:element type="positionType" name="position" minOccurs="0"/>
+            <xs:element type="rotationType" name="rotation" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="behaviorType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="class" use="optional"/>
+                <xs:attribute type="xs:byte" name="basespeed" use="optional"/>
+                <xs:attribute type="xs:byte" name="numpaths" use="optional"/>
+                <xs:attribute type="xs:byte" name="numpoints" use="optional"/>
+                <xs:attribute type="xs:byte" name="slowspeed" use="optional"/>
+                <xs:attribute type="xs:short" name="maxslowroadlength" use="optional"/>
+                <xs:attribute type="xs:string" name="seller" use="optional"/>
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+                <xs:attribute type="xs:string" name="default" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="networkType">
+        <xs:sequence>
+            <xs:element name="quotalists" minOccurs="0">
+                <xs:complexType mixed="true">
+                    <xs:sequence>
+                        <xs:element type="quotalistType" name="quotalist" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element type="involvedType" name="involved" minOccurs="0"/>
+            <xs:element type="overridesType" name="overrides" minOccurs="0"/>
+            <xs:element type="behaviorType" name="behavior"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:byte" name="dynamic" use="optional"/>
+        <xs:attribute type="xs:float" name="starttime" use="optional"/>
+        <xs:attribute type="xs:string" name="space" use="optional"/>
+        <xs:attribute type="xs:float" name="endtime" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="masstrafficType">
+        <xs:sequence>
+            <xs:element type="networkType" name="network" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="connectedType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="connection" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="connectionType" mixed="true">
+        <xs:sequence>
+            <xs:element type="connectedType" name="connected" minOccurs="0"/>
+            <xs:element type="componentType" name="component" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="connection" use="optional"/>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="macro" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="connectionsType" mixed="true">
+        <xs:sequence>
+            <xs:element type="connectionType" name="connection" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="componentType" mixed="true">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="offsetType" name="offset"/>
+            <xs:element type="masstrafficType" name="masstraffic"/>
+            <xs:element type="animationsType" name="animations"/>
+            <xs:element type="renderType" name="render"/>
+            <xs:element type="shieldsType" name="shields"/>
+            <xs:element name="gravidar">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute type="xs:short" name="range" use="optional"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element type="hullType" name="hull"/>
+            <xs:element type="gateType" name="gate"/>
+            <xs:element type="cargoType" name="cargo"/>
+            <xs:element type="productionType" name="production"/>
+            <xs:element type="listenersType" name="listeners"/>
+            <xs:element type="skillsType" name="skills"/>
+            <xs:element type="entityType" name="entity"/>
+            <xs:element type="npcseedType" name="npcseed"/>
+            <xs:element type="connectionsType" name="connections"/>
+            <xs:element type="turretsType" name="turrets"/>
+            <xs:element type="surfaceType" name="surface"/>
+            <xs:element type="tradeType" name="trade"/>
+            <xs:element type="upgradesType" name="upgrades"/>
+            <xs:element type="eventsType" name="events"/>
+            <xs:element type="movementType" name="movement"/>
+            <xs:element type="sourceType" name="source"/>
+            <xs:element type="ammunitionType" name="ammunition"/>
+            <xs:element type="dropType" name="drop"/>
+            <xs:element type="weaponcycleType" name="weaponcycle"/>
+            <xs:element type="signsType" name="signs"/>
+            <xs:element type="blackboardType" name="blackboard"/>
+            <xs:element type="controltextureType" name="controltexture"/>
+            <xs:element type="storageType" name="storage"/>
+            <xs:element type="buildType" name="build"/>
+            <xs:element type="commanderType" name="commander"/>
+            <xs:element type="waresType" name="wares"/>
+            <xs:element type="jumpType" name="jump"/>
+            <xs:element type="boostType" name="boost"/>
+            <xs:element type="lastglobalanimationType" name="lastglobalanimation"/>
+            <xs:element type="influencesType" name="influences"/>
+            <xs:element type="inventoryType" name="inventory"/>
+            <xs:element type="snapshotType" name="snapshot"/>
+            <xs:element type="trailsType" name="trails"/>
+            <xs:element type="accountType" name="account"/>
+            <xs:element type="tintType" name="tint"/>
+            <xs:element type="knownType" name="known"/>
+            <xs:element type="npcanimationType" name="npcanimation"/>
+            <xs:element type="shootcontrollerType" name="shootcontroller"/>
+            <xs:element type="scanType" name="scan"/>
+            <xs:element type="effectType" name="effect"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="class" use="optional"/>
+        <xs:attribute type="xs:string" name="macro" use="optional"/>
+        <xs:attribute type="xs:string" name="connection" use="optional"/>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="component" use="optional"/>
+        <xs:attribute type="xs:float" name="lastshottime" use="optional"/>
+        <xs:attribute type="xs:byte" name="ammunition" use="optional"/>
+        <xs:attribute type="xs:byte" name="targetseen" use="optional"/>
+        <xs:attribute type="xs:string" name="owner" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:short" name="page" use="optional"/>
+        <xs:attribute type="xs:byte" name="nameindex" use="optional"/>
+        <xs:attribute type="xs:long" name="seed" use="optional"/>
+        <xs:attribute type="xs:byte" name="platform" use="optional"/>
+        <xs:attribute type="xs:string" name="state" use="optional"/>
+        <xs:attribute type="xs:byte" name="forcesteering" use="optional"/>
+        <xs:attribute type="xs:string" name="knownto" use="optional"/>
+        <xs:attribute type="xs:byte" name="known" use="optional"/>
+        <xs:attribute type="xs:string" name="activity" use="optional"/>
+        <xs:attribute type="xs:byte" name="offsetupdaterequests" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="partType" mixed="true">
+        <xs:sequence>
+            <xs:element type="controlType" name="control" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+        <xs:attribute type="xs:string" name="default" use="optional"/>
+        <xs:attribute type="xs:string" name="sequence" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="animationType">
+        <xs:sequence>
+            <xs:element type="partType" name="part" minOccurs="0"/>
+            <xs:element type="textureType" name="texture" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="floatType" name="float" minOccurs="0"/>
+            <xs:element type="colorType" name="color" minOccurs="0"/>
+            <xs:element type="controlType" name="control" minOccurs="0"/>
+            <xs:element type="offsetType" name="offset" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="part" use="optional"/>
+        <xs:attribute type="xs:string" name="light" use="optional"/>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+        <xs:attribute type="xs:string" name="sequence" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="animationsType">
+        <xs:sequence>
+            <xs:element type="animationType" name="animation" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="summaryType" mixed="true">
+        <xs:sequence>
+            <xs:element type="wareType" name="ware" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="state" use="optional"/>
+        <xs:attribute type="xs:string" name="connection" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="shieldsType">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="groupType" name="group" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="persistentType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="start" use="optional"/>
+                <xs:attribute type="xs:short" name="duration" use="optional"/>
+                <xs:attribute type="xs:byte" name="value" use="optional"/>
+                <xs:attribute type="xs:byte" name="target" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="parameterType" mixed="true">
+        <xs:sequence>
+            <xs:element type="persistentType" name="persistent" minOccurs="0"/>
+            <xs:element type="volatileType" name="volatile" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="flags" use="optional"/>
+        <xs:attribute type="xs:float" name="value" use="optional"/>
+        <xs:attribute type="xs:string" name="owner" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="subname" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:float" name="start" use="optional"/>
+        <xs:attribute type="xs:byte" name="duration" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="renderType">
+        <xs:sequence>
+            <xs:element type="parameterType" name="parameter"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="rotationType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="yaw" use="optional"/>
+                <xs:attribute type="xs:float" name="pitch" use="optional"/>
+                <xs:attribute type="xs:float" name="roll" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="hullType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:short" name="min" use="optional"/>
+                <xs:attribute type="xs:float" name="value" use="optional"/>
+                <xs:attribute type="xs:float" name="time" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="gateType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="active" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="listenerType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="listener" use="optional"/>
+                <xs:attribute type="xs:string" name="event" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="listenersType">
+        <xs:sequence>
+            <xs:element type="listenerType" name="listener" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="turretsType">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="surfaceType">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="buyerType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="container" use="optional"/>
+                <xs:attribute type="xs:string" name="entity" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="sourceType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="class" use="optional"/>
+                <xs:attribute type="xs:string" name="job" use="optional"/>
+                <xs:attribute type="xs:string" name="network" use="optional"/>
+                <xs:attribute type="xs:short" name="flow" use="optional"/>
+                <xs:attribute type="xs:short" name="launch" use="optional"/>
+                <xs:attribute type="xs:string" name="quota" use="optional"/>
+                <xs:attribute type="xs:string" name="region" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="tradeType" mixed="true">
+        <xs:sequence>
+            <xs:element type="buyerType" name="buyer" minOccurs="0"/>
+            <xs:element type="sellerType" name="seller" minOccurs="0"/>
+            <xs:element type="sourceType" name="source" minOccurs="0"/>
+            <xs:element type="offersType" name="offers" minOccurs="0"/>
+            <xs:element type="ordersType" name="orders" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="ware" use="optional"/>
+        <xs:attribute type="xs:int" name="price" use="optional"/>
+        <xs:attribute type="xs:int" name="amount" use="optional"/>
+        <xs:attribute type="xs:string" name="buyer" use="optional"/>
+        <xs:attribute type="xs:string" name="flags" use="optional"/>
+        <xs:attribute type="xs:string" name="wares" use="optional"/>
+        <xs:attribute type="xs:string" name="seller" use="optional"/>
+        <xs:attribute type="xs:short" name="transferred" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="productionType">
+        <xs:sequence>
+            <xs:element type="tradeType" name="trade" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="efficiencyType" name="efficiency" minOccurs="0"/>
+            <xs:element type="queueType" name="queue" minOccurs="0"/>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:float" name="start" use="optional"/>
+        <xs:attribute type="xs:float" name="end" use="optional"/>
+        <xs:attribute type="xs:byte" name="item" use="optional"/>
+        <xs:attribute type="xs:byte" name="cycle" use="optional"/>
+        <xs:attribute type="xs:string" name="state" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="offersType">
+        <xs:sequence>
+            <xs:element type="missionType" name="mission" minOccurs="0"/>
+            <xs:element type="productionType" name="production" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="wareType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="ware" use="optional"/>
+                <xs:attribute type="xs:int" name="amount" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="cargoType">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="queueType" mixed="true">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="efficiencyType" name="efficiency" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="ware" use="optional"/>
+        <xs:attribute type="xs:string" name="method" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="skillType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+                <xs:attribute type="xs:byte" name="value" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="skillsType">
+        <xs:sequence>
+            <xs:element type="skillType" name="skill" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="entityType" mixed="true">
+        <xs:sequence>
+            <xs:element type="scriptType" name="script" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:byte" name="control" use="optional"/>
+        <xs:attribute type="xs:byte" name="customconversation" use="optional"/>
+        <xs:attribute type="xs:byte" name="representative" use="optional"/>
+        <xs:attribute type="xs:byte" name="missionactor" use="optional"/>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="npcseedType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:long" name="bodyparts" use="optional"/>
+                <xs:attribute type="xs:long" name="bonescales" use="optional"/>
+                <xs:attribute type="xs:long" name="morphtargetweights" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="upgradesType">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="efficiencyType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="cycle" use="optional"/>
+                <xs:attribute type="xs:float" name="product" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="gravidarType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:short" name="range" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="eventType" mixed="true">
+        <xs:sequence>
+            <xs:element type="tradeType" name="trade" minOccurs="0"/>
+            <xs:element type="offsetType" name="offset" minOccurs="0"/>
+            <xs:element type="safeposType" name="safepos" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="event" use="optional"/>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+        <xs:attribute type="xs:string" name="build" use="optional"/>
+        <xs:attribute type="xs:short" name="amount" use="optional"/>
+        <xs:attribute type="xs:float" name="starttime" use="optional"/>
+        <xs:attribute type="xs:string" name="zone" use="optional"/>
+        <xs:attribute type="xs:byte" name="price" use="optional"/>
+        <xs:attribute type="xs:string" name="network" use="optional"/>
+        <xs:attribute type="xs:string" name="sound" use="optional"/>
+        <xs:attribute type="xs:byte" name="type" use="optional"/>
+        <xs:attribute type="xs:string" name="ref" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="eventsType">
+        <xs:sequence>
+            <xs:element type="eventType" name="event" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="linearType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="x" use="optional"/>
+                <xs:attribute type="xs:float" name="y" use="optional"/>
+                <xs:attribute type="xs:float" name="z" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="velocityType" mixed="true">
+        <xs:sequence>
+            <xs:element type="linearType" name="linear" minOccurs="0"/>
+            <xs:element type="angularType" name="angular" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="readType">
+        <xs:sequence>
+            <xs:element type="offsetType" name="offset"/>
+            <xs:element type="velocityType" name="velocity"/>
+            <xs:element name="acceleration">
+                <xs:complexType mixed="true">
+                    <xs:sequence>
+                        <xs:element type="linearType" name="linear" minOccurs="0"/>
+                        <xs:element type="angularType" name="angular" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="numpathpoints" use="optional"/>
+        <xs:attribute type="xs:byte" name="avoidcollisions" use="optional"/>
+        <xs:attribute type="xs:byte" name="masstraffic" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="writeType">
+        <xs:sequence>
+            <xs:element type="offsetType" name="offset"/>
+            <xs:element type="velocityType" name="velocity"/>
+            <xs:element name="acceleration">
+                <xs:complexType mixed="true">
+                    <xs:sequence>
+                        <xs:element type="linearType" name="linear" minOccurs="0"/>
+                        <xs:element type="angularType" name="angular" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="numpathpoints" use="optional"/>
+        <xs:attribute type="xs:byte" name="avoidcollisions" use="optional"/>
+        <xs:attribute type="xs:byte" name="masstraffic" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="targetpointType" mixed="true">
+        <xs:sequence>
+            <xs:element type="offsetType" name="offset" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="refobject" use="optional"/>
+        <xs:attribute type="xs:string" name="behavior" use="optional"/>
+        <xs:attribute type="xs:string" name="direction" use="optional"/>
+        <xs:attribute type="xs:byte" name="forcerotation" use="optional"/>
+        <xs:attribute type="xs:byte" name="avoidcollisions" use="optional"/>
+        <xs:attribute type="xs:byte" name="resetroll" use="optional"/>
+        <xs:attribute type="xs:byte" name="relativemovement" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="targetpointsType" mixed="true">
+        <xs:sequence>
+            <xs:element type="targetpointType" name="targetpoint" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="flightcontrolmodelType" mixed="true">
+        <xs:sequence>
+            <xs:element type="behaviorType" name="behavior" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="movementType" mixed="true">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="positionType" name="position"/>
+            <xs:element type="targetpointsType" name="targetpoints"/>
+            <xs:element type="flightcontrolmodelType" name="flightcontrolmodel"/>
+            <xs:element type="formationType" name="formation"/>
+            <xs:element type="xs:string" name="transition"/>
+            <xs:element type="decelerationType" name="deceleration"/>
+            <xs:element type="velocityType" name="velocity"/>
+            <xs:element type="timeType" name="time"/>
+            <xs:element type="offsetType" name="offset"/>
+            <xs:element type="accelerationType" name="acceleration"/>
+            <xs:element type="cameraoffsetType" name="cameraoffset"/>
+            <xs:element type="animationType" name="animation"/>
+        </xs:choice>
+        <xs:attribute type="xs:byte" name="forceposition" use="optional"/>
+        <xs:attribute type="xs:string" name="class" use="optional"/>
+        <xs:attribute type="xs:byte" name="avoidcollisions" use="optional"/>
+        <xs:attribute type="xs:byte" name="forcerotation" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="itemType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="macro" use="optional"/>
+                <xs:attribute type="xs:short" name="amount" use="optional"/>
+                <xs:attribute type="xs:string" name="ware" use="optional"/>
+                <xs:attribute type="xs:string" name="method" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="availableType">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ammunitionType" mixed="true">
+        <xs:sequence>
+            <xs:element type="availableType" name="available" minOccurs="0"/>
+            <xs:element type="unavailableType" name="unavailable" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="macro" use="optional"/>
+        <xs:attribute type="xs:byte" name="amount" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="dropType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="ref" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="cycleType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="index" use="optional"/>
+                <xs:attribute type="xs:string" name="ref" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="slotType">
+        <xs:sequence>
+            <xs:element type="cycleType" name="cycle" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="ref" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="weaponcycleType">
+        <xs:sequence>
+            <xs:element type="slotType" name="slot" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="quotaType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id" use="optional"/>
+                <xs:attribute type="xs:string" name="class" use="optional"/>
+                <xs:attribute type="xs:byte" name="amount" use="optional"/>
+                <xs:attribute type="xs:string" name="macro" use="optional"/>
+                <xs:attribute type="xs:string" name="trade" use="optional"/>
+                <xs:attribute type="xs:short" name="cargo" use="optional"/>
+                <xs:attribute type="xs:byte" name="empty" use="optional"/>
+                <xs:attribute type="xs:byte" name="return" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="quotasType">
+        <xs:sequence>
+            <xs:element type="quotaType" name="quota"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="quotalistType">
+        <xs:sequence>
+            <xs:element type="tradeType" name="trade" minOccurs="0"/>
+            <xs:element type="quotasType" name="quotas"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:byte" name="continuous" use="optional"/>
+        <xs:attribute type="xs:string" name="startobject" use="optional"/>
+        <xs:attribute type="xs:string" name="endobject" use="optional"/>
+        <xs:attribute type="xs:float" name="starttime" use="optional"/>
+        <xs:attribute type="xs:float" name="endtime" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="sellerType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="container" use="optional"/>
+                <xs:attribute type="xs:string" name="entity" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="quotalistsType">
+        <xs:sequence>
+            <xs:element type="quotalistType" name="quotalist" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="signsType">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="unavailableType">
+        <xs:sequence>
+            <xs:element type="itemType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ordersType">
+        <xs:sequence>
+            <xs:element type="tradeType" name="trade" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="objectType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="involvedType">
+        <xs:sequence>
+            <xs:element type="objectType" name="object" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="valueType" mixed="true">
+        <xs:sequence>
+            <xs:element type="controlType" name="control" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:string" name="value" use="optional"/>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+        <xs:attribute type="xs:string" name="default" use="optional"/>
+        <xs:attribute type="xs:string" name="property" use="optional"/>
+        <xs:attribute type="xs:string" name="sequence" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="blackboardType">
+        <xs:sequence>
+            <xs:element type="valueType" name="value" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="resourcesType">
+        <xs:sequence>
+            <xs:element type="wareType" name="ware" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="componentsType">
+        <xs:sequence>
+            <xs:element type="componentType" name="component"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="unitType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="macro"/>
+                <xs:attribute type="xs:byte" name="amount"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="unitsType">
+        <xs:sequence>
+            <xs:element type="unitType" name="unit"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="buildType" mixed="true">
+        <xs:sequence>
+            <xs:element type="resourcesType" name="resources" minOccurs="0"/>
+            <xs:element type="componentsType" name="components" minOccurs="0"/>
+            <xs:element type="unitsType" name="units" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:float" name="start" use="optional"/>
+        <xs:attribute type="xs:float" name="end" use="optional"/>
+        <xs:attribute type="xs:byte" name="step" use="optional"/>
+        <xs:attribute type="xs:byte" name="steps" use="optional"/>
+        <xs:attribute type="xs:byte" name="update" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:string" name="state" use="optional"/>
+        <xs:attribute type="xs:string" name="masstraffic" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="storageType">
+        <xs:sequence>
+            <xs:element type="summaryType" name="summary" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="shapeType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="class" use="optional"/>
+                <xs:attribute type="xs:byte" name="rollformation" use="optional"/>
+                <xs:attribute type="xs:byte" name="rollmembers" use="optional"/>
+                <xs:attribute type="xs:float" name="distance" use="optional"/>
+                <xs:attribute type="xs:float" name="radius" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="memberType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="membersType">
+        <xs:sequence>
+            <xs:element type="memberType" name="member" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="formationType" mixed="true">
+        <xs:sequence>
+            <xs:element type="shapeType" name="shape" minOccurs="0"/>
+            <xs:element type="membersType" name="members" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="member" use="optional"/>
+        <xs:attribute type="xs:string" name="leader" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="commanderType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="missionType" mixed="true">
+        <xs:sequence>
+            <xs:element type="tradeType" name="trade" minOccurs="0"/>
+            <xs:element type="briefingType" name="briefing" minOccurs="0"/>
+            <xs:element type="objectiveType" name="objective" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:short" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="description" use="optional"/>
+        <xs:attribute type="xs:string" name="faction" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:string" name="level" use="optional"/>
+        <xs:attribute type="xs:byte" name="abortable" use="optional"/>
+        <xs:attribute type="xs:byte" name="active" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="overrideType">
+        <xs:sequence>
+            <xs:element type="positionType" name="position"/>
+            <xs:element type="rotationType" name="rotation" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="object" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="overridesType">
+        <xs:sequence>
+            <xs:element type="overrideType" name="override" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="decelerationType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="time" use="optional"/>
+                <xs:attribute type="xs:byte" name="keepangular" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="angularType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="rx" use="optional"/>
+                <xs:attribute type="xs:float" name="ry" use="optional"/>
+                <xs:attribute type="xs:float" name="rz" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="timeType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="start" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="waresType">
+        <xs:sequence>
+            <xs:element type="wareType" name="ware"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="volatileType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="start" use="optional"/>
+                <xs:attribute type="xs:float" name="duration" use="optional"/>
+                <xs:attribute type="xs:byte" name="value" use="optional"/>
+                <xs:attribute type="xs:float" name="target" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="groupType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="value" use="optional"/>
+                <xs:attribute type="xs:float" name="time" use="optional"/>
+                <xs:attribute type="xs:string" name="macro" use="optional"/>
+                <xs:attribute type="xs:string" name="parent" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="jumpType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="time" use="optional"/>
+                <xs:attribute type="xs:byte" name="charging" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="boostType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="charge" use="optional"/>
+                <xs:attribute type="xs:byte" name="efficiency" use="optional"/>
+                <xs:attribute type="xs:float" name="recharge" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="lastglobalanimationType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="trigger" use="optional"/>
+                <xs:attribute type="xs:float" name="time" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="profileType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="sustainvalue" use="optional"/>
+                <xs:attribute type="xs:float" name="releaseduration" use="optional"/>
+                <xs:attribute type="xs:string" name="class" use="optional"/>
+                <xs:attribute type="xs:float" name="startvalue" use="optional"/>
+                <xs:attribute type="xs:float" name="starttime" use="optional"/>
+                <xs:attribute type="xs:float" name="sustainduration" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="influenceType">
+        <xs:sequence>
+            <xs:element type="profileType" name="profile"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="class" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="influencesType">
+        <xs:sequence>
+            <xs:element type="influenceType" name="influence" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="allowedType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="y" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="safeposType">
+        <xs:sequence>
+            <xs:element type="allowedType" name="allowed"/>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="safepos" use="optional"/>
+        <xs:attribute type="xs:float" name="radius" use="optional"/>
+        <xs:attribute type="xs:string" name="refobject" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="channelType">
+        <xs:sequence>
+            <xs:element type="valueType" name="value" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="channel" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="textureType">
+        <xs:sequence>
+            <xs:element type="channelType" name="channel" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="accelerationType">
+        <xs:sequence>
+            <xs:element type="linearType" name="linear" minOccurs="0"/>
+            <xs:element type="angularType" name="angular" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="snapshotType">
+        <xs:sequence>
+            <xs:element type="wareType" name="ware" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="buildtreeType" name="buildtree" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="buildtreeType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="sequence" use="optional"/>
+                <xs:attribute type="xs:byte" name="stage" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="inventoryType">
+        <xs:sequence>
+            <xs:element type="wareType" name="ware" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="controlType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="current" use="optional"/>
+                <xs:attribute type="xs:string" name="next" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="floatType" mixed="true">
+        <xs:sequence>
+            <xs:element type="controlType" name="control" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="sequence" use="optional"/>
+        <xs:attribute type="xs:string" name="property" use="optional"/>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="trailType">
+        <xs:sequence>
+            <xs:element type="offsetType" name="offset"/>
+            <xs:element type="controlpointsType" name="controlpoints" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+        <xs:attribute type="xs:string" name="part" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="trailsType">
+        <xs:sequence>
+            <xs:element type="trailType" name="trail" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="controlpointType">
+        <xs:sequence>
+            <xs:element type="positionType" name="position"/>
+        </xs:sequence>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="controlpointsType">
+        <xs:sequence>
+            <xs:element type="controlpointType" name="controlpoint" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cameraoffsetType">
+        <xs:sequence>
+            <xs:element type="positionType" name="position"/>
+            <xs:element type="rotationType" name="rotation"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="tintType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="x"/>
+                <xs:attribute type="xs:byte" name="y"/>
+                <xs:attribute type="xs:byte" name="z"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="entryType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="entriesType">
+        <xs:sequence>
+            <xs:element type="entryType" name="entry"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="knownType">
+        <xs:sequence>
+            <xs:element type="entriesType" name="entries" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="npcanimationType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="currentsequenceid"/>
+                <xs:attribute type="xs:string" name="currentanimation"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="colorType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="time"/>
+                <xs:attribute type="xs:string" name="sequence"/>
+                <xs:attribute type="xs:string" name="property"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="shootcontrollerType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="class" use="optional"/>
+                <xs:attribute type="xs:string" name="shooter" use="optional"/>
+                <xs:attribute type="xs:float" name="starttime" use="optional"/>
+                <xs:attribute type="xs:float" name="angle" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="scanType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="longrange"/>
+                <xs:attribute type="xs:byte" name="progress"/>
+                <xs:attribute type="xs:byte" name="level"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="effectType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="effect" use="optional"/>
+                <xs:attribute type="xs:byte" name="element" use="optional"/>
+                <xs:attribute type="xs:byte" name="duration" use="optional"/>
+                <xs:attribute type="xs:float" name="starttime" use="optional"/>
+                <xs:attribute type="xs:byte" name="fadeinduration" use="optional"/>
+                <xs:attribute type="xs:byte" name="fadeoutduration" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="cameraType">
+        <xs:sequence>
+            <xs:element type="movementType" name="movement"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="component"/>
+    </xs:complexType>
+    <xs:complexType name="camerasType">
+        <xs:sequence>
+            <xs:element type="cameraType" name="camera"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="universeType">
+        <xs:sequence>
+            <xs:element type="factionsType" name="factions"/>
+            <xs:element type="controltexturesType" name="controltextures"/>
+            <xs:element type="componentType" name="component"/>
+            <xs:element type="camerasType" name="cameras"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="statType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id" use="optional"/>
+                <xs:attribute type="xs:float" name="value" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="statsType">
+        <xs:sequence>
+            <xs:element type="statType" name="stat" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="refType" mixed="true">
+        <xs:sequence>
+            <xs:element type="valueType" name="value" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="membersType" name="members" minOccurs="0"/>
+            <xs:element type="upgradeType" name="upgrade" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:short" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="string" use="optional"/>
+        <xs:attribute type="xs:string" name="component" use="optional"/>
+        <xs:attribute type="xs:string" name="connection" use="optional"/>
+        <xs:attribute type="xs:float" name="x" use="optional"/>
+        <xs:attribute type="xs:float" name="y" use="optional"/>
+        <xs:attribute type="xs:float" name="z" use="optional"/>
+        <xs:attribute type="xs:float" name="yaw" use="optional"/>
+        <xs:attribute type="xs:float" name="pitch" use="optional"/>
+        <xs:attribute type="xs:float" name="roll" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="refsType">
+        <xs:sequence>
+            <xs:element type="refType" name="ref" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="upgradeType" mixed="true">
+        <xs:sequence>
+            <xs:element type="upgradeType" name="upgrade" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="upgrade" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="tags" use="optional"/>
+        <xs:attribute type="xs:byte" name="level" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="varsType">
+        <xs:sequence>
+            <xs:element type="valueType" name="value" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="scriptType" mixed="true">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="refsType" name="refs"/>
+            <xs:element type="varsType" name="vars"/>
+            <xs:element type="cueType" name="cue"/>
+            <xs:element type="libraryType" name="library"/>
+            <xs:element type="commandType" name="command"/>
+            <xs:element type="countersType" name="counters"/>
+        </xs:choice>
+        <xs:attribute type="xs:short" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:byte" name="version" use="optional"/>
+        <xs:attribute type="xs:string" name="label" use="optional"/>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+        <xs:attribute type="xs:byte" name="index" use="optional"/>
+        <xs:attribute type="xs:string" name="attention" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="cueType" mixed="true">
+        <xs:sequence>
+            <xs:element type="varsType" name="vars" minOccurs="0"/>
+            <xs:element type="actorsType" name="actors" minOccurs="0"/>
+            <xs:element type="cueType" name="cue" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="instancesType" name="instances" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:short" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="state" use="optional"/>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+        <xs:attribute type="xs:short" name="ref" use="optional"/>
+        <xs:attribute type="xs:short" name="base" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="libraryType" mixed="true">
+        <xs:sequence>
+            <xs:element type="varsType" name="vars" minOccurs="0"/>
+            <xs:element type="actorsType" name="actors" minOccurs="0"/>
+            <xs:element type="cueType" name="cue" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="instancesType" name="instances" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:short" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="state" use="optional"/>
+        <xs:attribute type="xs:float" name="time" use="optional"/>
+        <xs:attribute type="xs:short" name="ref" use="optional"/>
+        <xs:attribute type="xs:short" name="base" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="instancesType">
+        <xs:sequence>
+            <xs:element type="cueType" name="cue" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="actorType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="actorsType">
+        <xs:sequence>
+            <xs:element type="actorType" name="actor"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="mdType">
+        <xs:sequence>
+            <xs:element type="scriptType" name="script" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="varsType" name="vars"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="objectiveType" mixed="true">
+        <xs:sequence>
+            <xs:element type="targetsType" name="targets" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="step" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:string" name="text" use="optional"/>
+        <xs:attribute type="xs:byte" name="active" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="briefingType">
+        <xs:sequence>
+            <xs:element type="objectiveType" name="objective" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="targetType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id"/>
+                <xs:attribute type="xs:byte" name="dock"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="targetsType">
+        <xs:sequence>
+            <xs:element type="targetType" name="target"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="missionsType">
+        <xs:sequence>
+            <xs:element type="missionType" name="mission" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="commandType" mixed="true">
+        <xs:sequence>
+            <xs:element type="paramType" name="param" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="paramType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+                <xs:attribute type="xs:string" name="value" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="counterType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="current" use="optional"/>
+                <xs:attribute type="xs:byte" name="max" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="countersType">
+        <xs:sequence>
+            <xs:element type="counterType" name="counter"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="aidirectorType">
+        <xs:sequence>
+            <xs:element type="entityType" name="entity" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="dataType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="environment" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="addonsType">
+        <xs:sequence>
+            <xs:element type="dataType" name="data" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="uiType">
+        <xs:sequence>
+            <xs:element type="addonsType" name="addons"/>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="version"/>
+    </xs:complexType>
+    <xs:complexType name="savegameType">
+        <xs:sequence>
+            <xs:element type="infoType" name="info"/>
+            <xs:element type="universeType" name="universe"/>
+            <xs:element type="statsType" name="stats"/>
+            <xs:element type="xs:string" name="log"/>
+            <xs:element type="scriptType" name="script"/>
+            <xs:element type="mdType" name="md"/>
+            <xs:element type="missionsType" name="missions"/>
+            <xs:element type="aidirectorType" name="aidirector"/>
+            <xs:element type="uiType" name="ui"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

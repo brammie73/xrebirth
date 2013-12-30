@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" jxb:version="2.1" xmlns:jxb="http://java.sun.com/xml/ns/jaxb">
+
+    <xs:annotation>
+        <xs:appinfo>
+            <jxb:bindings node="//xs:attributeGroup[@name='angles']/xs:attribute[@name='pitch']">
+                <jxb:property name="anglePitch"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:attributeGroup[@name='angles']/xs:attribute[@name='yaw']">
+                <jxb:property name="angleYaw"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:attributeGroup[@name='angles']/xs:attribute[@name='distance']">
+                <jxb:property name="angleDistance"/>
+            </jxb:bindings>
+
+            <jxb:bindings node="//xs:element[@name='camera_orbit']/xs:complexType/xs:attribute[@name='distance']">
+                <jxb:property name="camera_orbitDistance"/>
+            </jxb:bindings>
+            <jxb:bindings node="//xs:element[@name='camera_orbit']/xs:complexType/xs:attribute[@name='elevation']">
+                <jxb:property name="camera_orbitElevation"/>
+            </jxb:bindings>
+
+            <jxb:bindings node="//xs:extension[@base='valuesource_posrot']/xs:attribute[@name='reference']">
+                <jxb:property name="valuesource_posrot_ref"/>
+            </jxb:bindings>
+
+        </xs:appinfo>
+    </xs:annotation>
+
+
+    <!-- ===== Simple types ==== -->
+
+  <xs:simpleType name="identifier">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^:@]+" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="comment">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+
+  <xs:simpleType name="interpolation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="none" />
+      <xs:enumeration value="linear" />
+      <xs:enumeration value="smooth" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="cycle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="none" />
+      <xs:enumeration value="repeat" />
+      <xs:enumeration value="bounce" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="orientation">
+    <xs:annotation>
+      <xs:documentation>
+        Orientation of value source, default is ecliptic
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ecliptic" />
+      <xs:enumeration value="object" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="showside">
+    <xs:annotation>
+      <xs:documentation>
+        Show side, default is left
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="left" />
+      <xs:enumeration value="right" />
+      <xs:enumeration value="top" />
+      <xs:enumeration value="bottom" />
+      <xs:enumeration value="front" />
+      <xs:enumeration value="back" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="pandirection">
+    <xs:annotation>
+      <xs:documentation>
+        Pan direction, default is leftwards
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="leftwards" />
+      <xs:enumeration value="rightwards" />
+      <xs:enumeration value="upwards" />
+      <xs:enumeration value="downwards" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="valuesource">
+    <xs:annotation>
+      <xs:documentation>
+        Floating point value, or percentage of object size (append %)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="xs:float">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value=" *[0-9.eE-]+ *%" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="objectref">
+    <xs:annotation>
+      <xs:documentation>
+        Object reference
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+
+  <xs:simpleType name="objectgroupref">
+    <xs:annotation>
+      <xs:documentation>
+        Object group reference
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+
+  <xs:simpleType name="videoname">
+    <xs:annotation>
+      <xs:documentation>
+        Video file name, e.g. "test_video" will load videos/test_video.mkv
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  
+  <!-- ===== Attribute groups ==== -->
+
+  <xs:attributeGroup name="keyframecycles">
+    <xs:attribute name="cycle" type="cycle">
+      <xs:annotation>
+        <xs:documentation>
+          Keyframe cycling mode, default is none
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="delay" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>
+          Delay between cycles
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="interpolation_options">
+    <xs:attribute name="interpolation" type="interpolation">
+      <xs:annotation>
+        <xs:documentation>
+          Interpolation method, default is linear
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="keyframecycles" />
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="angles">
+    <xs:attribute name="pitch" type="xs:float" />
+    <xs:attribute name="yaw" type="xs:float" />
+    <xs:attribute name="distance" type="valuesource" />
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="angles_beginend">
+    <xs:attribute name="pitch" type="xs:float" />
+    <xs:attribute name="yaw" type="xs:float" />
+    <xs:attribute name="distance" type="xs:float" />
+  </xs:attributeGroup>
+
+  <!-- ===== Complex types ==== -->
+
+  <xs:complexType name="posrot">
+    <xs:sequence>
+      <xs:element name="position" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:attribute name="x" type="xs:float" />
+          <xs:attribute name="y" type="xs:float" />
+          <xs:attribute name="z" type="xs:float" />
+        </xs:complexType>
+      </xs:element>
+      <xs:choice minOccurs="0" maxOccurs="1">
+        <xs:element name="rotation">
+          <xs:complexType>
+            <xs:attribute name="yaw" type="xs:float" />
+            <xs:attribute name="pitch" type="xs:float" />
+            <xs:attribute name="roll" type="xs:float" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="quaternion">
+          <xs:complexType>
+            <xs:attribute name="qx" type="xs:float" />
+            <xs:attribute name="qy" type="xs:float" />
+            <xs:attribute name="qz" type="xs:float" />
+            <xs:attribute name="qw" type="xs:float" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="valuesource_posrot">
+    <xs:choice>
+      <xs:element name="angles">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="pitch" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            <xs:element name="yaw" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            <xs:element name="distance" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+          </xs:all>
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="bias_relative">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="valuesource_posrot">
+              <xs:attribute name="reference" type="objectref" />
+              <xs:attribute name="detail" />
+              <xs:attribute name="group" type="objectgroupref" />
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="reference">
+        <xs:complexType>
+          <xs:attribute name="object" type="objectref" />
+          <xs:attribute name="group" type="objectgroupref" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="keyframes">
+        <xs:complexType>
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="keyframe">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="valuesource_posrot">
+                    <xs:attribute name="timestamp" type="xs:double" use="required" />
+                    <xs:attribute name="interpolation" type="interpolation">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Interpolation, default is none
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attributeGroup ref="keyframecycles" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="value" minOccurs="1" maxOccurs="3">
+        <xs:complexType>
+          <xs:attribute name="exact" type="xs:float" use="required" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="lineofsight">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="pivot" type="valuesource_posrot" />
+            <xs:element name="target" type="valuesource_posrot" />
+            <xs:element name="distance" type="valuesource_single" />
+          </xs:all>
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="betweenobjects">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="point1" type="valuesource_posrot" />
+            <xs:element name="point2" type="valuesource_posrot" />
+            <xs:element name="distance" type="valuesource_single" />
+          </xs:all>
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="orbit">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="center" type="valuesource_posrot" minOccurs="0" maxOccurs="1" />
+            <xs:element name="distance" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            <xs:element name="elevation" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+          </xs:all>
+          <xs:attribute name="startangle" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                Start angle, default is 0
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="stopangle" type="xs:float">
+            <xs:annotation>
+              <xs:documentation>
+                End angle, default is 360
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="duration" type="xs:double">
+            <xs:annotation>
+              <xs:documentation>
+                Duration in ms, default is 15000
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="perpendicular">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="point1" type="valuesource_posrot" />
+            <xs:element name="point2" type="valuesource_posrot" />
+            <xs:element name="distance" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+          </xs:all>
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="valuesource_single">
+    <xs:choice>
+      <xs:element name="autodistance">
+        <xs:complexType>
+          <xs:attribute name="fillspace" type="xs:float" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="autozoom">
+        <xs:complexType>
+          <xs:attribute name="reference" type="objectref" />
+          <xs:attribute name="group" type="objectgroupref" />
+          <xs:attribute name="fillspace" type="xs:float" use="required" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="keyframes">
+        <xs:complexType>
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="keyframe">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="valuesource_single">
+                    <xs:attribute name="timestamp" type="xs:double" use="required" />
+                    <xs:attribute name="interpolation" type="interpolation">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Interpolation, default is none
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attributeGroup ref="keyframecycles" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="value">
+        <xs:complexType>
+          <xs:attribute name="exact" type="xs:float" />
+          <xs:attribute name="percentage" type="xs:float" />
+          <xs:attribute name="scaleref" />
+          <xs:attribute name="comment" type="comment" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="lock">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="valuesource_single">
+              <xs:attribute name="time" use="required" />
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <xs:complexType name="shot">
+    <xs:sequence>
+      <xs:element name="takeover_position" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:attribute name="duration">
+            <xs:annotation>
+              <xs:documentation>
+                Merge duration in milliseconds, default is 1000
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="interpolation" type="interpolation">
+            <xs:annotation>
+              <xs:documentation>
+                Merge interpolation, default is linear
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:choice minOccurs="0" maxOccurs="1">
+        <xs:element name="video">
+          <xs:complexType>
+            <xs:attribute name="name" type="videoname" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:choice minOccurs="0" maxOccurs="1">
+
+        <xs:element name="camera">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="position" type="valuesource_posrot" minOccurs="0" maxOccurs="1" />
+              <xs:element name="lookdirection" type="valuesource_posrot" minOccurs="0" maxOccurs="1" />
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_find">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="pitch" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="yaw" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="distance" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attributeGroup ref="angles_beginend" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attributeGroup ref="angles_beginend" />
+                  <xs:attribute name="time" type="xs:double" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="lookat_reference" type="objectref" use="required" />
+            <xs:attribute name="position_reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="time_search" type="xs:double">
+              <xs:annotation>
+                <xs:documentation>
+                  Search time in ms, default is 5000
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="time_lockon" type="xs:double">
+              <xs:annotation>
+                <xs:documentation>
+                  Lock time in ms, default is 3000
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="fillspace" type="xs:float" />
+            <xs:attributeGroup ref="angles" />
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="jitter" type="xs:float" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_flyby">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="distance" type="valuesource" />
+                  <xs:attribute name="offset" type="valuesource" />
+                  <xs:attribute name="elevation" type="valuesource" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="distance" type="valuesource" />
+                  <xs:attribute name="offset" type="valuesource" />
+                  <xs:attribute name="elevation" type="valuesource" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="distance" type="valuesource" />
+            <xs:attribute name="offset" type="valuesource" />
+            <xs:attribute name="elevation" type="valuesource" />
+            <xs:attribute name="time" type="xs:double" />
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_flyfromto">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="time" type="xs:double" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attribute name="flyto_reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="time_firstobject" type="xs:double">
+              <xs:annotation>
+                <xs:documentation>
+                  First time in ms, default is 8000
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="time_fly" type="xs:double">
+              <xs:annotation>
+                <xs:documentation>
+                  Pan time in ms, default is 5000
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="distance" type="xs:float">
+              <xs:annotation>
+                <xs:documentation>
+                  First distance in m, default is 200
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="flyto_distance" type="xs:float">
+              <xs:annotation>
+                <xs:documentation>
+                  Second distance in m, default is 200
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_flyto">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="fillspace" type="xs:float" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="fillspace" type="xs:double" use="required" />
+                  <xs:attribute name="time" type="xs:double" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="pitch" type="xs:float" />
+            <xs:attribute name="yaw" type="xs:float" />
+            <xs:attribute name="distance" type="valuesource" />
+            <xs:attribute name="fillspace" type="xs:float" />
+            <xs:attribute name="time" type="xs:double" />
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_follow">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attributeGroup ref="angles_beginend" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attributeGroup ref="angles_beginend" />
+                  <xs:attribute name="time" type="xs:double" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attributeGroup ref="angles" />
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_lookat">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="pitch" type="xs:float" />
+                  <xs:attribute name="yaw" type="xs:float" />
+                  <xs:attribute name="fillspace" type="xs:float" />
+                  <xs:attribute name="distance" type="valuesource" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="pitch" type="xs:float" />
+                  <xs:attribute name="yaw" type="xs:float" />
+                  <xs:attribute name="fillspace" type="xs:float" />
+                  <xs:attribute name="distance" type="valuesource" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="lookat_reference" type="objectref" use="required" />
+            <xs:attribute name="position_reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attributeGroup ref="angles" />
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_orbit">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="distance" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="elevation"  type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="angle" type="xs:float" />
+                  <xs:attribute name="distance" type="valuesource" />
+                  <xs:attribute name="elevation" type="valuesource" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="angle" type="xs:float" />
+                  <xs:attribute name="distance" type="valuesource" />
+                  <xs:attribute name="elevation" type="valuesource" />
+                  <xs:attribute name="time" type="xs:double" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="startangle" type="xs:float" />
+            <xs:attribute name="stopangle" type="xs:float" />
+            <xs:attribute name="time" type="xs:double" />
+            <xs:attribute name="distance" type="valuesource" />
+            <xs:attribute name="elevation" type="valuesource" />
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_panover">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="distance" type="xs:float" />
+                  <xs:attribute name="elevation" type="xs:float" />
+                  <xs:attribute name="offset" type="xs:float" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="distance" type="xs:float" />
+                  <xs:attribute name="elevation" type="xs:float" />
+                  <xs:attribute name="offset" type="xs:float" />
+                  <xs:attribute name="time" type="xs:double" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="distance" type="xs:float" />
+            <xs:attribute name="elevation" type="xs:float" />
+            <xs:attribute name="showing" type="showside" />
+            <xs:attribute name="pan_direction" type="pandirection" />
+            <xs:attribute name="time" type="xs:double" />
+            <xs:attribute name="panstart" type="xs:float" />
+            <xs:attribute name="panend" type="xs:float" />
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_panto">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="position" type="valuesource_posrot" minOccurs="0" maxOccurs="1" />
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="x" type="xs:float" />
+                  <xs:attribute name="y" type="xs:float" />
+                  <xs:attribute name="z" type="xs:float" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="x" type="xs:float" />
+                  <xs:attribute name="y" type="xs:float" />
+                  <xs:attribute name="z" type="xs:float" />
+                  <xs:attribute name="time" type="xs:double" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attribute name="panto_reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="time_firstobject" type="xs:double" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  First time in ms
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="time_pan" type="xs:double" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  Pan time in ms
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="x" type="xs:float" />
+            <xs:attribute name="y" type="xs:float" />
+            <xs:attribute name="z" type="xs:float" />
+            <xs:attribute name="orient_to" type="orientation" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_detail">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="begin" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="distance" type="valuesource" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="end" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="distance" type="valuesource" use="required" />
+                  <xs:attribute name="time" type="xs:double" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attribute name="detail" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="distance" type="valuesource" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="camera_animated">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="roll" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+              <xs:element name="zoom" type="valuesource_single" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="reference" type="objectref" use="required" />
+            <xs:attributeGroup ref="interpolation_options" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="environment" use="required" />
+    <xs:attribute name="failsafe" type="xs:double">
+      <xs:annotation>
+        <xs:documentation>
+          Failsafe duration in milliseconds
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="comment" type="comment" />
+  </xs:complexType>
+
+  <!-- ===== Root elements ==== -->
+
+  <xs:element name="cutscene">
+    <xs:annotation>
+      <xs:documentation>
+        Root element of a cutscene
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="director">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="params" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="param" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="name" use="required" />
+                        <xs:attribute name="comment" type="comment" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="comment" type="comment" />
+                </xs:complexType>
+                <xs:key name="param_name">
+                  <xs:selector xpath="param" />
+                  <xs:field xpath="@name" />
+                </xs:key>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="key" use="required" />
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="environments" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="environment_implicit">
+                <xs:complexType>
+                  <xs:attribute name="name" type="identifier" use="required" />
+                  <xs:attribute name="zone" use="required" />
+                  <xs:attribute name="comment" type="comment" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="environment_plot">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="teleport" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="offset" type="posrot" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+                        <xs:attribute name="zone" use="required" />
+                        <xs:attribute name="comment" type="comment" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="anchor" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:attribute name="name" use="required" />
+                        <xs:attribute name="comment" type="comment" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attribute name="name" type="identifier" use="required" />
+                  <xs:attribute name="comment" type="comment" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="object_group">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="reference">
+                      <xs:complexType>
+                        <xs:attribute name="object" use="required" />
+                        <xs:attribute name="weight" type="xs:integer" />
+                        <xs:attribute name="comment" type="comment" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" use="required" />
+                  <xs:attribute name="comment" type="comment" />
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="presentation">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="actions" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="sequence">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="shot" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:complexContent>
+                                <xs:extension base="shot">
+                                  <xs:attribute name="name" type="identifier" use="required" />
+                                  <xs:attribute name="duration" use="required" />
+                                </xs:extension>
+                              </xs:complexContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="identifier" use="required" />
+                        <xs:attribute name="start" />
+                        <xs:attribute name="comment" type="comment" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="dynamicshots">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="shot" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:complexContent>
+                                <xs:extension base="shot">
+                                  <xs:attribute name="name" type="identifier" use="required" />
+                                  <xs:attribute name="trigger" use="required" />
+                                </xs:extension>
+                              </xs:complexContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="identifier" use="required" />
+                        <xs:attribute name="endevent" />
+                        <xs:attribute name="comment" type="comment" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:attribute name="comment" type="comment" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="timings" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="timing">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="identifier" use="required" />
+                        <xs:attribute name="base" use="required" />
+                        <xs:attribute name="offset_add" />
+                        <xs:attribute name="offset_subtract" />
+                        <xs:attribute name="comment" type="comment" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="comment" type="comment" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="signals" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="signal">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="identifier" use="required" />
+                        <xs:attribute name="time" use="required" />
+                        <xs:attribute name="comment" type="comment" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="comment" type="comment" />
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+            <xs:attribute name="minruntime" type="xs:double">
+              <xs:annotation>
+                <xs:documentation>
+                  Minimum run time in milliseconds, default is 20
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="comment" type="comment" />
+          </xs:complexType>
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+    <xs:key name="unique_identifiers">
+      <xs:selector xpath="environments/environment_implicit | environments/environment_plot | presentation/actions/* | presentation/actions/*/shot | presentation/timings/timing | presentation/signals/signal" />
+      <xs:field xpath="@name" />
+    </xs:key>
+  </xs:element>
+
+</xs:schema>

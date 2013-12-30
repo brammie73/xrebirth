@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="wares">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="defaults"/>
+                <xs:element maxOccurs="unbounded" ref="ware"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="defaults">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="price"/>
+                <xs:element ref="production" />
+                <xs:element ref="container"/>
+                <xs:element ref="icon"/>
+            </xs:sequence>
+            <xs:attribute name="id" use="required" type="xs:NCName"/>
+            <xs:attribute name="name" use="required" type="xs:NCName"/>
+            <xs:attribute name="size" use="required" type="xs:NCName"/>
+            <xs:attribute name="transport" use="required" type="xs:NCName"/>
+            <xs:attribute name="volume" use="required" type="xs:integer"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="price">
+        <xs:complexType>
+            <xs:attribute name="average" use="required" type="xs:integer"/>
+            <xs:attribute name="max" use="required" type="xs:integer"/>
+            <xs:attribute name="min" use="required" type="xs:integer"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="production">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" ref="primary"/>
+                <xs:element minOccurs="0" ref="secondary"/>
+                <xs:element minOccurs="0" ref="effects"/>
+            </xs:sequence>
+            <xs:attribute name="amount" use="required" type="xs:integer"/>
+            <xs:attribute name="method" use="required" type="xs:NCName"/>
+            <xs:attribute name="name" use="required"/>
+            <xs:attribute name="time" use="required" type="xs:integer"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="primary">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="ware"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="secondary">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="ware"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="effects">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="effect"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="effect">
+        <xs:complexType>
+            <xs:attribute name="product" use="required" type="xs:decimal"/>
+            <xs:attribute name="type" use="required" type="xs:NCName"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="container">
+        <xs:complexType>
+            <xs:attribute name="ref" use="required" type="xs:NCName"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="icon">
+        <xs:complexType>
+            <xs:attribute name="active" use="required" type="xs:NCName"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ware">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" ref="price"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="production"/>
+                <xs:element minOccurs="0" ref="component"/>
+                <xs:element minOccurs="0" ref="container"/>
+                <xs:element minOccurs="0" ref="icon"/>
+                <xs:element minOccurs="0" ref="restriction"/>
+            </xs:sequence>
+            <xs:attribute name="amount" type="xs:integer"/>
+            <xs:attribute name="description"/>
+            <xs:attribute name="id" type="xs:NCName"/>
+            <xs:attribute name="illegal"/>
+            <xs:attribute name="licence" type="xs:NCName"/>
+            <xs:attribute name="name"/>
+            <xs:attribute name="shortname"/>
+            <xs:attribute name="size" type="xs:NCName"/>
+            <xs:attribute name="specialist" type="xs:NCName"/>
+            <xs:attribute name="tags"/>
+            <xs:attribute name="transport" type="xs:NCName"/>
+            <xs:attribute name="volume" type="xs:integer"/>
+            <xs:attribute name="ware" type="xs:NCName"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="component">
+        <xs:complexType>
+            <xs:attribute name="amount" use="required" type="xs:integer"/>
+            <xs:attribute name="ref" use="required" type="xs:NCName"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="restriction">
+        <xs:complexType>
+            <xs:attribute name="sell" use="required" type="xs:decimal"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
