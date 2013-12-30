@@ -1,0 +1,5 @@
+<providers>
+    <provider class-name="nl.games.xrebirth.filesystem.XRFileProvider">
+        <scheme name="xr"/>
+    </provider>
+</providers>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Last exported: 26.09.2013 10:02:21-->
+<races xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/races.xsd">
+  <race id="argon" name="{20202,101}" description="{20202,102}">
+    <relations>
+      <relation race="boron" relation="1" />
+      <relation race="paranid" relation="-1" />
+    </relations>
+  </race>
+  <race id="boron" name="{20202,201}" description="{20202,202}">
+    <relations>
+      <relation race="argon" relation="1" />
+      <relation race="split" relation="-1" />
+    </relations>
+  </race>
+  <race id="split" name="{20202,301}" description="{20202,302}">
+    <relations>
+      <relation race="boron" relation="-1" />
+    </relations>
+  </race>
+  <race id="paranid" name="{20202,401}" description="{20202,402}">
+    <relations>
+      <relation race="argon" relation="-1" />
+    </relations>
+  </race>
+  <race id="teladi" name="{20202,501}" description="{20202,502}" />
+  <race id="xenon" name="{20202,601}" description="{20202,602}" />
+  <race id="terran" name="{20202,701}" description="{20202,702}" />
+  <race id="drone" name="{20202,801}" description="{20202,802}" />
+</races>
