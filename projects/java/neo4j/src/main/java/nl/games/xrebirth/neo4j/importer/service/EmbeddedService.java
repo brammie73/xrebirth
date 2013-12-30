@@ -1,6 +1,9 @@
 package nl.games.xrebirth.neo4j.importer.service;
 
 import nl.games.xrebirth.neo4j.importer.reader.ImportContext;
+import nl.games.xrebirth.neo4j.importer.reader.LanguageTextFormatter;
+import nl.games.xrebirth.neo4j.importer.reader.TextFormatter;
+import nl.games.xrebirth.neo4j.importer.reader.language.LanguageImporter;
 import nl.games.xrebirth.neo4j.importer.reader.wares.WaresImporter;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
@@ -48,6 +51,9 @@ public class EmbeddedService {
 
         ImportContext importContext = new ImportContext();
         importContext.setDatabaseService(graphDb);
+        new LanguageTextFormatter(importContext, new LanguageImporter());
+
+
 
 
 /*

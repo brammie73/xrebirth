@@ -34,7 +34,7 @@ public class FactionsWriter extends AbstractNeo4jWriter<Factions> {
             for (Faction faction : factions.getFaction()) {
                 Label label = DynamicLabel.label(getLabel());
                 Node node = service.createNode(label);
-                addAttributeFields(faction, node);
+                addAttributeFields(importContext, faction, node);
                 cache.put(new Key(faction.getId()), new Value(node.getId()));
             }
 

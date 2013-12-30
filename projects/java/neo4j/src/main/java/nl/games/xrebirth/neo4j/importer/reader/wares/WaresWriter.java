@@ -40,7 +40,7 @@ public class WaresWriter extends AbstractNeo4jWriter<Wares> {
             for (Ware ware : wares.getWare()) {
                 updateWithDefault(ware, defaultWare);
                 Node node = service.createNode(DynamicLabel.label(getLabel()));
-                this.addAttributeFields(ware, node);
+                this.addAttributeFields(importContext, ware, node);
                 node.setProperty("name", ware.getId());
                 node.setProperty("price-min", ware.getPrice().getMin().longValue());
                 node.setProperty("price-avarage", ware.getPrice().getAverage().longValue());
@@ -51,7 +51,7 @@ public class WaresWriter extends AbstractNeo4jWriter<Wares> {
                 Node node = service.getNodeById(nodeIdMap.get(ware.getId()));
                 for (Production production : ware.getProduction()) {
                     Node productionNode = service.createNode(productionLabel);
-                    addAttributeFields(production, productionNode);
+                    addAttributeFields(importContext, production, productionNode);
                     productionNode.createRelationshipTo(node, produces);
                     if (production.getEffects() != null) {
                         for (Effect effect : production.getEffects().getEffect()) {

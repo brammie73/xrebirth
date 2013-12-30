@@ -24,7 +24,9 @@ public abstract class AbstractNeo4jWriter<T> implements Neo4jWriter<T> {
     }
 
 
-    protected void addAttributeFields(Object object, Node node) throws IllegalAccessException {
+
+
+    protected void addAttributeFields(TextFormatter textFormatter, Object object, Node node) throws IllegalAccessException {
         Field[] fields = object.getClass().getDeclaredFields();
         for (Field field : fields) {
             if (field.isAnnotationPresent(XmlAttribute.class)) {
@@ -37,10 +39,9 @@ public abstract class AbstractNeo4jWriter<T> implements Neo4jWriter<T> {
                     if (value instanceof String) {
                         String stringValue = ((String) value).trim();
                         if ("tags".equalsIgnoreCase(annotation.name())) {
-                            String[] strings = stringValue.split(" ");
-                            value = strings;
+                            value = textFormatter.format(stringValue.split(" "));
                         } else if (stringValue.startsWith("{") && stringValue.endsWith("}") ) {
-                            value = lookupText(stringValue);
+                            value = textFormatter.format(stringValue);
                         }
                     }
                     node.setProperty(annotation.name(), value);
@@ -48,10 +49,4 @@ public abstract class AbstractNeo4jWriter<T> implements Neo4jWriter<T> {
             }
         }
     }
-
-    private String lookupText(String in) {
-        return in;
-    }
-
-
 }

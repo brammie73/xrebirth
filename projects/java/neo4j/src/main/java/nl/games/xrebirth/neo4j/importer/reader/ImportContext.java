@@ -15,12 +15,14 @@ import org.neo4j.graphdb.*;
  * Time: 18:59
  * To change this template use File | Settings | File Templates.
  */
-public class ImportContext {
+public class ImportContext implements TextFormatter {
 
     private GraphDatabaseService databaseService;
     private IndexReader indexReader;
     private FileObject root;
     private Configuration configuration = Config.getConfiguration();
+
+    private TextFormatter textFormatter = new DefaultTextFormatter();
 
     public ImportContext()  {
         setUpFilesystem();
@@ -28,7 +30,7 @@ public class ImportContext {
 
     private void setUpFilesystem() {
         try {
-            String uri = new StringBuilder("catdat:").append(this.configuration.getString("egosoft.xrebirth.dir")).toString();
+            String uri = new StringBuilder("xr:").append(this.configuration.getString("egosoft.xrebirth.dir")).toString();
             FileSystemManager manager  = VFS.getManager();
             this.root = manager.resolveFile(uri);
         } catch (FileSystemException e) {
@@ -75,5 +77,23 @@ public class ImportContext {
             node.setProperty(NAME_OBJECT_TYPE, type);
             return node;
         }
+    }
+
+    void setTextFormatter(TextFormatter textFormatter) {
+        this.textFormatter = textFormatter;
+    }
+
+    public TextFormatter getTextFormatter() {
+        return textFormatter;
+    }
+
+    @Override
+    public String format(String in) {
+        return textFormatter.format(in);
+    }
+
+    @Override
+    public String[] format(String[] in) {
+        return textFormatter.format(in);
     }
 }
