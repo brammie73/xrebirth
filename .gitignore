@@ -11,4 +11,5 @@
 ###################
 *.iml
 .idea
-**/target/*
+**/.idea
+**/target
