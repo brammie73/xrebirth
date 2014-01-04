@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-        >
-
-    <xs:simpleType name="name">
+  <xs:simpleType name="name">
     <xs:restriction base="xs:string">
       <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*" />
     </xs:restriction>
@@ -159,7 +157,7 @@
     </xs:attribute>
   </xs:complexType>
 
-  <xs:complexType name="scriptsdatatype">
+  <xs:complexType name="datatype">
     <xs:annotation>
       <xs:documentation>
         Definition of a real script data type, or a specialized/generalized value type for documentation purposes
@@ -225,7 +223,7 @@
               <xs:field xpath="@name" />
             </xs:key>
           </xs:element>
-          <xs:element name="datatype" type="scriptsdatatype">
+          <xs:element name="datatype" type="datatype">
             <xs:keyref name="datatype_base_type" refer="type_name">
               <xs:selector xpath="." />
               <xs:field xpath="@type" />

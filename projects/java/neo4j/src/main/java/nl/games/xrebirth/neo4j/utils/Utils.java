@@ -17,7 +17,7 @@ public class Utils {
         return getDeclaredClass(o.getClass());
     }
 
-    public static Class getDeclaredClass(Class clazz) {
+    public static  Class getDeclaredClass(Class clazz) {
         return (Class)((ParameterizedType)clazz.getGenericSuperclass()).getActualTypeArguments()[0];
     }
 

@@ -144,6 +144,7 @@ public class SchemaFixInludes implements SchemaFix {
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
             DOMSource source = new DOMSource(document);
+
             StreamResult result = new StreamResult(new FileOutputStream(out));
             transformer.transform(source, result);
         } catch (TransformerException e) {

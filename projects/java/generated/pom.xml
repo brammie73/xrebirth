@@ -16,11 +16,111 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>target/generated-sources/xsd</directory>
+                <excludes>
+                    <exclude>*.xjb</exclude>
+                </excludes>
+                <targetPath>META-INF/xsd</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>nl.games.xrebirth.schema</groupId>
+                <artifactId>schemafix</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <namespaceMapping>
+                        <property><name>aiscripts.xsd</name><value>http://xrebirth.egosoft.com/aiscripts</value></property>
+<!--
+                        <property><name>common.xsd</name><value>http://xrebirth.egosoft.com/common</value></property>
+-->
+                        <property><name>ccomponents.xsd</name><value>http://xrebirth.egosoft.com/ccomponents</value></property>
+                        <property><name>factions.xsd</name><value>http://xrebirth.egosoft.com/factions</value></property>
+<!--
+                        <property><name>globaltypes.xsd</name><value>http://xrebirth.egosoft.com/factions</value></property>
+-->
+                        <property><name>libraries.xsd</name><value>http://xrebirth.egosoft.com/libraries</value></property>
+                        <property><name>material_library.xsd</name><value>http://xrebirth.egosoft.com/libraries/materials</value></property>
+                        <property><name>md.xsd</name><value>http://xrebirth.egosoft.com/missiondirector</value></property>
+                        <property><name>parameters.xsd</name><value>http://xrebirth.egosoft.com/parameters</value></property>
+                        <property><name>quotas.xsd</name><value>http://xrebirth.egosoft.com/quotas</value></property>
+<!--
+                        <property><name>racelookup.xsd</name><value>http://xrebirth.egosoft.com/racelookup</value></property>
+-->
+                        <property><name>races.xsd</name><value>http://xrebirth.egosoft.com/races</value></property>
+                        <property><name>region_definitions.xsd</name><value>http://xrebirth.egosoft.com/regions</value></property>
+                        <property><name>savegame.xsd</name><value>http://xrebirth.egosoft.com/savegame</value></property>
+                        <property><name>scriptproperties.xsd</name><value>http://xrebirth.egosoft.com/scriptproperties</value></property>
+                        <property><name>sound_library.xsd</name><value>http://xrebirth.egosoft.com/libraries/sound</value></property>
+                        <property><name>stats.xsd</name><value>http://xrebirth.egosoft.com/stats</value></property>
+                        <property><name>text.xsd</name><value>http://xrebirth.egosoft.com/text</value></property>
+                        <property><name>unlocks.xsd</name><value>http://xrebirth.egosoft.com/unlocks</value></property>
+                        <property><name>wares.xsd</name><value>http://xrebirth.egosoft.com/wares</value></property>
+                    </namespaceMapping>
+                    <inputDirectory>src/main/xsd</inputDirectory>
+                    <outputDirectory>target/generated-sources/xsd</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>fix</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.8.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+
+                    <args>
+                        <arg>-Xsimplify</arg>
+                        <arg>-XtoString</arg>
+                        <arg>-Xequals</arg>
+                        <arg>-XhashCode</arg>
+                    </args>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics</artifactId>
+                            <version>0.6.4</version>
+                        </plugin>
+                    </plugins>
+                    <schemaDirectory>target/generated-sources/xsd</schemaDirectory>
+                    <schemaExcludes>
+                        <exclude>aiscripts.xsd</exclude>
+                        <exclude>common.xsd</exclude>
+                        <exclude>racelookup.xsd</exclude>
+                    </schemaExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <dependencies>
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics-runtime</artifactId>
+            <version>0.6.4</version>
+        </dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>nl.games.xrebirth</groupId>
             <artifactId>filesystem</artifactId>
@@ -30,7 +130,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -38,6 +137,7 @@
             <artifactId>xmlunit</artifactId>
             <version>1.5</version>
         </dependency>
-
     </dependencies>
+
+
 </project>

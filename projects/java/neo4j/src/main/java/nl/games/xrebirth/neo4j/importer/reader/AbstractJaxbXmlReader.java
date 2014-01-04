@@ -1,5 +1,6 @@
 package nl.games.xrebirth.neo4j.importer.reader;
 
+import nl.games.xrebirth.generated.JAXBHelper;
 import nl.games.xrebirth.neo4j.utils.Utils;
 import org.apache.commons.vfs2.FileObject;
 
@@ -17,39 +18,22 @@ import java.io.InputStream;
  */
 public abstract class AbstractJaxbXmlReader<T> implements XmlReader<T> {
 
-    private final String fileLocation;
 
-    public AbstractJaxbXmlReader(final String fileLocation) {
-        this.fileLocation = fileLocation;
+    Class<T> getDeclaredClass() {
+        return Utils.getDeclaredClass(this);
     }
 
     @Override
-    public String getFileLocation() {
-        return this.fileLocation;
+    public T doRead(ImportContext importContext, String file) {
+        return doImportXml(importContext, file);
     }
 
-    String getPackage() {
-        return Utils.getDeclaredClass(this).getPackage().getName();
-    }
-
-    @Override
-    public T doRead(ImportContext importContext) {
-        return doImportXml(importContext);
-    }
-
-    protected T doImportXml(ImportContext importContext) {
+    protected T doImportXml(ImportContext importContext, String file) {
         try {
-            FileObject fo = importContext.getRoot().resolveFile(getFileLocation());
+            FileObject fo = importContext.getRoot().resolveFile(file);
             InputStream is = fo.getContent().getInputStream();
-            JAXBContext jc = JAXBContext.newInstance(getPackage());
-            Unmarshaller u = jc.createUnmarshaller();
-            Object obj = u.unmarshal( is );
-            if (obj instanceof JAXBElement) {
-                JAXBElement element = (JAXBElement)obj;
-                return (T)element.getValue();
-            } else {
-                return (T)obj;
-            }
+            T t = (T)JAXBHelper.get().unMarshall(is, getDeclaredClass());
+            return t;
         } catch (Exception e) {
             throw new ImportException(e);
         }

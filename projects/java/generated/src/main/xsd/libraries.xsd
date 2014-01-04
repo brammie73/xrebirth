@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-
-        >
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
   <xs:include schemaLocation="common.xsd" />
 
-    <!-- ===== Root elements ==== -->
+  <!-- ===== Root elements ==== -->
 
   <xs:element name="ships">
     <xs:annotation>

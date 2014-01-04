@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+
+        >
+
     <xs:element name="wares">
         <xs:complexType>
             <xs:sequence>
@@ -12,7 +15,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="price"/>
-                <xs:element ref="production" />
+                <xs:element ref="production"/>
                 <xs:element ref="container"/>
                 <xs:element ref="icon"/>
             </xs:sequence>
@@ -60,14 +63,13 @@
     <xs:element name="effects">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" ref="effect"/>
+                <xs:element maxOccurs="unbounded" name="effect">
+                    <xs:complexType>
+                        <xs:attribute name="product" use="required" type="xs:decimal"/>
+                        <xs:attribute name="type" use="required" type="xs:NCName"/>
+                    </xs:complexType>
+                </xs:element>
             </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="effect">
-        <xs:complexType>
-            <xs:attribute name="product" use="required" type="xs:decimal"/>
-            <xs:attribute name="type" use="required" type="xs:NCName"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="container">

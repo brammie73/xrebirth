@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" >
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-    <xs:include schemaLocation="common.xsd" />
-
-    <!-- ===== Simple types ==== -->
+  <!-- ===== Simple types ==== -->
 
   <xs:simpleType name="identifier">
     <xs:restriction base="xs:string">
       <xs:pattern value="[^:@]+" />
     </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="comment">
+    <xs:restriction base="xs:string" />
   </xs:simpleType>
 
   <xs:simpleType name="interpolation">
@@ -27,7 +29,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="orientationType">
+  <xs:simpleType name="orientation">
     <xs:annotation>
       <xs:documentation>
         Orientation of value source, default is ecliptic
@@ -451,7 +453,7 @@
             </xs:attribute>
             <xs:attribute name="fillspace" type="xs:float" />
             <xs:attributeGroup ref="angles" />
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="jitter" type="xs:float" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
@@ -483,7 +485,7 @@
             <xs:attribute name="offset" type="valuesource" />
             <xs:attribute name="elevation" type="valuesource" />
             <xs:attribute name="time" type="xs:double" />
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
@@ -530,7 +532,7 @@
                 </xs:documentation>
               </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
@@ -559,7 +561,7 @@
             <xs:attribute name="distance" type="valuesource" />
             <xs:attribute name="fillspace" type="xs:float" />
             <xs:attribute name="time" type="xs:double" />
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
@@ -584,7 +586,7 @@
             <xs:attribute name="reference" type="objectref" use="required" />
             <xs:attributeGroup ref="interpolation_options" />
             <xs:attributeGroup ref="angles" />
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
@@ -615,7 +617,7 @@
             <xs:attribute name="position_reference" type="objectref" use="required" />
             <xs:attributeGroup ref="interpolation_options" />
             <xs:attributeGroup ref="angles" />
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
@@ -650,7 +652,7 @@
             <xs:attribute name="time" type="xs:double" />
             <xs:attribute name="distance" type="valuesource" />
             <xs:attribute name="elevation" type="valuesource" />
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
@@ -685,7 +687,7 @@
             <xs:attribute name="time" type="xs:double" />
             <xs:attribute name="panstart" type="xs:float" />
             <xs:attribute name="panend" type="xs:float" />
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>
@@ -732,7 +734,7 @@
             <xs:attribute name="x" type="xs:float" />
             <xs:attribute name="y" type="xs:float" />
             <xs:attribute name="z" type="xs:float" />
-            <xs:attribute name="orient_to" type="orientationType" />
+            <xs:attribute name="orient_to" type="orientation" />
             <xs:attribute name="comment" type="comment" />
           </xs:complexType>
         </xs:element>

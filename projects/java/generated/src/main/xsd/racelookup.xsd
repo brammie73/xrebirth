@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?> 
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-        >
-
-    <xs:simpleType name="racelookup">
+  <xs:simpleType name="racelookup">
     <xs:annotation>
       <xs:documentation>
         Race lookup values generated

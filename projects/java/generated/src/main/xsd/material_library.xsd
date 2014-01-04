@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-        >
-
-    <xs:simpleType name="blendmodelookup">
+  <xs:simpleType name="blendmodelookup">
     <xs:restriction base="xs:string">
       <!-- <xs:enumeration value="undefined" /> -->
       <!-- <xs:enumeration value="default" /> -->

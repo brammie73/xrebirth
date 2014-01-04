@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jxb:bindings
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        jxb:version="2.1"
+        xmlns:jxb="http://java.sun.com/xml/ns/jaxb">
+    >
+
+    <jxb:bindings schemaLocation="components.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.components"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="savegame.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.savegame"/>
+        </jxb:schemaBindings>
+        <jxb:bindings node="//xs:complexType[@name='animationType']/xs:attribute[@name='part']">
+            <jxb:property name="animationTypePart"/>
+        </jxb:bindings>
+        <jxb:bindings
+                node="//xs:complexType[@name='skillType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+            <jxb:property name="skillTypeValue"/>
+        </jxb:bindings>
+        <jxb:bindings
+                node="//xs:complexType[@name='paramType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+            <jxb:property name="paramTypeValue"/>
+        </jxb:bindings>
+        <jxb:bindings
+                node="//xs:complexType[@name='groupType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+            <jxb:property name="groupTypeValue"/>
+        </jxb:bindings>
+        <jxb:bindings
+                node="//xs:complexType[@name='persistentType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+            <jxb:property name="persistentTypeValue"/>
+        </jxb:bindings>
+        <jxb:bindings
+                node="//xs:complexType[@name='statType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+            <jxb:property name="statTypeValue"/>
+        </jxb:bindings>
+        <jxb:bindings
+                node="//xs:complexType[@name='volatileType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+            <jxb:property name="volatileTypeValue"/>
+        </jxb:bindings>
+        <jxb:bindings
+                node="//xs:complexType[@name='hullType']/xs:simpleContent/xs:extension/xs:attribute[@name='value']">
+            <jxb:property name="hullTypeValue"/>
+        </jxb:bindings>
+    </jxb:bindings>
+
+
+<!--
+    <jxb:bindings schemaLocation="aiscripts.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.aiscripts"/>
+        </jxb:schemaBindings>
+        <jxb:bindings node="//xs:element[@name='create_build_plan']/xs:complexType/xs:attribute[@name='buildplan']">
+            <jxb:property name="BuildplanExpr"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:element[@name='get_zone_exit_pos']/xs:complexType/xs:attribute[@name='position']">
+            <jxb:property name="exitPosition"/>
+        </jxb:bindings>
+    </jxb:bindings>
+-->
+
+    <jxb:bindings schemaLocation="races.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.races"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="factions.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.factions"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+
+
+    <jxb:bindings schemaLocation="cutscenes.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.cutscenes"/>
+        </jxb:schemaBindings>
+        <jxb:bindings node="//xs:attributeGroup[@name='angles']/xs:attribute[@name='pitch']">
+            <jxb:property name="anglePitch"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:attributeGroup[@name='angles']/xs:attribute[@name='yaw']">
+            <jxb:property name="angleYaw"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:attributeGroup[@name='angles']/xs:attribute[@name='distance']">
+            <jxb:property name="angleDistance"/>
+        </jxb:bindings>
+
+        <jxb:bindings node="//xs:element[@name='camera_orbit']/xs:complexType/xs:attribute[@name='distance']">
+            <jxb:property name="camera_orbitDistance"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:element[@name='camera_orbit']/xs:complexType/xs:attribute[@name='elevation']">
+            <jxb:property name="camera_orbitElevation"/>
+        </jxb:bindings>
+
+        <jxb:bindings node="//xs:extension[@base='valuesource_posrot']/xs:attribute[@name='reference']">
+            <jxb:property name="valuesource_posrot_ref"/>
+        </jxb:bindings>
+    </jxb:bindings>
+
+
+    <jxb:bindings schemaLocation="libraries.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.libraries"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="material_library.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.materials"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="md.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.missionsdirector"/>
+        </jxb:schemaBindings>
+        <jxb:bindings node="//xs:element[@name='create_build_plan']/xs:complexType/xs:attribute[@name='buildplan']">
+            <jxb:property name="BuildplanExpr"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:element[@name='get_zone_exit_pos']/xs:complexType/xs:attribute[@name='position']">
+            <jxb:property name="exitPosition"/>
+        </jxb:bindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="parameters.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.parameters"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="quotas.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.quotas"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="region_definitions.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.regiondefinitions"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+
+    <jxb:bindings schemaLocation="scriptproperties.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.scriptproperties"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="sound_library.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.soundlibrary"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="stats.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.sound_library"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="text.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.text"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="unlocks.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.unlocks"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="wares.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.wares"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+</jxb:bindings>

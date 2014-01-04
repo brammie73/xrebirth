@@ -49,6 +49,7 @@ public class WaresWriter extends AbstractNeo4jWriter<Wares> {
             }
             for (Ware ware : wares.getWare()) {
                 Node node = service.getNodeById(nodeIdMap.get(ware.getId()));
+
                 for (Production production : ware.getProduction()) {
                     Node productionNode = service.createNode(productionLabel);
                     addAttributeFields(importContext, production, productionNode);

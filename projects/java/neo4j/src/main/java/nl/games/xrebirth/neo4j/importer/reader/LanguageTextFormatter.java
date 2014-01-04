@@ -3,10 +3,9 @@ package nl.games.xrebirth.neo4j.importer.reader;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import nl.games.xrebirth.generated.text.Language;
-import nl.games.xrebirth.generated.text.Page;
-import nl.games.xrebirth.generated.text.Text;
+import nl.games.xrebirth.generated.text.TextPage;
+import nl.games.xrebirth.generated.text.TextValue;
 
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,8 +32,8 @@ public class LanguageTextFormatter extends DefaultTextFormatter {
 
     private void fillTable(Language language) {
         lookupTable = HashBasedTable.create(language.getPage().size(), 100);
-        for (Page page : language.getPage()) {
-            for (Text text : page.getT()) {
+        for (TextPage page : language.getPage()) {
+            for (TextValue text : page.getT()) {
                 lookupTable.put(page.getId(), text.getId(), text.getValue());
             }
         }

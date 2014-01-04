@@ -1,5 +1,6 @@
 package nl.games.xrebirth.neo4j.importer.reader.language;
 
+import com.google.common.base.Strings;
 import nl.games.xrebirth.generated.text.Language;
 import nl.games.xrebirth.generated.wares.Wares;
 import nl.games.xrebirth.neo4j.Config;
@@ -8,6 +9,10 @@ import nl.games.xrebirth.neo4j.importer.reader.AbstractJaxbXmlReader;
 import nl.games.xrebirth.neo4j.importer.reader.AbstractNeo4jWriter;
 import nl.games.xrebirth.neo4j.importer.reader.ImportContext;
 import nl.games.xrebirth.neo4j.importer.reader.wares.WaresWriter;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,8 +31,7 @@ public class LanguageImporter extends AbstractImporter<Language> {
 
     public LanguageImporter() {
         super(
-                new AbstractJaxbXmlReader<Language>(fileLocation) {
-                },
+                new AbstractJaxbXmlReader<Language>() {},
                 new AbstractNeo4jWriter<Language>() {
                     public Language doWrite(ImportContext importContext, Language language) {
                         return language;
@@ -36,4 +40,12 @@ public class LanguageImporter extends AbstractImporter<Language> {
         );
     }
 
+    @Override
+    public List<String> doGetFileLocations() {
+        return Arrays.asList(fileLocation);
+    }
+
+    public boolean doImport(ImportContext importContext) {
+        return super.doImport(importContext, fileLocation);
+    }
 }

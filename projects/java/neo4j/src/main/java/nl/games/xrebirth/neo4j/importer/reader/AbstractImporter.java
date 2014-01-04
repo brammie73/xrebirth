@@ -2,9 +2,11 @@ package nl.games.xrebirth.neo4j.importer.reader;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import scala.collection.immutable.ListSerializeStart;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +15,7 @@ import java.lang.reflect.ParameterizedType;
  * Time: 1:59
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractImporter<T> implements Importer<T> {
+public abstract class AbstractImporter<T> implements Importer<T> {
 
 
     private Class declaredClass = (Class) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -31,13 +33,29 @@ public class AbstractImporter<T> implements Importer<T> {
 
     }
 
+    public abstract List<String> doGetFileLocations();
+
+
+
     @Override
     public boolean doImport(ImportContext importContext) {
-        T t = reader.doRead(importContext);
+        for (String s : doGetFileLocations()) {
+            boolean result = doImport(importContext, s);
+            if (!result) {
+                System.err.println("error on:" + s);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean doImport(ImportContext importContext, String file) {
+        T t = reader.doRead(importContext, file);
         writer.doWrite(importContext, t);
         this.t = t;
         return false;
     }
+
 
     public T getValues() {
         if (t == null) {

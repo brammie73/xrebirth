@@ -4,6 +4,9 @@ import nl.games.xrebirth.generated.factions.Factions;
 import nl.games.xrebirth.neo4j.importer.reader.AbstractImporter;
 import nl.games.xrebirth.neo4j.importer.reader.AbstractJaxbXmlReader;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: bram
@@ -17,8 +20,11 @@ public class FactionsImporter extends AbstractImporter<Factions> {
 
 
     public FactionsImporter() {
-        super(new AbstractJaxbXmlReader<Factions>(fileLocation) {}, new FactionsWriter());
+        super(new AbstractJaxbXmlReader<Factions>() {}, new FactionsWriter());
     }
 
-
+    @Override
+    public List<String> doGetFileLocations() {
+        return Arrays.asList(fileLocation);
+    }
 }

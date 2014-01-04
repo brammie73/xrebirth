@@ -9,8 +9,6 @@ package nl.games.xrebirth.neo4j.importer.reader;
  */
 public interface XmlReader<T> {
 
-    public String getFileLocation();
-
-    public T doRead(ImportContext importContext);
+    public T doRead(ImportContext importContext, String file);
 
 }
