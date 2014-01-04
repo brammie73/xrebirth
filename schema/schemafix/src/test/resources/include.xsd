@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified"
+        xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+
+        >
+
+    <xs:annotation>
+        <xs:appinfo>
+            <jxb:bindings>
+                <jxb:dom />
+            </jxb:bindings>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:simpleType name="includeType">
+        <xs:restriction base="xs:boolean"/>
+    </xs:simpleType>
+
+</xs:schema>

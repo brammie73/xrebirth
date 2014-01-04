@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>nl.games.xrebirth.schema</groupId>
+    <artifactId>schemafixtest</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>schemafixtest</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>nl.games.xrebirth.schema</groupId>
+                <artifactId>schemafix</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <namespaceMapping>
+                        <property>
+                            <name>test.xsd</name>
+                            <value>http://test.org/test/bla</value>
+                        </property>
+                        <property>
+                            <name>test2.xsd</name>
+                            <value>http://test.org/test</value>
+                        </property>
+                    </namespaceMapping>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>fix</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

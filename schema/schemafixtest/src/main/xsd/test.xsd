@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://test.com/test"
+           targetNamespace="http://test.com/test"
+           elementFormDefault="qualified">
+	<xs:include schemaLocation="include.xsd"/>
+	<xs:simpleType name="boolean">
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="booleanInclude">
+		<xs:restriction base="includeType"/>
+	</xs:simpleType>
+	<xs:simpleType name="jo">
+		<xs:restriction base="booleanInclude"/>
+	</xs:simpleType>
+</xs:schema>
