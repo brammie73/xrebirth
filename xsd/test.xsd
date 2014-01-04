@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+
+        >
+    <xs:include schemaLocation="common.xsd"/>
+    <xs:include schemaLocation="cutscenes.xsd"/>
+    <xs:include schemaLocation="factions.xsd"/>
+    <xs:include schemaLocation="libraries.xsd"/>
+    <xs:include schemaLocation="material_library.xsd"/>
+    <xs:include schemaLocation="md.xsd"/>
+    <xs:include schemaLocation="parameters.xsd"/>
+    <xs:include schemaLocation="quotas.xsd"/>
+    <xs:include schemaLocation="racelookup.xsd"/>
+    <xs:include schemaLocation="races.xsd"/>
+    <xs:include schemaLocation="region_definitions.xsd"/>
+    <xs:include schemaLocation="savegame.xsd"/>
+    <xs:include schemaLocation="scriptproperties.xsd"/>
+    <xs:include schemaLocation="sound_library.xsd"/>
+    <xs:include schemaLocation="stats.xsd"/>
+    <xs:include schemaLocation="text.xsd"/>
+    <xs:include schemaLocation="unlocks.xsd"/>
+    <xs:include schemaLocation="wares.xsd"/>
+</xs:schema>
