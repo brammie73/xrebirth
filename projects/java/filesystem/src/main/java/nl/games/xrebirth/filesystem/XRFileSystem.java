@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class XRFileSystem extends AbstractFileSystem implements FileSystem {
 
-    private long diretoryLastModilfied =0L;
+    private long diretoryLastModilfied = 0L;
 
     protected XRFileSystem(FileName rootName, FileObject parentLayer, FileSystemOptions fileSystemOptions) {
         super(rootName, parentLayer, fileSystemOptions);
@@ -47,7 +47,7 @@ public class XRFileSystem extends AbstractFileSystem implements FileSystem {
         InputStream inputStream = catalogFileObject.getContent().getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
-        List<XRFileObject> strongRef = new ArrayList<XRFileObject>(100);
+        List<XRFileObject> strongRef = new ArrayList<>(100);
         long offset = 0;
         try {
             while ((line = reader.readLine()) != null) {
@@ -91,13 +91,12 @@ public class XRFileSystem extends AbstractFileSystem implements FileSystem {
     @Override
     protected FileObject createFile(AbstractFileName name) throws Exception {
         // This is only called for files which do not exist in the File System, eg direcories file
-        XRFileObject fo = new XRFileObject(name, null, null) {
+        return new XRFileObject(name, null, null) {
             @Override
             protected long doGetLastModifiedTime() throws Exception {
                 return diretoryLastModilfied;
             }
         };
-        return fo;
     }
 
 
@@ -105,7 +104,6 @@ public class XRFileSystem extends AbstractFileSystem implements FileSystem {
     protected void addCapabilities(Collection<Capability> caps) {
         caps.addAll(XRFileProvider.capabilities);
     }
-
 
 
 }

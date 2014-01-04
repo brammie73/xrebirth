@@ -11,15 +11,13 @@ import java.io.InputStream;
 import java.util.HashSet;
 
 /**
- * Created with IntelliJ IDEA.
  * User: bram
  * Date: 27-12-13
  * Time: 3:28
- * To change this template use File | Settings | File Templates.
  */
 public class XRFileObject extends AbstractFileObject implements FileObject {
 
-    private final HashSet<String> children = new HashSet<String>();
+    private final HashSet<String> children = new HashSet<>();
     private final XRFileInfo fileInfo;
 
 
@@ -88,5 +86,8 @@ public class XRFileObject extends AbstractFileObject implements FileObject {
         return false;
     }
 
-
+    @Override
+    public FileObject getChild(String name) throws FileSystemException {
+        return super.getChild(name.toLowerCase());
+    }
 }
