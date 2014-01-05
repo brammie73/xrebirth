@@ -1,162 +1,178 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <!-- define additional simple types-->
-  <xs:simpleType name="PositiveInteger">
-    <xs:restriction base="xs:integer">
-      <xs:minInclusive value="1" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="RefString">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[A-Za-z0-9_\-#]+" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="NonNegativeFloat">
-    <xs:restriction base="xs:float">
-      <xs:minInclusive value="0" />
-    </xs:restriction>
-  </xs:simpleType>
-  <!-- regions node -->
-  <xs:element name="regions">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" maxOccurs="unbounded" ref="region" />
-      </xs:sequence>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="regions" type="regionsType"> </xs:element>
+
+    <xs:complexType name="regionsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="region" type="regionType"/>
+        </xs:sequence>
     </xs:complexType>
-  </xs:element>
-  <!-- regions/region -->
-  <xs:element name="region">
-    <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element ref="asteroids" />
-        <xs:element ref="nebula" />
-        <xs:element ref="debris" />
-        <xs:element ref="flag" />
-        <xs:element ref="effect" />
-      </xs:choice>
-      <xs:attribute name="name" type="xs:ID" use="required" />
-      <xs:attribute name="size" type="xs:string" use="required" />
-      <xs:attribute name="count" type="PositiveInteger" />
-      <xs:attribute name="moving" type="xs:float" />
-      <xs:attribute name="rotation" type="xs:float" />
+
+    <xs:complexType name="regionType">
+        <xs:sequence>
+            <xs:element name="boundary" type="boundaryType"/>
+            <xs:element minOccurs="0" name="falloff" type="falloffType"/>
+            <xs:element name="fields" type="fieldsType"/>
+        </xs:sequence>
+        <xs:attribute name="density" type="xs:decimal"/>
+        <xs:attribute name="maxnoisevalue" type="xs:integer"/>
+        <xs:attribute name="minnoisevalue" type="xs:decimal"/>
+        <xs:attribute name="moving" type="xs:decimal"/>
+        <xs:attribute name="name" use="required" type="xs:NMTOKEN"/>
+        <xs:attribute name="noisescale" type="xs:integer"/>
+        <xs:attribute name="rotation" type="xs:decimal"/>
+        <xs:attribute name="seed" type="xs:integer"/>
     </xs:complexType>
-  </xs:element>
-  <!-- regions/region/asteroids -->
-  <xs:element name="asteroids">
-    <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element ref="flag" />
-        <xs:element ref="effect" />
-      </xs:choice>
-      <xs:attribute name="ref" type="RefString" use="required" />
-      <xs:attribute name="percentage" type="xs:string" use="required" />
-      <xs:attribute name="moving" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="movingvariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="rotation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="rotationvariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="sizevariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="resource" use="required">
-        <xs:simpleType>
-          <xs:restriction base="xs:NMTOKEN">
-            <xs:enumeration value="ore" />
-            <xs:enumeration value="nividium" />
-            <xs:enumeration value="silicon" />
-            <xs:enumeration value="gas" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="resourcefactor" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="yield" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="yieldvariation" type="NonNegativeFloat" use="required" />
+    <xs:complexType name="boundaryType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="splineposition" type="splinepositionType"/>
+            <xs:element name="size" type="sizeType"/>
+        </xs:sequence>
+        <xs:attribute name="class" use="required" type="xs:NCName"/>
     </xs:complexType>
-  </xs:element>
-  <!-- regions/region/nebula -->
-  <xs:element name="nebula">
-    <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element ref="flag" />
-        <xs:element ref="effect" />
-      </xs:choice>
-      <xs:attribute name="ref" type="RefString" use="required" />
-      <xs:attribute name="percentage" type="xs:string" use="required" />
-      <xs:attribute name="moving" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="movingvariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="rotation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="rotationvariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="sizevariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="resource" use="required">
-        <xs:simpleType>
-          <xs:restriction base="xs:NMTOKEN">
-            <xs:enumeration value="energy" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="resourcefactor" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="yield" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="yieldvariation" type="NonNegativeFloat" use="required" />
+    <xs:complexType name="splinepositionType">
+        <xs:attribute name="inlength" use="required" type="xs:decimal"/>
+        <xs:attribute name="outlength" use="required" type="xs:decimal"/>
+        <xs:attribute name="tx" use="required" type="xs:decimal"/>
+        <xs:attribute name="ty" use="required" type="xs:decimal"/>
+        <xs:attribute name="tz" use="required" type="xs:decimal"/>
+        <xs:attribute name="weight" use="required" type="xs:integer"/>
+        <xs:attribute name="x" use="required" type="xs:decimal"/>
+        <xs:attribute name="y" use="required" type="xs:decimal"/>
+        <xs:attribute name="z" use="required" type="xs:decimal"/>
     </xs:complexType>
-  </xs:element>
-  <!-- regions/region/debris -->
-  <xs:element name="debris">
-    <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element ref="flag" />
-        <xs:element ref="effect" />
-      </xs:choice>
-      <xs:attribute name="ref" type="RefString" use="required" />
-      <xs:attribute name="percentage" type="xs:string" use="required" />
-      <xs:attribute name="moving" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="movingvariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="rotation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="rotationvariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="sizevariation" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="resource" use="required">
-        <xs:simpleType>
-          <xs:restriction base="xs:NMTOKEN">
-            <xs:enumeration value="ice" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="resourcefactor" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="yield" type="NonNegativeFloat" use="required" />
-      <xs:attribute name="yieldvariation" type="NonNegativeFloat" use="required" />
+    <xs:complexType name="sizeType">
+        <xs:attribute name="linear" type="xs:integer"/>
+        <xs:attribute name="r" use="required" type="xs:integer"/>
     </xs:complexType>
-  </xs:element>
-  <!-- regions/region/*/effect -->
-  <xs:element name="effect">
-    <xs:complexType>
-      <xs:attribute default="none" name="type">
-        <xs:simpleType>
-          <xs:restriction base="xs:NMTOKEN">
-            <xs:enumeration value="none" />
-            <xs:enumeration value="hide" />
-            <xs:enumeration value="electric" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
+    <xs:complexType name="falloffType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="lateral" type="lateralType"/>
+            <xs:element name="radial" type="radialType"/>
+        </xs:sequence>
     </xs:complexType>
-  </xs:element>
-  <!-- regions/region/*/flag -->
-  <xs:element name="flag">
-    <xs:complexType>
-      <xs:attribute default="none" name="type">
-        <xs:simpleType>
-          <xs:restriction base="xs:NMTOKEN">
-            <xs:enumeration value="none" />
-            <xs:enumeration value="jump" />
-            <xs:enumeration value="stayinregion" />
-            <xs:enumeration value="exclusionarea" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="time" type="xs:string" />
-      <xs:attribute name="modifier">
-        <xs:simpleType>
-          <xs:restriction base="xs:NMTOKEN">
-            <xs:enumeration value="randomstart" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
+    <xs:complexType name="lateralType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="step" type="stepType"/>
+        </xs:sequence>
+        <xs:attribute name="default" type="xs:decimal"/>
     </xs:complexType>
-  </xs:element>
+    <xs:complexType name="radialType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="step" type="stepType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="fieldsType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="asteroid" type="asteroidType"/>
+            <xs:element name="debris" type="debrisType"/>
+            <xs:element name="nebula" type="nebulaType"/>
+            <xs:element name="object" type="objectType"/>
+            <xs:element name="positional" type="positionalType"/>
+            <xs:element name="viewcorrection" type="viewcorrectionType"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="asteroidType">
+        <xs:attribute name="densityfactor" use="required" type="xs:decimal"/>
+        <xs:attribute name="maxnoisevalue" type="xs:decimal"/>
+        <xs:attribute name="minnoisevalue" type="xs:decimal"/>
+        <xs:attribute name="moving" type="xs:integer"/>
+        <xs:attribute name="movingvariation" type="xs:integer"/>
+        <xs:attribute name="noisescale" type="xs:integer"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+        <xs:attribute name="replenishtime" use="required" type="xs:integer"/>
+        <xs:attribute name="resource" use="required" type="xs:NCName"/>
+        <xs:attribute name="resourcepercentage" use="required" type="xs:integer"/>
+        <xs:attribute name="rotation" use="required" type="xs:integer"/>
+        <xs:attribute name="rotationvariation" use="required" type="xs:integer"/>
+        <xs:attribute name="seed" type="xs:integer"/>
+        <xs:attribute name="yield" use="required" type="xs:integer"/>
+        <xs:attribute name="yieldvariation" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="debrisType">
+        <xs:attribute name="densityfactor" use="required" type="xs:decimal"/>
+        <xs:attribute name="maxnoisevalue" type="xs:integer"/>
+        <xs:attribute name="minnoisevalue" type="xs:decimal"/>
+        <xs:attribute name="moving" type="xs:integer"/>
+        <xs:attribute name="movingvariation" type="xs:integer"/>
+        <xs:attribute name="noisescale" type="xs:integer"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+        <xs:attribute name="replenishtime" use="required" type="xs:integer"/>
+        <xs:attribute name="resource" type="xs:NCName"/>
+        <xs:attribute name="resourcepercentage" type="xs:integer"/>
+        <xs:attribute name="rotation" use="required" type="xs:integer"/>
+        <xs:attribute name="rotationvariation" use="required" type="xs:decimal"/>
+        <xs:attribute name="seed" type="xs:integer"/>
+        <xs:attribute name="yield" type="xs:integer"/>
+        <xs:attribute name="yieldvariation" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="nebulaType">
+        <xs:attribute name="backgroundfog" type="xs:boolean"/>
+        <xs:attribute name="densityfactor" type="xs:decimal"/>
+        <xs:attribute name="fogdistance" type="xs:decimal"/>
+        <xs:attribute name="gatherspeedfactor" type="xs:decimal"/>
+        <xs:attribute name="localblue" type="xs:integer"/>
+        <xs:attribute name="localdensity" type="xs:decimal"/>
+        <xs:attribute name="localgreen" type="xs:integer"/>
+        <xs:attribute name="localred" type="xs:integer"/>
+        <xs:attribute name="maxnoisevalue" type="xs:integer"/>
+        <xs:attribute name="minnoisevalue" type="xs:decimal"/>
+        <xs:attribute name="moving" type="xs:integer"/>
+        <xs:attribute name="movingvariation" type="xs:integer"/>
+        <xs:attribute name="noisescale" type="xs:integer"/>
+        <xs:attribute name="ref" use="required"/>
+        <xs:attribute name="replenishtime" type="xs:integer"/>
+        <xs:attribute name="resource" type="xs:NCName"/>
+        <xs:attribute name="resourcepercentage" type="xs:integer"/>
+        <xs:attribute name="rotation" type="xs:integer"/>
+        <xs:attribute name="rotationvariation" type="xs:integer"/>
+        <xs:attribute name="seed" type="xs:integer"/>
+        <xs:attribute name="uniformblue" type="xs:integer"/>
+        <xs:attribute name="uniformdensity" type="xs:decimal"/>
+        <xs:attribute name="uniformgreen" type="xs:integer"/>
+        <xs:attribute name="uniformred" type="xs:integer"/>
+        <xs:attribute name="yield" type="xs:integer"/>
+        <xs:attribute name="yieldvariation" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="objectType">
+        <xs:attribute name="densityfactor" use="required" type="xs:decimal"/>
+        <xs:attribute name="maxnoisevalue" type="xs:decimal"/>
+        <xs:attribute name="minnoisevalue" type="xs:decimal"/>
+        <xs:attribute name="moving" type="xs:integer"/>
+        <xs:attribute name="movingvariation" type="xs:integer"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+        <xs:attribute name="replenishtime" use="required" type="xs:integer"/>
+        <xs:attribute name="resource" type="xs:NCName"/>
+        <xs:attribute name="resourcepercentage" type="xs:integer"/>
+        <xs:attribute name="rotation" use="required" type="xs:integer"/>
+        <xs:attribute name="rotationvariation" use="required" type="xs:decimal"/>
+        <xs:attribute name="yield" type="xs:integer"/>
+        <xs:attribute name="yieldvariation" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="positionalType">
+        <xs:attribute name="densityfactor" use="required" type="xs:decimal"/>
+        <xs:attribute name="maxnoisevalue" type="xs:integer"/>
+        <xs:attribute name="minnoisevalue" type="xs:decimal"/>
+        <xs:attribute name="moving" type="xs:integer"/>
+        <xs:attribute name="movingvariation" type="xs:integer"/>
+        <xs:attribute name="noisescale" type="xs:integer"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+        <xs:attribute name="replenishtime" type="xs:integer"/>
+        <xs:attribute name="resource" type="xs:NCName"/>
+        <xs:attribute name="resourcepercentage" type="xs:integer"/>
+        <xs:attribute name="rotation" type="xs:integer"/>
+        <xs:attribute name="rotationvariation" use="required" type="xs:decimal"/>
+        <xs:attribute name="seed" type="xs:integer"/>
+        <xs:attribute name="yield" type="xs:integer"/>
+        <xs:attribute name="yieldvariation" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="viewcorrectionType">
+        <xs:attribute name="exposure" use="required" type="xs:decimal"/>
+        <xs:attribute name="eyeadaptionspeed" use="required" type="xs:decimal"/>
+        <xs:attribute name="tonemapLUT" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="stepType">
+        <xs:attribute name="position" use="required" type="xs:decimal"/>
+        <xs:attribute name="value" use="required" type="xs:decimal"/>
+    </xs:complexType>
 </xs:schema>

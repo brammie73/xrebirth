@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-    targetNamespace="http://xrebirth.egosoft.com/wares" xmlns="http://xrebirth.egosoft.com/wares">
+           targetNamespace="http://xrebirth.egosoft.com/wares" xmlns="http://xrebirth.egosoft.com/wares">
 
-    <xs:include schemaLocation="globaltypes.xsd" />
-    
+    <xs:include schemaLocation="globaltypes.xsd"/>
+
     <xs:element name="wares" type="waresType"/>
 
     <xs:complexType name="waresType">
@@ -31,7 +31,7 @@
     <xs:complexType name="wareType">
         <xs:sequence>
             <xs:element minOccurs="0" name="price" type="priceType"/>
-            <xs:element minOccurs="0" name="production" type="priceType"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="production" type="productionType"/>
             <xs:element minOccurs="0" name="component" type="componentType"/>
             <xs:element minOccurs="0" name="container" type="referenceType"/>
             <xs:element minOccurs="0" name="icon" type="iconType"/>
@@ -39,17 +39,17 @@
         </xs:sequence>
         <xs:attribute name="amount" type="xs:integer"/>
         <xs:attribute name="description"/>
-        <xs:attribute name="id" type="xs:NCName"/>
+        <xs:attribute name="id" type="xs:string"/>
         <xs:attribute name="illegal"/>
-        <xs:attribute name="licence" type="xs:NCName"/>
+        <xs:attribute name="licence" type="xs:string"/>
         <xs:attribute name="name"/>
         <xs:attribute name="shortname"/>
-        <xs:attribute name="size" type="xs:NCName"/>
-        <xs:attribute name="specialist" type="xs:NCName"/>
-        <xs:attribute name="tags"/>
-        <xs:attribute name="transport" type="xs:NCName"/>
+        <xs:attribute name="size" type="xs:string"/>
+        <xs:attribute name="specialist" type="xs:string"/>
+        <xs:attribute name="tags" type="xs:string"/>
+        <xs:attribute name="transport" type="xs:string"/>
         <xs:attribute name="volume" type="xs:integer"/>
-        <xs:attribute name="ware" type="xs:NCName"/>
+        <xs:attribute name="ware" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="priceType">
@@ -57,32 +57,49 @@
         <xs:attribute name="max" use="required" type="xs:integer"/>
         <xs:attribute name="min" use="required" type="xs:integer"/>
     </xs:complexType>
+
     <xs:complexType name="productionType">
         <xs:sequence>
-            <xs:element minOccurs="0" name="primary" type="wareType"/>
-            <xs:element minOccurs="0" name="secondary" type="wareType"/>
+            <xs:element minOccurs="0" name="primary">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ware" type="productionWareType" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="secondary">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ware" type="productionWareType" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
             <xs:element minOccurs="0" name="effects" type="effectsType"/>
         </xs:sequence>
         <xs:attribute name="amount" use="required" type="xs:integer"/>
-        <xs:attribute name="method" use="required" type="xs:NCName"/>
-        <xs:attribute name="name" use="required"/>
+        <xs:attribute name="method" use="required" type="xs:string"/>
+        <xs:attribute name="name" use="required" type="xs:string"/>
         <xs:attribute name="time" use="required" type="xs:integer"/>
     </xs:complexType>
-    
-    
+
+    <xs:complexType name="productionWareType">
+        <xs:attribute name="ware" use="required" type="xs:string"/>
+        <xs:attribute name="amount" use="required" type="xs:int"/>
+    </xs:complexType>
+
     <xs:complexType name="effectsType">
         <xs:sequence>
             <xs:element maxOccurs="unbounded" name="effect" type="effectType"/>
         </xs:sequence>
     </xs:complexType>
-    
+
     <xs:complexType name="effectType">
         <xs:attribute name="product" use="required" type="xs:decimal"/>
-        <xs:attribute name="type" use="required" type="xs:NCName"/>
+        <xs:attribute name="type" use="required" type="xs:string"/>
     </xs:complexType>
-    
+
     <xs:complexType name="iconType">
-        <xs:attribute name="active" use="required" type="xs:NCName"/>
+        <xs:attribute name="active" use="required" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="componentType">

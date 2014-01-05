@@ -5,6 +5,7 @@ import org.apache.commons.vfs2.VFS;
 import org.testng.annotations.Test;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
@@ -37,4 +38,20 @@ public class XRFileSystemTest {
         in.close();
         VFS.getManager().closeFileSystem(fo.getFileSystem());
     }
+
+    @Test
+    public void testFile() throws Exception {
+        Properties properties = new Properties();
+        properties.load(getClass().getResourceAsStream("/xrebirth.properties"));
+        FileObject fo = VFS.getManager().resolveFile("xr:/" + properties.getProperty("egosoft.xrebirth.dir"));
+        FileObject xmlFO = fo.resolveFile("libraries/region_definitions.xml");
+        byte[] arr = new byte[(int)xmlFO.getContent().getSize()];
+        InputStream in = xmlFO.getContent().getInputStream();
+        int read = in.read(arr);
+        for (int i = 0; i < 5 ; i++) {
+            System.err.println(String.format("%x", arr[i]));
+        }
+    }
 }
+
+

@@ -24,7 +24,10 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Goal which touches a timestamp file.
@@ -47,12 +50,16 @@ public class SchemafixMojo extends AbstractMojo {
     @Parameter(property = "namespaceMapping", required = false)
     private Properties namespaceMapping;
 
+    @Parameter(property = "force", required = true, defaultValue = "false")
+    private boolean force;
+
     private SchemaFix fixer;
 
     public void execute() throws MojoExecutionException {
         fixer = new SchemaFixInludes(this.namespaceMapping);
         File outputDir = outputDirectory;
         File inputDir = inputDirectory;
+
         if (!inputDir.exists()) {
             getLog().info("directory not found:" + inputDir.getAbsolutePath());
             return;
@@ -70,7 +77,10 @@ public class SchemafixMojo extends AbstractMojo {
         }
         for (File in : files) {
             getLog().info("fixing:" + in.getName());
-            fixer.execute(in, new File(outputDir, in.getName()));
+            File outFile = new File(outputDir, in.getName());
+            if (!outFile.exists() || force || outFile.lastModified() < in.lastModified()) {
+                fixer.execute(in, outFile);
+            }
         }
     }
 }

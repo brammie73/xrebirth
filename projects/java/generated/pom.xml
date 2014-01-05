@@ -57,7 +57,10 @@
                         <property><name>scriptproperties.xsd</name><value>http://xrebirth.egosoft.com/scriptproperties</value></property>
                         <property><name>sound_library.xsd</name><value>http://xrebirth.egosoft.com/libraries/sound</value></property>
                         <property><name>stats.xsd</name><value>http://xrebirth.egosoft.com/stats</value></property>
+<!--
+home made
                         <property><name>text.xsd</name><value>http://xrebirth.egosoft.com/text</value></property>
+-->
                         <property><name>unlocks.xsd</name><value>http://xrebirth.egosoft.com/unlocks</value></property>
                         <property><name>wares.xsd</name><value>http://xrebirth.egosoft.com/wares</value></property>
                     </namespaceMapping>
@@ -136,6 +139,11 @@
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
             <version>1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
     </dependencies>
 

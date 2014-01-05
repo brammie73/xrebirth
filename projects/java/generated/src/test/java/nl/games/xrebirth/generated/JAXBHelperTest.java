@@ -3,17 +3,10 @@ package nl.games.xrebirth.generated;
 import nl.games.xrebirth.generated.quotas.Componentoffset;
 import nl.games.xrebirth.generated.text.Language;
 import org.testng.annotations.Test;
-import org.xml.sax.*;
 
 import javax.xml.bind.UnmarshalException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import static org.testng.Assert.*;
 
@@ -65,6 +58,18 @@ public class JAXBHelperTest {
 
     @Test()
     public void testValidatePass() throws Exception{
+        JAXBHelper helper = JAXBHelper.get();
+        try {
+            helper.setValidating(true);
+            InputStream in = new ByteArrayInputStream("<language id=\"1\" />".getBytes());
+            Language language = helper.unMarshall(in, Language.class);
+        } finally {
+            helper.setValidating(false);
+        }
+    }
+
+    @Test()
+    public void testScriptproperties() throws Exception{
         JAXBHelper helper = JAXBHelper.get();
         try {
             helper.setValidating(true);

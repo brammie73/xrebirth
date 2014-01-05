@@ -90,4 +90,9 @@ public class XRFileObject extends AbstractFileObject implements FileObject {
     public FileObject getChild(String name) throws FileSystemException {
         return super.getChild(name.toLowerCase());
     }
+
+    @Override
+    public FileObject resolveFile(String path) throws FileSystemException {
+        return super.resolveFile(path.toLowerCase());
+    }
 }

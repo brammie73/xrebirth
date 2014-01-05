@@ -112,7 +112,7 @@
 
     <jxb:bindings schemaLocation="material_library.xsd">
         <jxb:schemaBindings>
-            <jxb:package name="nl.games.xrebirth.generated.materials"/>
+            <jxb:package name="nl.games.xrebirth.generated.libraries.materials"/>
         </jxb:schemaBindings>
     </jxb:bindings>
 
@@ -155,13 +155,13 @@
 
     <jxb:bindings schemaLocation="sound_library.xsd">
         <jxb:schemaBindings>
-            <jxb:package name="nl.games.xrebirth.generated.soundlibrary"/>
+            <jxb:package name="nl.games.xrebirth.generated.libraries.sound"/>
         </jxb:schemaBindings>
     </jxb:bindings>
 
     <jxb:bindings schemaLocation="stats.xsd">
         <jxb:schemaBindings>
-            <jxb:package name="nl.games.xrebirth.generated.sound_library"/>
+            <jxb:package name="nl.games.xrebirth.generated.stats"/>
         </jxb:schemaBindings>
     </jxb:bindings>
 
