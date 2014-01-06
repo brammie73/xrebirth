@@ -1,6 +1,6 @@
 package nl.games.xrebirth.neo4j.utils;
 
-import nl.games.xrebirth.neo4j.importer.reader.ImportException;
+import nl.games.xrebirth.neo4j.importer.ImportException;
 
 import java.lang.reflect.ParameterizedType;
 

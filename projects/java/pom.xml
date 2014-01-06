@@ -13,6 +13,10 @@
         <module>neo4j</module>
         <module>web</module>
     </modules>
+    <properties>
+        <deltaspike.version>0.5</deltaspike.version>
+        <owb.version>1.2.0</owb.version>
+    </properties>
     <build>
         <pluginManagement>
             <plugins>
@@ -60,6 +64,24 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jodd</groupId>
+                <artifactId>jodd-bean</artifactId>
+                <version>3.4.10</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>12.0</version>
@@ -69,6 +91,13 @@
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
                 <version>6.3.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>xmlunit</groupId>
+                <artifactId>xmlunit</artifactId>
+                <version>1.5</version>
                 <scope>test</scope>
             </dependency>
 
@@ -83,6 +112,109 @@
                 <artifactId>generated</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>2.0-beta9</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.0-beta9</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.jvnet.jaxb2_commons</groupId>
+                <artifactId>jaxb2-basics-runtime</artifactId>
+                <version>0.6.4</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.jboss.weld</groupId>
+                <artifactId>weld-core-impl</artifactId>
+                <version>2.1.1.Final</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se</artifactId>
+                <version>2.1.1.Final</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se-core</artifactId>
+                <version>2.1.1.Final</version>
+                <scope>compile</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.cdictrl</groupId>
+                <artifactId>deltaspike-cdictrl-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.cdictrl</groupId>
+                <artifactId>deltaspike-cdictrl-weld</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.cdictrl</groupId>
+                <artifactId>deltaspike-cdictrl-owb</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.openwebbeans</groupId>
+                <artifactId>openwebbeans-spi</artifactId>
+                <version>${owb.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.openwebbeans</groupId>
+                <artifactId>openwebbeans-impl</artifactId>
+                <version>${owb.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-jcdi_1.0_spec</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-atinject_1.0_spec</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-interceptor_1.1_spec</artifactId>
+                <version>1.0</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

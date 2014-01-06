@@ -1,12 +1,12 @@
 package nl.games.xrebirth.neo4j.importer.reader;
 
 import nl.games.xrebirth.generated.JAXBHelper;
+import nl.games.xrebirth.neo4j.importer.ImportContext;
+import nl.games.xrebirth.neo4j.importer.ImportException;
+import nl.games.xrebirth.neo4j.importer.XmlReader;
 import nl.games.xrebirth.neo4j.utils.Utils;
 import org.apache.commons.vfs2.FileObject;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 
 /**
@@ -32,8 +32,7 @@ public abstract class AbstractJaxbXmlReader<T> implements XmlReader<T> {
         try {
             FileObject fo = importContext.getRoot().resolveFile(file);
             InputStream is = fo.getContent().getInputStream();
-            T t = (T)JAXBHelper.get().unMarshall(is, getDeclaredClass());
-            return t;
+            return JAXBHelper.get().unMarshall(is, getDeclaredClass());
         } catch (Exception e) {
             throw new ImportException(e);
         }

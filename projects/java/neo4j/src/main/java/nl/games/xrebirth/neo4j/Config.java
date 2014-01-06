@@ -23,7 +23,9 @@ public class Config {
 
     private Config() {
         try {
-            PropertiesConfiguration config = new PropertiesConfiguration("xrebirth.properties");
+
+            PropertiesConfiguration config = new PropertiesConfiguration("J:/projects/xrebirth/projects/java/xrebirth.properties");
+
             config.setReloadingStrategy(new FileChangedReloadingStrategy());
             this.configuration = config;
         } catch (ConfigurationException e) {

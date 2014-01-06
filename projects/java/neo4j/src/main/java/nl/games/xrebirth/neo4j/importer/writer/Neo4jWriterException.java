@@ -1,4 +1,4 @@
-package nl.games.xrebirth.neo4j.importer.reader;
+package nl.games.xrebirth.neo4j.importer.writer;
 
 import nl.games.xrebirth.neo4j.importer.ImportException;
 
@@ -9,25 +9,25 @@ import nl.games.xrebirth.neo4j.importer.ImportException;
  * Time: 1:52
  * To change this template use File | Settings | File Templates.
  */
-public class XmlReaderException extends ImportException {
+public class Neo4jWriterException extends ImportException {
 
-    public XmlReaderException() {
+    public Neo4jWriterException() {
         super();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public XmlReaderException(String message) {
+    public Neo4jWriterException(String message) {
         super(message);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public XmlReaderException(String message, Throwable cause) {
+    public Neo4jWriterException(String message, Throwable cause) {
         super(message, cause);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public XmlReaderException(Throwable cause) {
+    public Neo4jWriterException(Throwable cause) {
         super(cause);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    protected XmlReaderException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected Neo4jWriterException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

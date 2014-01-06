@@ -66,7 +66,7 @@ class InputReaderFixer extends Reader {
                 result = result + namespace.length();
             }
             System.arraycopy(buff, position, outArray, off, len);
-            System.err.println(new String(buff, 0, 500));
+            //System.err.println(new String(buff, 0, 500));
             if (len < result) {
                 position = position + len;
                 return len;

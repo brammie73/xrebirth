@@ -1,33 +1,31 @@
-package nl.games.xrebirth.neo4j.importer.reader;
-
-import nl.games.xrebirth.neo4j.importer.ImportException;
+package nl.games.xrebirth.neo4j.importer;
 
 /**
  * Created with IntelliJ IDEA.
  * User: bram
- * Date: 29-12-13
- * Time: 1:52
+ * Date: 27-12-13
+ * Time: 22:40
  * To change this template use File | Settings | File Templates.
  */
-public class XmlReaderException extends ImportException {
+public class ImportException extends RuntimeException {
 
-    public XmlReaderException() {
+    public ImportException() {
         super();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public XmlReaderException(String message) {
+    public ImportException(String message) {
         super(message);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public XmlReaderException(String message, Throwable cause) {
+    public ImportException(String message, Throwable cause) {
         super(message, cause);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public XmlReaderException(Throwable cause) {
+    public ImportException(Throwable cause) {
         super(cause);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    protected XmlReaderException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected ImportException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

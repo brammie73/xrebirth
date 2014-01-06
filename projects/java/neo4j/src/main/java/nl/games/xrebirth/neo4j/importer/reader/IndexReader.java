@@ -1,6 +1,7 @@
 package nl.games.xrebirth.neo4j.importer.reader;
 
 
+import nl.games.xrebirth.neo4j.importer.ImportException;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;

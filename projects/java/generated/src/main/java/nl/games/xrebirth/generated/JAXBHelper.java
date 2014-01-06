@@ -1,7 +1,6 @@
 package nl.games.xrebirth.generated;
 
 import com.google.common.base.Joiner;
-import org.apache.commons.io.input.XmlStreamReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -19,7 +18,9 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import java.io.*;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;

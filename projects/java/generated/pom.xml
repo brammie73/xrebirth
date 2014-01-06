@@ -91,8 +91,10 @@ home made
                     <args>
                         <arg>-Xsimplify</arg>
                         <arg>-XtoString</arg>
-                        <arg>-Xequals</arg>
-                        <arg>-XhashCode</arg>
+                        <arg>-XenumValue</arg>
+                        <arg>-XautoInheritance</arg>
+                        <arg>-XautoInheritance-xmlRootElementsExtend=nl.games.xrebirth.generated.AbstractElement</arg>
+                        <arg>-XautoInheritance-xmlTypesExtend=nl.games.xrebirth.generated.AbstractElement</arg>
                     </args>
                     <plugins>
                         <plugin>
@@ -112,16 +114,10 @@ home made
         </plugins>
     </build>
     <dependencies>
+
         <dependency>
             <groupId>org.jvnet.jaxb2_commons</groupId>
             <artifactId>jaxb2-basics-runtime</artifactId>
-            <version>0.6.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -136,15 +132,30 @@ home made
         </dependency>
 
         <dependency>
-            <groupId>xmlunit</groupId>
-            <artifactId>xmlunit</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-bean</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 
