@@ -20,6 +20,7 @@ import java.util.Properties;
 public abstract class AbstractXmlTest<T> {
 
 
+    boolean  validating = true;
     private FileObject root;
 
     @BeforeClass
@@ -52,11 +53,16 @@ public abstract class AbstractXmlTest<T> {
     public abstract String getFileName();
 
     @Test
-    public void testparseFile() throws Exception {
+    public T testparseFile() throws Exception {
         JAXBHelper helper =  JAXBHelper.get();
-        helper.setValidating(true);
+        helper.setValidating(validating);
         T result =  helper.unMarshall(getFile().getContent().getInputStream(), getDeclaredClass());
         assertNotNull(result);
         assertEquals(result.getClass(), getDeclaredClass());
+        return  result;
+    }
+
+    public void setValidating(boolean validating) {
+        this.validating = validating;
     }
 }

@@ -31,8 +31,11 @@ public abstract class AbstractJaxbXmlReader<T> implements XmlReader<T> {
     protected T doImportXml(ImportContext importContext, String file) {
         try {
             FileObject fo = importContext.getRoot().resolveFile(file);
-            InputStream is = fo.getContent().getInputStream();
-            return JAXBHelper.get().unMarshall(is, getDeclaredClass());
+            if (fo.exists() && fo.getContent().getSize() > 1L) {
+                InputStream is = fo.getContent().getInputStream();
+                return JAXBHelper.get().unMarshall(is, getDeclaredClass());
+            }
+            return null;
         } catch (Exception e) {
             throw new ImportException(e);
         }

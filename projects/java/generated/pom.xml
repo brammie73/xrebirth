@@ -63,6 +63,8 @@ home made
 -->
                         <property><name>unlocks.xsd</name><value>http://xrebirth.egosoft.com/unlocks</value></property>
                         <property><name>wares.xsd</name><value>http://xrebirth.egosoft.com/wares</value></property>
+                        <property><name>macros.xsd</name><value>http://xrebirth.egosoft.com/macros</value></property>
+                        <property><name>index.xsd</name><value>http://xrebirth.egosoft.com/index</value></property>
                     </namespaceMapping>
                     <inputDirectory>src/main/xsd</inputDirectory>
                     <outputDirectory>target/generated-sources/xsd</outputDirectory>
@@ -87,7 +89,7 @@ home made
                     </execution>
                 </executions>
                 <configuration>
-
+                    <forceRegenerate>true</forceRegenerate>
                     <args>
                         <arg>-Xsimplify</arg>
                         <arg>-XtoString</arg>

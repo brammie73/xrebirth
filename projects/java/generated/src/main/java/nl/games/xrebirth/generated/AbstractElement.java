@@ -18,7 +18,10 @@ public abstract class AbstractElement {
     public List<String> getClassNames() {
         if (BeanUtil.hasProperty(this, "clazz")) {
             Object obj = BeanUtil.getProperty(this, "clazz");
-            String[] arr  = TypeConverterManager.convertType(obj, String[].class);
+            String[] arr = TypeConverterManager.convertType(obj, String[].class);
+            if (arr== null) {
+                return Arrays.asList("unkown, fix me");
+            }
             return Arrays.asList(arr);
         } else {
             return null;
@@ -28,6 +31,9 @@ public abstract class AbstractElement {
     public String getIdString() {
         if (BeanUtil.hasProperty(this, "id")) {
             Object obj = BeanUtil.getProperty(this, "id");
+            return TypeConverterManager.convertType(obj, String.class);
+        } else if (BeanUtil.hasProperty(this, "name")) {
+            Object obj = BeanUtil.getProperty(this, "name");
             return TypeConverterManager.convertType(obj, String.class);
         } else {
             return null;
@@ -42,7 +48,7 @@ public abstract class AbstractElement {
         if (BeanUtil.hasProperty(this, "tag")) {
             Object obj = BeanUtil.getProperty(this, "tag");
             if (obj instanceof String) {
-                return Arrays.asList(((String)obj).split(" "));
+                return Arrays.asList(((String) obj).split(" "));
             }
         }
         return null;

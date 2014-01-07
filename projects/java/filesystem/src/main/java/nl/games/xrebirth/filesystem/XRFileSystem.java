@@ -91,10 +91,15 @@ public class XRFileSystem extends AbstractFileSystem implements FileSystem {
     @Override
     protected FileObject createFile(AbstractFileName name) throws Exception {
         // This is only called for files which do not exist in the File System, eg direcories file
-        return new XRFileObject(name, null, null) {
+        return new XRFileObject(name, this, null) {
             @Override
             protected long doGetLastModifiedTime() throws Exception {
                 return diretoryLastModilfied;
+            }
+
+            @Override
+            protected FileType doGetType() throws Exception {
+                return FileType.IMAGINARY;
             }
         };
     }

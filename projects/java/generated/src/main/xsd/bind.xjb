@@ -183,4 +183,21 @@
         </jxb:schemaBindings>
     </jxb:bindings>
 
+    <jxb:bindings schemaLocation="index.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.index"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="macros.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="nl.games.xrebirth.generated.macros"/>
+        </jxb:schemaBindings>
+        <jxb:bindings node="//xs:complexType[@name='upgradeType']/xs:attribute[@name='upgrade']">
+            <jxb:property name="upgradeName"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:complexType[@name='angularType']/xs:attribute[@name='roll']">
+            <jxb:property name="rollValue"/>
+        </jxb:bindings>
+    </jxb:bindings>
+
 </jxb:bindings>

@@ -1,6 +1,9 @@
-package nl.games.xrebirth.neo4j.importer;
+package nl.games.xrebirth.neo4j.importer.importers;
+
+import nl.games.xrebirth.neo4j.importer.*;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,7 +31,7 @@ public abstract class AbstractImporter<T> implements Importer {
         this.writer = writer;
     }
 
-    public abstract List<String> doGetFileLocations();
+    public abstract Collection<String> doGetFileLocations();
 
     public XmlReader<T> getReader() {
         return reader;
@@ -51,9 +54,11 @@ public abstract class AbstractImporter<T> implements Importer {
         return true;
     }
 
-    private boolean doImport(ImportContext importContext, String file) {
+    protected boolean doImport(ImportContext importContext, String file) {
         T t = getReader().doRead(importContext, file);
-        getWriter().doWrite(importContext, t);
+        if (t != null) {
+            getWriter().doWrite(importContext, t);
+        }
         this.values = t;
         return true;
     }
@@ -63,7 +68,7 @@ public abstract class AbstractImporter<T> implements Importer {
         if (values == null) {
             throw new ImportException("objects not imported yet");
         }
-        T  local = values;
+        T local = values;
         values = null;
         return local;
     }
@@ -73,7 +78,7 @@ public abstract class AbstractImporter<T> implements Importer {
     }
 
     public Class getDeclaredClass() {
-        return  (Class) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return (Class) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
 }

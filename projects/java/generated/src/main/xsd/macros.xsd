@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" jxb:version="2.1"
+           xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify"
+           jxb:extensionBindingPrefixes="simplify" targetNamespace="http://xrebirth.egosoft.com/macros"
+           xmlns="http://xrebirth.egosoft.com/macros" elementFormDefault="qualified">
+
+    <xs:element name="macros" type="macrosType"/>
+
+    <xs:complexType name="macroType">
+        <xs:all>
+            <xs:element name="component" type="componentType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="properties" type="propertiesType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="connections" type="connectionsType" minOccurs="0" maxOccurs="1"/>
+        </xs:all>
+        <xs:attribute name="alias" type="xs:NCName"/>
+        <xs:attribute name="class" type="xs:NCName"/>
+        <xs:attribute name="comment"/>
+        <xs:attribute name="connection" type="xs:NCName"/>
+        <xs:attribute name="name"/>
+        <xs:attribute name="path"/>
+        <xs:attribute name="ref" type="xs:NCName"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="componentType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="connections" type="connectionsType"/>
+        </xs:sequence>
+        <xs:attribute name="connection" type="xs:NCName"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+
+    <xs:complexType name="propertiesType">
+        <xs:all>
+            <xs:element minOccurs="0" name="region" type="regionType"/>
+            <xs:element minOccurs="0" name="scanner" type="scannerType"/>
+            <xs:element minOccurs="0" name="effect" type="effectsType"/>
+            <xs:element minOccurs="0" name="ai" type="aiType"/>
+            <xs:element minOccurs="0" name="volume" type="volumeType"/>
+            <xs:element minOccurs="0" name="boost" type="boostType"/>
+            <xs:element minOccurs="0" name="acceleration" type="accelerationType"/>
+            <xs:element minOccurs="0" name="angular" type="angularType"/>
+            <xs:element minOccurs="0" name="detail" type="detailType"/>
+            <xs:element minOccurs="0" name="efficiency" type="efficiencyType"/>
+            <xs:element minOccurs="0" name="speed" type="speedType"/>
+            <xs:element minOccurs="0" name="trigger" type="triggerType"/>
+            <xs:element minOccurs="0" name="ability" type="abilityType"/>
+            <xs:element minOccurs="0" name="ammunition" type="ammunitionType"/>
+            <xs:element minOccurs="0" name="areadamage" type="areadamageType"/>
+            <xs:element minOccurs="0" name="boundaries" type="boundariesType"/>
+            <xs:element minOccurs="0" name="bullet" type="bulletType"/>
+            <xs:element minOccurs="0" name="cargo" type="cargoType"/>
+            <xs:element minOccurs="0" name="collapse" type="collapseType"/>
+            <xs:element minOccurs="0" name="controls" type="controlsType"/>
+            <xs:element minOccurs="0" name="damage" type="damageType"/>
+            <xs:element minOccurs="0" name="details" type="detailsType"/>
+            <xs:element minOccurs="0" name="dock" type="dockType"/>
+            <xs:element minOccurs="0" name="docksize" type="docksizeType"/>
+            <xs:element minOccurs="0" name="drop" type="dropType"/>
+            <xs:element minOccurs="0" name="effects" type="effectsType"/>
+            <xs:element minOccurs="0" name="energy" type="energyType"/>
+            <xs:element minOccurs="0" name="explosiondamage" type="explosiondamageType"/>
+            <xs:element minOccurs="0" name="heat" type="heatType"/>
+            <xs:element minOccurs="0" name="hull" type="hullType"/>
+            <xs:element minOccurs="0" name="identification" type="identificationType"/>
+            <xs:element minOccurs="0" name="jumpdrive" type="jumpdriveType"/>
+            <xs:element minOccurs="0" name="launched" type="launchedType"/>
+            <xs:element minOccurs="0" name="missile" type="missileType"/>
+            <xs:element minOccurs="0" name="population" type="populationType"/>
+            <xs:element minOccurs="0" name="radar" type="radarType"/>
+            <xs:element minOccurs="0" name="range" type="rangeType"/>
+            <xs:element minOccurs="0" name="recharge" type="rechargeType"/>
+            <xs:element minOccurs="0" name="reload" type="reloadType"/>
+            <xs:element minOccurs="0" name="rotationspeed" type="rotationspeedType"/>
+            <xs:element minOccurs="0" name="scan" type="scanType"/>
+            <xs:element minOccurs="0" name="secrecy" type="secrecyType"/>
+            <xs:element minOccurs="0" name="shield" type="shieldType"/>
+            <xs:element minOccurs="0" name="sounds" type="soundsType"/>
+            <xs:element minOccurs="0" name="steeringcurve" type="steeringcurveType"/>
+            <xs:element minOccurs="0" name="storage" type="storageType"/>
+            <xs:element minOccurs="0" name="typeinfo" type="typeinfoType"/>
+            <xs:element minOccurs="0" name="upgrades" type="upgradesType"/>
+            <xs:element minOccurs="0" name="weapons" type="weaponsType"/>
+            <xs:element minOccurs="0" name="environment" type="environmentType"/>
+            <xs:element minOccurs="0" name="undock" type="undockType"/>
+            <xs:element minOccurs="0" name="area" type="areaType"/>
+            <xs:element minOccurs="0" name="detach" type="detachType"/>
+            <xs:element minOccurs="0" name="longrangescan" type="longrangescanType"/>
+            <xs:element minOccurs="0" name="builder" type="builderType"/>
+            <xs:element minOccurs="0" name="production" type="productionType"/>
+            <xs:element minOccurs="0" name="facemods" type="facemodsType"/>
+            <xs:element minOccurs="0" name="build" type="buildType"/>
+            <xs:element minOccurs="0" name="configuration" type="configurationType"/>
+            <xs:element minOccurs="0" name="function" type="functionType"/>
+            <xs:element minOccurs="0" name="glow" type="glowType"/>
+            <xs:element minOccurs="0" name="hack" type="hackType"/>
+            <xs:element minOccurs="0" name="models" type="modelsType"/>
+            <xs:element minOccurs="0" name="regiondrain" type="regiondrainType"/>
+            <xs:element minOccurs="0" name="software" type="softwareType"/>
+            <xs:element minOccurs="0" name="wall" type="wallType"/>
+            <xs:element minOccurs="0" name="remotecontrol" type="remotecontrolType"/>
+            <xs:element minOccurs="0" name="icon" type="iconType"/>
+            <xs:element minOccurs="0" name="map" type="mapType"/>
+        </xs:all>
+    </xs:complexType>
+
+
+    <xs:complexType name="connectionsType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="connection" type="connectionType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="indexType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="entry" type="entryType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="entryType">
+        <xs:attribute name="name" use="required"/>
+        <xs:attribute name="value" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="macrosType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="macro" type="macroType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="octreeType">
+        <xs:sequence>
+            <xs:element name="node" type="nodeType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="waypointsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="waypoint" type="waypointType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="waypointType">
+        <xs:sequence>
+            <xs:element name="links" type="linksType"/>
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:NCName"/>
+        <xs:attribute name="normalx" use="required" type="xs:double"/>
+        <xs:attribute name="normaly" use="required" type="xs:double"/>
+        <xs:attribute name="normalz" use="required" type="xs:double"/>
+        <xs:attribute name="tags" use="required"/>
+        <xs:attribute name="x" use="required" type="xs:decimal"/>
+        <xs:attribute name="y" use="required" type="xs:decimal"/>
+        <xs:attribute name="z" use="required" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="linksType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="link" type="linkType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="regionType">
+        <xs:attribute name="ref" use="required" type="xs:NMTOKEN"/>
+    </xs:complexType>
+    <xs:complexType name="scannerType">
+        <xs:attribute name="influencelist" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="effectType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="aiType">
+        <xs:sequence>
+            <xs:element name="type" type="typeType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="typeType">
+        <xs:attribute name="global" use="required"/>
+        <xs:attribute name="local" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="volumeType">
+        <xs:attribute name="gridsize" use="required" type="xs:decimal"/>
+        <xs:attribute name="scale" use="required" type="xs:decimal"/>
+        <xs:attribute name="size" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="abilityType">
+        <xs:attribute name="influencelist" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="ammunitionType">
+        <xs:attribute name="reload" type="xs:decimal"/>
+        <xs:attribute name="value" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="areadamageType">
+        <xs:attribute name="max" type="xs:integer"/>
+        <xs:attribute name="value" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="boundariesType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="boundary" type="boundaryType"/>
+        </xs:sequence>
+        <xs:attribute name="priority" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="boundaryType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="position" type="positionType"/>
+            <xs:element minOccurs="0" name="rotation" type="rotationType"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="splineposition" type="splinepositionType"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="tangent" type="tangentType"/>
+            <xs:element name="size"/>
+        </xs:sequence>
+        <xs:attribute name="class" use="required" type="xs:NCName"/>
+        <xs:attribute name="parts" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="rotationType">
+        <xs:attribute name="pitch" use="required" type="xs:integer"/>
+        <xs:attribute name="roll" use="required" type="xs:integer"/>
+        <xs:attribute name="yaw" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="splinepositionType">
+        <xs:attribute name="inlength" type="xs:decimal"/>
+        <xs:attribute name="outlength" type="xs:decimal"/>
+        <xs:attribute name="tx" type="xs:double"/>
+        <xs:attribute name="ty" type="xs:double"/>
+        <xs:attribute name="tz" type="xs:decimal"/>
+        <xs:attribute name="weight" type="xs:integer"/>
+        <xs:attribute name="x" type="xs:decimal"/>
+        <xs:attribute name="y" type="xs:decimal"/>
+        <xs:attribute name="z" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="tangentType">
+        <xs:attribute name="x" type="xs:integer"/>
+        <xs:attribute name="z" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="sizeType">
+        <xs:attribute name="linear" type="xs:integer"/>
+        <xs:attribute name="r" type="xs:integer"/>
+        <xs:attribute name="x" type="xs:integer"/>
+        <xs:attribute name="y" type="xs:integer"/>
+        <xs:attribute name="z" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="bulletType">
+        <xs:attribute name="amount" type="xs:integer"/>
+        <xs:attribute name="angle" type="xs:decimal"/>
+        <xs:attribute name="attach" type="xs:integer"/>
+        <xs:attribute name="barrelamount" type="xs:integer"/>
+        <xs:attribute name="class" type="xs:NCName"/>
+        <xs:attribute name="delay" type="xs:decimal"/>
+        <xs:attribute name="icon" type="xs:NCName"/>
+        <xs:attribute name="lifetime" type="xs:decimal"/>
+        <xs:attribute name="maxhits" type="xs:integer"/>
+        <xs:attribute name="minrange" type="xs:integer"/>
+        <xs:attribute name="range" type="xs:integer"/>
+        <xs:attribute name="restitution" type="xs:decimal"/>
+        <xs:attribute name="ricochet" type="xs:decimal"/>
+        <xs:attribute name="scale" type="xs:integer"/>
+        <xs:attribute name="selfdestruct" type="xs:boolean"/>
+        <xs:attribute name="speed" type="xs:integer"/>
+        <xs:attribute name="timediff" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="cargoType">
+        <xs:attribute name="max" use="required" type="xs:integer"/>
+        <xs:attribute name="tags" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="collapseType">
+        <xs:attribute name="allow" use="required" type="xs:boolean"/>
+    </xs:complexType>
+    <xs:complexType name="controlsType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="linear" type="linearType"/>
+            <xs:element minOccurs="0" name="angular" type="angularType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="linearType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="velocity" type="velocityType"/>
+            <xs:element minOccurs="0" name="time" type="timeType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="velocityType">
+        <xs:attribute name="max" type="xs:integer"/>
+        <xs:attribute name="min" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="timeType">
+        <xs:attribute name="max" type="xs:integer"/>
+        <xs:attribute name="min" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="damageType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="multiplier" type="multiplierType"/>
+        </xs:sequence>
+        <xs:attribute name="delay" type="xs:integer"/>
+        <xs:attribute name="hull" type="xs:integer"/>
+        <xs:attribute name="max" type="xs:integer"/>
+        <xs:attribute name="min" type="xs:integer"/>
+        <xs:attribute name="rate" type="xs:integer"/>
+        <xs:attribute name="repair" type="xs:integer"/>
+        <xs:attribute name="shield" type="xs:integer"/>
+        <xs:attribute name="value" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="multiplierType">
+        <xs:attribute name="mining" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="detailsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="detail" type="detailType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="dockType">
+        <xs:attribute name="external" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="docksizeType">
+        <xs:attribute name="tag" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="dropType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="effectsType">
+        <xs:sequence>
+            <xs:choice minOccurs="0">
+                <xs:element name="boosting" type="boostingType"/>
+                <xs:element name="detach" type="detachType"/>
+                <xs:element name="longrangescan" type="longrangescanType"/>
+                <xs:element name="trigger" type="triggerType"/>
+            </xs:choice>
+            <xs:element minOccurs="0" name="activation" type="activationType"/>
+            <xs:element minOccurs="0" name="deactivation" type="deactivationType"/>
+            <xs:element minOccurs="0" name="explosion" type="explosionType"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="sefx_hack_disabled" type="sefx_hack_disabledType"/>
+                <xs:element name="surface"/>
+            </xs:choice>
+            <xs:sequence minOccurs="0">
+                <xs:element name="jumpin" type="jumpinType"/>
+                <xs:element name="jumpout" type="jumpoutType"/>
+            </xs:sequence>
+            <xs:sequence minOccurs="0">
+                <xs:element name="sefx_damage_low" type="sefx_damage_lowType"/>
+                <xs:element name="sefx_damage_medium" type="sefx_damage_mediumType"/>
+                <xs:element name="sefx_damage_high" type="sefx_damage_highType"/>
+            </xs:sequence>
+            <xs:choice>
+                <xs:element name="sefx_shield" type="sefx_shieldType"/>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="impact" type="impactType"/>
+                    <xs:element name="launch" type="launchType"/>
+                </xs:choice>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="activationType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="deactivationType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="explosionType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="sefx_hack_disabledType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="surfaceType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="jumpinType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="jumpoutType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="sefx_damage_lowType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="sefx_damage_mediumType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="sefx_damage_highType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="sefx_shieldType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="impactType">
+        <xs:attribute name="inside" type="xs:NCName"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="launchType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="energyType">
+        <xs:attribute name="value" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="explosiondamageType">
+        <xs:attribute name="delay" type="xs:integer"/>
+        <xs:attribute name="hull" type="xs:integer"/>
+        <xs:attribute name="max" type="xs:integer"/>
+        <xs:attribute name="min" type="xs:integer"/>
+        <xs:attribute name="rate" type="xs:integer"/>
+        <xs:attribute name="shield" type="xs:integer"/>
+        <xs:attribute name="value" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="heatType">
+        <xs:attribute name="cooldelay" type="xs:integer"/>
+        <xs:attribute name="coolrate" type="xs:integer"/>
+        <xs:attribute name="overheat" type="xs:integer"/>
+        <xs:attribute name="reenable" type="xs:integer"/>
+        <xs:attribute name="value" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="hullType">
+        <xs:attribute name="hittable" type="xs:boolean"/>
+        <xs:attribute name="integrated" type="xs:integer"/>
+        <xs:attribute name="invulnerable" type="xs:integer"/>
+        <xs:attribute name="max" type="xs:integer"/>
+        <xs:attribute name="min" type="xs:integer"/>
+        <xs:attribute name="threshold" type="xs:decimal"/>
+        <xs:attribute name="value" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="identificationType">
+        <xs:attribute name="basename"/>
+        <xs:attribute name="commable" type="xs:boolean"/>
+        <xs:attribute name="description"/>
+        <xs:attribute name="female" type="xs:boolean"/>
+        <xs:attribute name="name"/>
+        <xs:attribute name="owner" type="xs:NCName"/>
+        <xs:attribute name="page" type="xs:integer"/>
+        <xs:attribute name="race" type="xs:NCName"/>
+        <xs:attribute name="unique" type="xs:integer"/>
+        <xs:attribute name="variation"/>
+    </xs:complexType>
+    <xs:complexType name="jumpdriveType">
+        <xs:attribute name="basecost" use="required" type="xs:integer"/>
+        <xs:attribute name="charge" use="required" type="xs:integer"/>
+        <xs:attribute name="cooldown" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="launchedType">
+        <xs:attribute name="class" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="missileType">
+        <xs:attribute name="amount" type="xs:integer"/>
+        <xs:attribute name="destructonhit" type="xs:integer"/>
+        <xs:attribute name="distribute" type="xs:integer"/>
+        <xs:attribute name="guided" type="xs:integer"/>
+        <xs:attribute name="icon" type="xs:NCName"/>
+        <xs:attribute name="lifetime" use="required" type="xs:decimal"/>
+        <xs:attribute name="range" type="xs:integer"/>
+        <xs:attribute name="remotecontrol" type="xs:integer"/>
+        <xs:attribute name="retarget" type="xs:integer"/>
+        <xs:attribute name="selfdestruct" type="xs:integer"/>
+        <xs:attribute name="swarm" type="xs:integer"/>
+        <xs:attribute name="tagdart" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="populationType">
+        <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="radarType">
+        <xs:attribute name="range" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="rangeType">
+        <xs:attribute name="abort" use="required" type="xs:integer"/>
+        <xs:attribute name="follow" use="required" type="xs:integer"/>
+        <xs:attribute name="trigger" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="rechargeType">
+        <xs:attribute name="delay" use="required" type="xs:decimal"/>
+        <xs:attribute name="max" use="required" type="xs:integer"/>
+        <xs:attribute name="rate" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="reloadType">
+        <xs:attribute name="rate" type="xs:decimal"/>
+        <xs:attribute name="time" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="rotationspeedType">
+        <xs:attribute name="max" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="scanType">
+        <xs:attribute name="angle" use="required" type="xs:integer"/>
+        <xs:attribute name="longrange" use="required" type="xs:integer"/>
+        <xs:attribute name="maxlevel" use="required" type="xs:integer"/>
+        <xs:attribute name="range" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="secrecyType">
+        <xs:attribute name="level" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="shieldType">
+        <xs:attribute name="value" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="quaternionType">
+        <xs:attribute name="qw" use="required" type="xs:double"/>
+        <xs:attribute name="qx" use="required" type="xs:double"/>
+        <xs:attribute name="qy" use="required" type="xs:double"/>
+        <xs:attribute name="qz" use="required" type="xs:double"/>
+    </xs:complexType>
+    <xs:complexType name="offsetType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="position" type="positionType"/>
+            <xs:element minOccurs="0" name="quaternion" type="quaternionType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="connectionType">
+        <xs:sequence>
+            <xs:choice minOccurs="0">
+                <xs:element name="build" type="buildType"/>
+                <xs:element name="offset" type="offsetType"/>
+            </xs:choice>
+            <xs:element minOccurs="0" maxOccurs="1" name="macro" type="macroType"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:NCName"/>
+        <xs:attribute name="path"/>
+        <xs:attribute name="position" type="xs:NCName"/>
+        <xs:attribute name="ref"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="planType">
+        <xs:attribute name="sequence" use="required" type="xs:NCName"/>
+        <xs:attribute name="stage" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="buildType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="upgrade" type="upgradeType"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="plan" type="planType"/>
+        </xs:sequence>
+        <xs:attribute name="group" type="xs:NCName"/>
+        <xs:attribute name="mode" type="xs:NCName"/>
+        <xs:attribute name="sequence" type="xs:NCName"/>
+        <xs:attribute name="stage" type="xs:integer"/>
+        <xs:attribute name="tags" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="thresholdType">
+        <xs:attribute name="threshold" use="required" type="xs:decimal"/>
+        <xs:attribute name="value" use="required" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="positionType">
+        <xs:attribute name="x" use="required" type="xs:double"/>
+        <xs:attribute name="y" use="required" type="xs:decimal"/>
+        <xs:attribute name="z" use="required" type="xs:double"/>
+    </xs:complexType>
+    <xs:complexType name="speedType">
+        <xs:attribute name="forward" use="required" type="xs:integer"/>
+        <xs:attribute name="pitch" type="xs:decimal"/>
+        <xs:attribute name="reverse" type="xs:integer"/>
+        <xs:attribute name="roll" type="xs:decimal"/>
+        <xs:attribute name="rotation" type="xs:decimal"/>
+        <xs:attribute name="strafe" type="xs:decimal"/>
+        <xs:attribute name="yaw" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="rollType">
+        <xs:attribute name="max" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="angularType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="roll" type="rollType"/>
+        </xs:sequence>
+        <xs:attribute name="pitch" type="xs:integer"/>
+        <xs:attribute name="roll" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="accelerationType">
+        <xs:attribute name="forward" use="required" type="xs:integer"/>
+        <xs:attribute name="pitch" type="xs:decimal"/>
+        <xs:attribute name="reverse" use="required" type="xs:integer"/>
+        <xs:attribute name="roll" type="xs:decimal"/>
+        <xs:attribute name="rotation" type="xs:decimal"/>
+        <xs:attribute name="strafe" use="required" type="xs:integer"/>
+        <xs:attribute name="yaw" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="detailType">
+        <xs:attribute name="ref" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="efficiencyType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="threshold" type="thresholdType"/>
+        </xs:sequence>
+        <xs:attribute name="bonus" type="xs:decimal"/>
+        <xs:attribute name="cycle" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="upgradeType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="upgrade" type="upgradeType"/>
+        </xs:sequence>
+        <xs:attribute name="level" type="xs:decimal"/>
+        <xs:attribute name="tags"/>
+        <xs:attribute name="upgrade" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="detachType">
+        <xs:attribute name="macro"/>
+        <xs:attribute name="ref" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="boostingType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="triggerType">
+        <xs:attribute name="delay" type="xs:decimal"/>
+        <xs:attribute name="friendfoe" type="xs:integer"/>
+        <xs:attribute name="ref" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="longrangescanType">
+        <xs:attribute name="minlevel" type="xs:integer"/>
+        <xs:attribute name="ref" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="glowType">
+        <xs:attribute name="default" type="xs:integer"/>
+        <xs:attribute name="time" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="hackType">
+        <xs:attribute name="angle" use="required" type="xs:integer"/>
+        <xs:attribute name="range" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="boostType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="speed" type="speedType"/>
+            <xs:element name="acceleration" type="accelerationType"/>
+        </xs:sequence>
+        <xs:attribute name="charge" type="xs:integer"/>
+        <xs:attribute name="duration" type="xs:integer"/>
+        <xs:attribute name="minshieldpercent" type="xs:integer"/>
+        <xs:attribute name="recharge" type="xs:integer"/>
+        <xs:attribute name="ref" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="childrenType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="node" type="nodeType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="nodeType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="position" type="positionType"/>
+            <xs:element name="children" type="childrenType"/>
+        </xs:choice>
+        <xs:attribute name="body" use="required" type="xs:NCName"/>
+        <xs:attribute name="depth" use="required" type="xs:integer"/>
+        <xs:attribute name="dimension" use="required" type="xs:integer"/>
+        <xs:attribute name="filled" use="required" type="xs:boolean"/>
+    </xs:complexType>
+    <xs:complexType name="mapType">
+        <xs:attribute name="background" use="optional" type="xs:NCName"/>
+        <xs:attribute name="index" use="optional" type="xs:integer"/>
+        <xs:attribute name="shortvariation" use="optional"/>
+        <xs:attribute name="visible" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="iconType">
+        <xs:attribute name="drone"/>
+        <xs:attribute name="map"/>
+        <xs:attribute name="weapon"/>
+    </xs:complexType>
+    <xs:complexType name="remotecontrolType">
+        <xs:attribute name="range" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="wallType">
+        <xs:attribute name="opaque" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="softwareType">
+        <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="regiondrainType">
+        <xs:attribute name="depletionhours" use="required" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="selectType">
+        <xs:attribute name="index" use="required" type="xs:integer"/>
+        <xs:attribute name="ref" use="required"/>
+        <xs:attribute name="weight" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="modelType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="select" type="selectType"/>
+        </xs:sequence>
+        <xs:attribute name="ref"/>
+        <xs:attribute name="selection" type="xs:NCName"/>
+        <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="modelsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="model" type="modelType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="functionType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="threshold" type="thresholdType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="configurationType">
+        <xs:attribute name="ref" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="facemodType">
+        <xs:attribute name="exact" type="xs:decimal"/>
+        <xs:attribute name="max" type="xs:decimal"/>
+        <xs:attribute name="min" type="xs:decimal"/>
+        <xs:attribute name="name" use="required" type="xs:NCName"/>
+        <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="facemodsType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="facemod" type="facemodType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="itemType">
+        <xs:attribute name="method" type="xs:NCName"/>
+        <xs:attribute name="ware" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="queueType">
+        <xs:choice>
+            <xs:element name="efficiency"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="item" type="itemType"/>
+        </xs:choice>
+        <xs:attribute name="method" type="xs:NCName"/>
+        <xs:attribute name="ware" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="productionType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="queue" type="queueType"/>
+        </xs:sequence>
+        <xs:attribute name="wares"/>
+    </xs:complexType>
+    <xs:complexType name="builderType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="macro" type="macroType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="areaType">
+        <xs:attribute name="sunlight" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="undockType">
+        <xs:attribute name="distance" type="xs:integer"/>
+        <xs:attribute name="rotate" use="required" type="xs:integer"/>
+        <xs:attribute name="speed" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="environmentType">
+        <xs:attribute name="texture" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="cycleType">
+        <xs:attribute name="index" use="required" type="xs:integer"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="slotType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="cycle" type="cycleType"/>
+        </xs:sequence>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="weaponsType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="slot" type="slotType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="upgradesType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="upgrade" type="upgradeType"/>
+        </xs:sequence>
+        <xs:attribute name="multimacro" use="required" type="xs:boolean"/>
+    </xs:complexType>
+    <xs:complexType name="typeinfoType">
+        <xs:attribute name="mk" use="required" type="xs:integer"/>
+        <xs:attribute name="type" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="storageType">
+        <xs:attribute name="bomb" type="xs:integer"/>
+        <xs:attribute name="capacity" type="xs:integer"/>
+        <xs:attribute name="missile" type="xs:integer"/>
+        <xs:attribute name="unit" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="pointType">
+        <xs:attribute name="position" use="required" type="xs:decimal"/>
+        <xs:attribute name="value" use="required" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="steeringcurveType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="point" type="pointType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="boosting_lfeType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="chargingType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="musicType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="ambientType">
+        <xs:attribute name="distance" type="xs:decimal"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+        <xs:attribute name="volume" type="xs:decimal"/>
+    </xs:complexType>
+    <xs:complexType name="firingType">
+        <xs:attribute name="distance" type="xs:decimal"/>
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+    <xs:complexType name="soundsType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="firing" type="firingType"/>
+            <xs:element minOccurs="0" name="ambient" type="ambientType"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="boost" type="boostType"/>
+                <xs:element name="music" type="musicType"/>
+                <xs:sequence>
+                    <xs:element name="charging" type="chargingType"/>
+                    <xs:element name="boosting" type="boostingType"/>
+                    <xs:element name="boosting_lfe" type="boosting_lfeType"/>
+                </xs:sequence>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="linkType">
+        <xs:attribute name="ref" use="required" type="xs:NCName"/>
+    </xs:complexType>
+
+</xs:schema>

@@ -1,11 +1,14 @@
 package nl.games.xrebirth.neo4j.importer.reader;
 
 
+import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.ImportException;
+import nl.games.xrebirth.neo4j.importer.XmlReader;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 
+import javax.inject.Singleton;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -24,7 +27,8 @@ import java.util.Map;
  * Time: 2:10
  * To change this template use File | Settings | File Templates.
  */
-public class IndexReader {
+@Singleton
+public class IndexReader implements XmlReader<Map<String, String>> {
 
     public static final QName Q_NAME = new QName("name");
     public static final QName Q_VALUE = new QName("value");
@@ -48,6 +52,16 @@ public class IndexReader {
 
     public Map<String, String> getMacros() {
         return macros;
+    }
+
+    @Override
+    public Map<String, String> doRead(ImportContext importContext, String file) {
+        read(importContext.getRoot());
+        HashMap<String, String> all = new HashMap<String, String>();
+        all.putAll(components);
+        all.putAll(macros);
+        return all;
+
     }
 
     public void read(FileObject root)  {
@@ -74,15 +88,6 @@ public class IndexReader {
             }
         }
         return index;
-    }
-
-
-    public static void main(String[] args) throws Exception {
-        FileSystemManager manager  = VFS.getManager();
-        FileObject root = manager.resolveFile("filesystem://J:/games/X Rebirth");
-        IndexReader indexReader = new IndexReader();
-        indexReader.read(root);
-        System.err.println("jo");
     }
 
 }

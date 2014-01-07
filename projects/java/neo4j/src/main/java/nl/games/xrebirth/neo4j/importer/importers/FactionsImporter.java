@@ -1,7 +1,6 @@
 package nl.games.xrebirth.neo4j.importer.importers;
 
 import nl.games.xrebirth.generated.factions.Factions;
-import nl.games.xrebirth.neo4j.importer.AbstractImporter;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.reader.AbstractJaxbXmlReader;
 import nl.games.xrebirth.neo4j.importer.writer.FactionsWriter;

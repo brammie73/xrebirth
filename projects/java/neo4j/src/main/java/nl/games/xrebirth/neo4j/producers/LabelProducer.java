@@ -8,6 +8,7 @@ import org.neo4j.graphdb.Label;
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,12 +21,14 @@ import java.util.List;
 public class LabelProducer {
 
     public Label[] getLabels(AbstractElement element) {
-        List<String> list = element.getClassNames();
-        if (list == null || !list.isEmpty()) {
-            String value = element.getClass().getSimpleName().toLowerCase();
-            list = new ArrayList<>();
-            list.add(value);
+        List<String> list = new LinkedList<>();
+        List<String> tmp= element.getClassNames();
+        if (tmp != null) {
+            list.addAll(tmp);
         }
+
+        String elementClass = element.getClass().getSimpleName().toLowerCase();
+        list.add(elementClass);
         List<Label> result = new ArrayList<>(list.size());
         for (String value : list) {
             result.add(DynamicLabel.label(value));

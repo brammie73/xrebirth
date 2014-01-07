@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.XMLFilterImpl;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -120,9 +121,20 @@ public class JAXBHelper {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
         SAXParser saxParser = spf.newSAXParser();
+        XMLFilterImpl filter = new XMLFilterImpl(saxParser.getXMLReader()) {
+            @Override
+            public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
+                //super.ignorableWhitespace(ch, start, length);
+                System.err.println("skipping");
+            }
+        };
+
+
         InputSource inputSource = new InputSource(fixedReader);
+
         SAXSource saxSource = new SAXSource(saxParser.getXMLReader(), inputSource);
         Unmarshaller u = jc.createUnmarshaller();
+
         if (isValidating()) {
             u.setSchema(schema);
         }

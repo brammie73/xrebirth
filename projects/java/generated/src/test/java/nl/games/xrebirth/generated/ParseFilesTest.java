@@ -1,8 +1,9 @@
 package nl.games.xrebirth.generated;
 
-import nl.games.xrebirth.generated.cutscenes.Cutscene;
 import nl.games.xrebirth.generated.components.Components;
+import nl.games.xrebirth.generated.cutscenes.Cutscene;
 import nl.games.xrebirth.generated.factions.Factions;
+import nl.games.xrebirth.generated.macros.MacrosType;
 import nl.games.xrebirth.generated.parameters.Parameters;
 import nl.games.xrebirth.generated.races.Races;
 import nl.games.xrebirth.generated.regiondefinitions.RegionsType;
@@ -20,6 +21,10 @@ import org.testng.annotations.Test;
 public class ParseFilesTest {
 
     public static class ComponentsTest extends AbstractXmlTest<Components> {
+
+        public ComponentsTest() {
+            setValidating(false);
+        }
 
         @Override
         public String getFileName() {
@@ -96,6 +101,14 @@ public class ParseFilesTest {
         @Override
         public String getFileName() {
             return "libraries/wares.xml";
+        }
+    }
+
+    public static class MacrroTest extends AbstractXmlTest<MacrosType> {
+
+        @Override
+        public String getFileName() {
+            return "maps/XU_ep1_universe/galaxy.xml";
         }
     }
 

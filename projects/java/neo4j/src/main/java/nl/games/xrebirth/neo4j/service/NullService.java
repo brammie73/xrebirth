@@ -2,6 +2,9 @@ package nl.games.xrebirth.neo4j.service;
 
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.Importer;
+import nl.games.xrebirth.neo4j.importer.importers.ComponentsImporter;
+import nl.games.xrebirth.neo4j.importer.importers.MacrosImporter;
+import org.apache.commons.io.FileUtils;
 import org.apache.deltaspike.cdise.api.CdiContainer;
 import org.apache.deltaspike.cdise.api.CdiContainerLoader;
 import org.apache.deltaspike.cdise.api.ContextControl;
@@ -13,6 +16,7 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Singleton;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -30,7 +34,12 @@ public class NullService {
         super();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
+        File file = new File(DB_PATH);
+        if (file.exists()) {
+            FileUtils.deleteDirectory(file);
+        }
+
         GraphDatabaseService graphDb;
         graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
         CdiContainer container = CdiContainerLoader.getCdiContainer();
@@ -49,8 +58,10 @@ public class NullService {
     public void onStart(@Observes ImportContext importContext) {
         List<Importer> importers = BeanProvider.getContextualReferences(Importer.class, true);
         for (Importer importer : importers) {
-            if (!importer.isImported()) {
-                importer.doImport(importContext);
+            if (importer instanceof MacrosImporter) {
+                if (!importer.isImported()) {
+                    importer.doImport(importContext);
+                }
             }
         }
     }

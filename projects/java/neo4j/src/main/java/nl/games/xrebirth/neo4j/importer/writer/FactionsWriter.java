@@ -23,7 +23,6 @@ import java.util.Map;
  * Date: 29-12-13
  * Time: 1:58
  *
- * todo:sumhow solve dependancy to "race"
  */
 
 @Singleton

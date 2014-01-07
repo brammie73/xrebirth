@@ -25,8 +25,9 @@ import javax.inject.Singleton;
 public class ImportContext {
 
     private GraphDatabaseService databaseService;
-    private IndexReader indexReader;
+
     private FileObject root;
+
     private Configuration configuration = Config.getConfiguration();
 
     @Inject
@@ -55,16 +56,6 @@ public class ImportContext {
     public FileObject getRoot() {
         return root;
     }
-
-    public IndexReader getIndex() {
-        if (this.indexReader == null) {
-            IndexReader indexReader = new IndexReader();
-            indexReader.read(root);
-            this.indexReader = indexReader;
-        }
-        return indexReader;
-    }
-
 
     public GraphDatabaseService getDatabaseService() {
         return databaseService;

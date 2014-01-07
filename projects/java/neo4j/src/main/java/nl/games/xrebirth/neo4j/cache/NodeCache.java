@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import jodd.bean.BeanUtil;
 import nl.games.xrebirth.generated.AbstractElement;
+import nl.games.xrebirth.generated.components.ComponentType;
 import org.jvnet.jaxb2_commons.lang.EnumValue;
 import org.neo4j.graphdb.Node;
 
@@ -56,6 +57,15 @@ public class NodeCache {
     }
 
     private CacheKey generateCacheKey(AbstractElement element) {
+        if (element.getIdString() == null) {
+            throw new NullPointerException("no id found for:" + element.getClass().getName());
+        } else {
+            CacheKey cacheKey = new CacheKey(element.getClass(), "id", element.getIdString());
+            return cacheKey;
+        }
+    }
+
+    private CacheKey generateCacheKey(ComponentType element) {
         if (element.getIdString() == null) {
             throw new NullPointerException("no id found for:" + element.getClass().getName());
         } else {

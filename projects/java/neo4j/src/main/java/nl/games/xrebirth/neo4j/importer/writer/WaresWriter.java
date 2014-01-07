@@ -57,6 +57,7 @@ public class WaresWriter extends AbstractNeo4jWriter<WaresType> {
                 Node node = service.createNode(labelProducer.getLabels(ware));
                 addAttributeFields(importContext, ware, node);
                 nodeCache.addObject(ware, node);
+                //todo: component ref's
             }
 
             //link all poduction types

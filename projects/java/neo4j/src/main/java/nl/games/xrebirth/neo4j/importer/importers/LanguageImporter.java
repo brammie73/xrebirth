@@ -2,15 +2,11 @@ package nl.games.xrebirth.neo4j.importer.importers;
 
 import nl.games.xrebirth.generated.text.Language;
 import nl.games.xrebirth.neo4j.Config;
-import nl.games.xrebirth.neo4j.importer.AbstractImporter;
-import nl.games.xrebirth.neo4j.importer.TextFormatter;
 import nl.games.xrebirth.neo4j.importer.reader.AbstractJaxbXmlReader;
 import nl.games.xrebirth.neo4j.importer.writer.AbstractNeo4jWriter;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 import java.util.Arrays;
 import java.util.List;
