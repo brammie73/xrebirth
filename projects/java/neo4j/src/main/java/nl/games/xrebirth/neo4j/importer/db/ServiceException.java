@@ -1,33 +1,31 @@
-package nl.games.xrebirth.neo4j.importer;
+package nl.games.xrebirth.neo4j.importer.db;
 
-import nl.games.xrebirth.neo4j.Neo4jException;
+import nl.games.xrebirth.neo4j.importer.ImportException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: bram
- * Date: 27-12-13
- * Time: 22:40
- * To change this template use File | Settings | File Templates.
+ * Author: bram
+ * Date: 9-1-14
+ * Time: 2:26
  */
-public class ImportException extends Neo4jException {
+public class ServiceException extends ImportException {
 
-    public ImportException() {
+    public ServiceException() {
         super();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public ImportException(String message) {
+    public ServiceException(String message) {
         super(message);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public ImportException(String message, Throwable cause) {
+    public ServiceException(String message, Throwable cause) {
         super(message, cause);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public ImportException(Throwable cause) {
+    public ServiceException(Throwable cause) {
         super(cause);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    protected ImportException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected ServiceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

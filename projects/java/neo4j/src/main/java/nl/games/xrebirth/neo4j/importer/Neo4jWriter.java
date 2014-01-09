@@ -1,5 +1,9 @@
 package nl.games.xrebirth.neo4j.importer;
 
+import nl.games.xrebirth.generated.AbstractElement;
+
+import javax.enterprise.event.Observes;
+
 /**
  * Created with IntelliJ IDEA.
  * User: bram
@@ -7,8 +11,8 @@ package nl.games.xrebirth.neo4j.importer;
  * Time: 16:58
  * To change this template use File | Settings | File Templates.
  */
-public interface Neo4jWriter<T> {
+public interface Neo4jWriter<T extends AbstractElement> {
 
-    public T doWrite(ImportContext importContext, T t);
+    public void doWrite(@Observes T element);
 
 }

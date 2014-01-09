@@ -9,9 +9,8 @@ package nl.games.xrebirth.neo4j.importer;
  */
 public interface Importer {
 
-    public boolean doImport(ImportContext importContext);
+    public void doImport();
 
-    public Object getValues();
 
     public boolean isImported();
 

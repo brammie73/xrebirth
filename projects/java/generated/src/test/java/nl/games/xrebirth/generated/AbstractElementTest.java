@@ -30,7 +30,6 @@ public class AbstractElementTest {
             }
         };
 
-        assertEquals("id", elm.getIdString());
         assertEquals(Arrays.asList("clazz"), elm.getClassNames());
         assertEquals(Arrays.asList("tag", "tag"), elm.getTagList());
     }
@@ -39,7 +38,6 @@ public class AbstractElementTest {
         AbstractElement elm = new AbstractElement() {
         };
 
-        assertEquals(null, elm.getIdString());
         assertEquals(null, elm.getClassNames());
         assertEquals(null, elm.getTagList());
     }
@@ -47,7 +45,6 @@ public class AbstractElementTest {
     public void testSomeInstance() {
         Language elm = new Language();
         elm.setId(123);
-        assertEquals(String.valueOf(123), elm.getIdString());
         assertEquals(null, elm.getClassNames());
         assertEquals(null, elm.getTagList());
     }

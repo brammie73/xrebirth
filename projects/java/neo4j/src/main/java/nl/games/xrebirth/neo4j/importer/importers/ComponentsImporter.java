@@ -1,14 +1,13 @@
 package nl.games.xrebirth.neo4j.importer.importers;
 
-import nl.games.xrebirth.generated.components.Components;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
-import nl.games.xrebirth.neo4j.importer.reader.ComponentReader;
-import nl.games.xrebirth.neo4j.importer.reader.IndexReader;
-import nl.games.xrebirth.neo4j.importer.writer.ComponentWriter;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,35 +17,29 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 @Singleton
-public class ComponentsImporter extends AbstractImporter<Components> {
+public class ComponentsImporter extends AbstractImporter {
 
     @Inject
     ImportContext context;
 
-    @Inject
-    IndexReader indexReader;
+    XRIndex xrIndex;
 
-    @Inject
-    protected ComponentsImporter(ComponentReader reader, ComponentWriter writer) {
-        super(reader, writer);
-    }
 
     @Override
+    public void doImport() {
+
+    }
+
     public List<String> doGetFileLocations() {
-        indexReader.read(context.getRoot());
-        Map<String, String> index = indexReader.getComponents();
-        return new LinkedList<>(index.values());
+        //xrIndex.getComponentFiles()
+        return new LinkedList<>();
     }
 
     Set<String> importedFiles = new HashSet<>();
 
-    @Override
-    protected boolean doImport(ImportContext importContext, String file) {
+    protected void doImport(ImportContext importContext, String file) {
         if (importedFiles.contains(file) || file.contains("\\test\\")) {
-            return true;
         }
-        boolean res = super.doImport(importContext, file + ".xml");
         importedFiles.add(file);
-        return res;
     }
 }

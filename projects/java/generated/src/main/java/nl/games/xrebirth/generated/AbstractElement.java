@@ -15,6 +15,40 @@ public abstract class AbstractElement {
 
     private static Set<Class> classIgnore = new HashSet<>(500);
 
+
+    @javax.xml.bind.annotation.XmlTransient
+    private String xmlFile;
+
+    public String getXmlFile() {
+        return xmlFile;
+    }
+
+    public void setXmlFile(String xmlFile) {
+        this.xmlFile = xmlFile;
+    }
+
+    @javax.xml.bind.annotation.XmlTransient
+    private Object id;
+
+    public Object getId() {
+        return id;
+    }
+
+    public void setId(Object nodeId) {
+        this.id = nodeId;
+    }
+
+    @javax.xml.bind.annotation.XmlTransient
+    private AbstractElement parentElement;
+
+    public AbstractElement getParentElement() {
+        return parentElement;
+    }
+
+    public void setParentElement(AbstractElement parentElement) {
+        this.parentElement = parentElement;
+    }
+
     public List<String> getClassNames() {
         if (BeanUtil.hasProperty(this, "clazz")) {
             Object obj = BeanUtil.getProperty(this, "clazz");
@@ -28,29 +62,23 @@ public abstract class AbstractElement {
         }
     }
 
-    public String getIdString() {
-        if (BeanUtil.hasProperty(this, "id")) {
-            Object obj = BeanUtil.getProperty(this, "id");
-            return TypeConverterManager.convertType(obj, String.class);
-        } else if (BeanUtil.hasProperty(this, "name")) {
-            Object obj = BeanUtil.getProperty(this, "name");
-            return TypeConverterManager.convertType(obj, String.class);
-        } else {
-            return null;
-        }
-    }
-
     public List<String> getTagList() {
+        Object obj = null;
         if (BeanUtil.hasProperty(this, "tags")) {
-            Object obj = BeanUtil.getProperty(this, "tags");
-            return Arrays.asList(TypeConverterManager.convertType(obj, String[].class));
+            obj = BeanUtil.getProperty(this, "tags");
         }
         if (BeanUtil.hasProperty(this, "tag")) {
-            Object obj = BeanUtil.getProperty(this, "tag");
-            if (obj instanceof String) {
-                return Arrays.asList(((String) obj).split(" "));
-            }
+            obj = BeanUtil.getProperty(this, "tag");
         }
-        return null;
+        if (obj ==  null) {
+            return null;
+        } else if (obj instanceof String) {
+            return Arrays.asList(((String) obj).split(" "));
+        } else if (obj instanceof String[]) {
+            return Arrays.asList((String[]) obj);
+        } else if (obj instanceof List) {
+            return TypeConverterManager.convertType(obj, List.class);
+        }
+        throw new IllegalArgumentException("dunno what to do with:" +  obj.getClass());
     }
 }

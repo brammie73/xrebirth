@@ -9,6 +9,10 @@ package nl.games.xrebirth.neo4j.importer;
  */
 public interface TextFormatter {
 
+    public void init();
+
+    public Object format(Object  in);
+
     public String format(String in);
 
     public String[] format(String[] in);

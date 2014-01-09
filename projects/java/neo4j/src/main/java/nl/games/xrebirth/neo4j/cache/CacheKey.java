@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Date: 6-1-14
  * Time: 3:35
  */
-class CacheKey implements Serializable {
+public class CacheKey implements Serializable {
 
     private Class clazz;
     private String name;

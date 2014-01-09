@@ -3,16 +3,14 @@ package nl.games.xrebirth.neo4j.importer.importers;
 import nl.games.xrebirth.generated.macros.MacroType;
 import nl.games.xrebirth.generated.macros.MacrosType;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
+import nl.games.xrebirth.neo4j.importer.events.FileEvent;
 import nl.games.xrebirth.neo4j.importer.events.Reference;
-import nl.games.xrebirth.neo4j.importer.reader.IndexReader;
-import nl.games.xrebirth.neo4j.importer.reader.MacrosReader;
-import nl.games.xrebirth.neo4j.importer.writer.MacrosWriter;
 
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Collection;
 
 /**
  * Author: bram
@@ -21,82 +19,49 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 
 @Singleton
-public class MacrosImporter extends AbstractImporter<MacrosType> {
+public class MacrosImporter extends AbstractImporter {
 
-    String galaxy = "/maps/XU_ep1_universe/galaxy";
-    String clusters = "/maps/XU_ep1_universe/clusters";
-    String sectors = "/maps/XU_ep1_universe/sectors";
-    String zones = "/maps/XU_ep1_universe/zones";
-    String zonehighways = "/maps/XU_ep1_universe/zonehighways";
+    String galaxy = "/maps/XU_ep1_universe/galaxy.xml";
+    String clusters = "/maps/XU_ep1_universe/clusters.xml";
+    String sectors = "/maps/XU_ep1_universe/sectors.xml";
+    String zones = "/maps/XU_ep1_universe/zones.xml";
+    String zonehighways = "/maps/XU_ep1_universe/zonehighways.xml";
+
 
     @Inject
-    IndexReader indexReader;
+    ImportContext importContext;
 
     @Inject
-    ImportContext context;
-
-
-    ConcurrentLinkedQueue<String> importQueue = new ConcurrentLinkedQueue<>();
-
-    @Inject
-    protected MacrosImporter(MacrosReader reader, MacrosWriter writer) {
-        super(reader, writer);
-        importQueue.offer(galaxy);
-        importQueue.offer(clusters);
-        importQueue.offer(sectors);
-        importQueue.offer(zones);
-        importQueue.offer(zonehighways);
-    }
-
+    Event<FileEvent> fileEventBus;
 
     @Override
-    public Collection<String> doGetFileLocations() {
-        return importQueue;
+    public void doImport() {
+
     }
 
-    Set<String> importedFiles = new HashSet<>();
-
-
-    private Set<String> counter = new HashSet<>();
+    public Collection<String> doGetFileLocations() {
+        return null;
+    }
 
     public boolean doImport(ImportContext importContext) {
-        indexReader.read(context.getRoot());
-        String first = importQueue.poll();
-        while (first != null) {
-            counter.add(first);
-            boolean result = doImport(importContext, first);
-            if (!result) {
-                System.err.println("error on:" + first);
-                return false;
-            }
-            first = importQueue.poll();
-        }
-        System.err.println(counter.size());
-        Object[] obj = counter.toArray();
-        Arrays.sort(obj);
-        List<Object> list = Arrays.asList(obj);
+        FileEvent event = new FileEvent(MacrosType.class, galaxy);
+        fileEventBus.fire(event);
         return true;
     }
 
 
-    @Override
     protected boolean doImport(ImportContext importContext, String file) {
-        if (importedFiles.contains(file) || file.contains("\\test\\")) {
-            return true;
-        }
-        boolean res = super.doImport(importContext, file + ".xml");
-        importedFiles.add(file);
-        return res;
+        return true;
     }
 
     public void refererFoundListener(@Observes @Reference MacroType macroType) {
         String ref = macroType.getRef();
-        String file = indexReader.getMacros().get(ref);
+        String file = null; //xRIndex.getMacro(ref);
         if (file != null) {
-            importQueue.offer(file);
+            FileEvent event = new FileEvent(MacrosType.class, file);
+            fileEventBus.fire(event);
         } else {
-            System.err.println("NOT FOUND:" + ref);
-
+            System.err.println("file not found in index:" + ref);
         }
     }
 }

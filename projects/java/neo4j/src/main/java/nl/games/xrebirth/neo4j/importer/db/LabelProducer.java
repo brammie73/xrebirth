@@ -1,11 +1,9 @@
-package nl.games.xrebirth.neo4j.producers;
+package nl.games.xrebirth.neo4j.importer.db;
 
-import com.google.common.base.Joiner;
 import nl.games.xrebirth.generated.AbstractElement;
 import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.Label;
 
-import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.LinkedList;

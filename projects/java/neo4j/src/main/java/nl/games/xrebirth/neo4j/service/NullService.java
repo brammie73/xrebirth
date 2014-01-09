@@ -2,8 +2,8 @@ package nl.games.xrebirth.neo4j.service;
 
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.Importer;
-import nl.games.xrebirth.neo4j.importer.importers.ComponentsImporter;
-import nl.games.xrebirth.neo4j.importer.importers.MacrosImporter;
+import nl.games.xrebirth.neo4j.importer.db.Neo4jService;
+import nl.games.xrebirth.neo4j.importer.importers.GenericImporter;
 import org.apache.commons.io.FileUtils;
 import org.apache.deltaspike.cdise.api.CdiContainer;
 import org.apache.deltaspike.cdise.api.CdiContainerLoader;
@@ -31,7 +31,7 @@ public class NullService {
     private static final String DB_PATH = "neo4j-store";
 
     public NullService() {
-        super();    //To change body of overridden methods use File | Settings | File Templates.
+        super();
     }
 
     public static void main(String[] args) throws Exception{
@@ -46,8 +46,10 @@ public class NullService {
         container.boot();
         ContextControl contextControl = container.getContextControl();
         contextControl.startContext(ApplicationScoped.class);
+        Neo4jService neo4jService =  BeanProvider.getContextualReference(Neo4jService.class);
+        neo4jService.setDatabaseService(graphDb);
         ImportContext importContext = BeanProvider.getContextualReference(ImportContext.class);
-        importContext.setDatabaseService(graphDb);
+        importContext.init();
         container.getBeanManager().fireEvent(importContext, InitializedLiteral.INSTANCE);
         contextControl.stopContexts();
         graphDb.shutdown();
@@ -58,9 +60,9 @@ public class NullService {
     public void onStart(@Observes ImportContext importContext) {
         List<Importer> importers = BeanProvider.getContextualReferences(Importer.class, true);
         for (Importer importer : importers) {
-            if (importer instanceof MacrosImporter) {
+            if (importer instanceof GenericImporter) {
                 if (!importer.isImported()) {
-                    importer.doImport(importContext);
+                    importer.doImport();
                 }
             }
         }

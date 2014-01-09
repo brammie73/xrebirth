@@ -1,15 +1,10 @@
 package nl.games.xrebirth.neo4j.importer;
 
-import nl.games.xrebirth.neo4j.Config;
-import nl.games.xrebirth.neo4j.importer.reader.IndexReader;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
-import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.VFS;
-import org.neo4j.graphdb.*;
+import nl.games.xrebirth.neo4j.cache.NodeCache;
+import nl.games.xrebirth.neo4j.importer.db.Neo4jService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -24,71 +19,23 @@ import javax.inject.Singleton;
 @Singleton
 public class ImportContext {
 
-    private GraphDatabaseService databaseService;
-
-    private FileObject root;
-
-    private Configuration configuration = Config.getConfiguration();
+    static Logger log = LogManager.getLogger(ImportContext.class);
 
     @Inject
-    private LanguageTextFormatter textFormatter;
+    private TextFormatter textFormatter;
 
-    public ImportContext() {
+    @Inject
+    NodeCache nodeCache;
+
+    @Inject
+    Neo4jService neo4jService;
+
+
+    public void init() {
+        textFormatter.init();
     }
 
-    @PostConstruct
-    void postConstruct() {
-        setUpFilesystem();
-        textFormatter.initialize(this);
-
-    }
-
-    void setUpFilesystem() {
-        try {
-            String uri = new StringBuilder("xr:").append(this.configuration.getString("egosoft.xrebirth.dir")).toString();
-            FileSystemManager manager = VFS.getManager();
-            this.root = manager.resolveFile(uri);
-        } catch (FileSystemException e) {
-            throw new ImportException(e);
-        }
-    }
-
-    public FileObject getRoot() {
-        return root;
-    }
-
-    public GraphDatabaseService getDatabaseService() {
-        return databaseService;
-    }
-
-    public void setDatabaseService(GraphDatabaseService databaseService) {
-        this.databaseService = databaseService;
-    }
-
-    public static final Label ROOT_LABEL = DynamicLabel.label("ROOT");
-    public static final String NAME_OBJECT_TYPE = "object-type";
-
-
-    //no transaction ...
-    public Node findRootNode(String type) {
-        ResourceIterable<Node> iterable = databaseService.findNodesByLabelAndProperty(ROOT_LABEL, NAME_OBJECT_TYPE, type);
-        ResourceIterator<Node> iterator = iterable.iterator();
-        if (iterator.hasNext()) {
-            Node item = iterator.next();
-            return item;
-        } else {
-            Node node = databaseService.createNode();
-            node.addLabel(ROOT_LABEL);
-            node.setProperty(NAME_OBJECT_TYPE, type);
-            return node;
-        }
-    }
-
-    public String format(String in) {
-        return textFormatter.format(in);
-    }
-
-    public String[] format(String[] in) {
-        return textFormatter.format(in);
+    public Neo4jService getService() {
+        return neo4jService;
     }
 }

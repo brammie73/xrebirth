@@ -1,16 +1,12 @@
 package nl.games.xrebirth.neo4j.importer.writer;
 
-import nl.games.xrebirth.generated.AbstractElement;
 import nl.games.xrebirth.generated.wares.*;
-import nl.games.xrebirth.neo4j.cache.NodeCache;
-import nl.games.xrebirth.neo4j.importer.writer.AbstractNeo4jWriter;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.ImportException;
-import nl.games.xrebirth.neo4j.producers.LabelProducer;
-import nl.games.xrebirth.neo4j.producers.RelationshipTypeProducer;
+import nl.games.xrebirth.neo4j.importer.db.PropertyBuilder;
 import nl.games.xrebirth.neo4j.utils.Utils;
-import org.neo4j.graphdb.*;
 
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -30,97 +26,89 @@ import java.util.Map;
 @Singleton
 public class WaresWriter extends AbstractNeo4jWriter<WaresType> {
 
-
     @Inject
-    LabelProducer labelProducer;
-
-    @Inject
-    RelationshipTypeProducer relationshipTypeProducer;
-
-    @Inject
-    NodeCache nodeCache;
-
-
-    private RelationshipType rawMaterialRelationType = DynamicRelationshipType.withName("rawmaterial");
-    private RelationshipType secondaryMaterialRelationType = DynamicRelationshipType.withName("secondarymaterial");
-    private RelationshipType produces = DynamicRelationshipType.withName("produces");
-
+    ImportContext importContext;
 
     @Override
-    public WaresType doWrite(ImportContext importContext, WaresType wares) {
-        GraphDatabaseService service = importContext.getDatabaseService();
+    public void doWrite(@Observes WaresType wares) {
         DefaultsType defaultWare = wares.getDefaults();
-        try (Transaction tx = service.beginTx()) {
-            //import all wares
-            for (WareType ware : wares.getWare()) {
-                updateWithDefault(ware, defaultWare);
-                Node node = service.createNode(labelProducer.getLabels(ware));
-                addAttributeFields(importContext, ware, node);
-                nodeCache.addObject(ware, node);
-                //todo: component ref's
+        for (WareType ware : wares.getWare()) {
+            updateWithDefault(ware, defaultWare);
+            PropertyBuilder wareProperties = PropertyBuilder.create(defaultWare)
+                    .update(ware)
+                    .add("name", ware.getId())
+                    .add("price-min", ware.getPrice().getMin().longValue())
+                    .add("price-avarage", ware.getPrice().getAverage().longValue())
+                    .add("price-max", ware.getPrice().getMax().longValue());
+            importContext.getService().createNode(ware, wareProperties);
+            if ("cutcrystals".equals(ware.getId())) {
+                System.err.println("stop");
             }
-
-            //link all poduction types
-            for (WareType ware : wares.getWare()) {
-                Node node = service.getNodeById(nodeCache.getNodeId(ware));
-                for (ProductionType production : ware.getProduction()) {
-                    Node productionNode = service.createNode(labelProducer.getLabels(production));
-                    addAttributeFields(importContext, production, productionNode, node);
-                    productionNode.createRelationshipTo(node, relationshipTypeProducer.produce(production));
-
-                    if (production.getPrimary() != null) {
-                        for (ProductionWareType primaryWare : production.getPrimary().getWare()) {
-                            Long primWareId = nodeCache.getNodeId(WareType.class, primaryWare.getWare());
-                            if (primWareId == null) {
-                                System.err.println("id not found for:" + primaryWare.getWare());
-                            }
-                            Node primaryWareNode = service.getNodeById(primWareId);
-                            RelationshipType rt = relationshipTypeProducer.produce(production.getPrimary());
-                            Relationship relationship = productionNode.createRelationshipTo(primaryWareNode, rt);
-                            relationship.setProperty("amount", primaryWare.getAmount());
-                        }
-                    }
-                    if (production.getSecondary() != null) {
-                        for (ProductionWareType secondaryWare : production.getSecondary().getWare()) {
-                            Long primWareId = nodeCache.getNodeId(WareType.class, secondaryWare.getWare());
-                            if (primWareId == null) {
-                                System.err.println("id not found for:" + secondaryWare.getWare());
-                            }
-                            Node secondairyWareNode = service.getNodeById(primWareId);
-                            RelationshipType rt = relationshipTypeProducer.produce(production.getSecondary());
-                            Relationship relationship = productionNode.createRelationshipTo(secondairyWareNode, rt);
-                            relationship.setProperty("amount", secondaryWare.getAmount());
-                        }
-                    }
+            //todo: component ref's
+            for (ProductionType productionType : ware.getProduction()) {
+                if (productionType != null) {
+                    productionType.setParentElement(ware);
+                    productionType.setId(String.format("%s - %s", ware.getId(), productionType.getName()));
+                    fire(productionType);
                 }
             }
-            tx.success();
-        } catch (Exception e) {
-            throw new ImportException(e);
         }
-        return wares;
     }
 
-    protected void addAttributeFields(ImportContext context, WareType ware, Node node) throws IllegalAccessException {
-        super.addAttributeFields(context, ware, node);
-        node.setProperty("name", ware.getId());
-        node.setProperty("price-min", ware.getPrice().getMin().longValue());
-        node.setProperty("price-avarage", ware.getPrice().getAverage().longValue());
-        node.setProperty("price-max", ware.getPrice().getMax().longValue());
-    }
 
-    protected void addAttributeFields(ImportContext context, ProductionType production, Node productionNode, Node wareNode) throws IllegalAccessException {
-        super.addAttributeFields(context, production, productionNode);
-        productionNode.setProperty("id", String.format("%s - %s", wareNode.getProperty("id"), production.getMethod()));
-        productionNode.setProperty("product", wareNode.getId());
-        productionNode.setProperty("name", wareNode.getId());
-        if (production.getEffects() != null) {
-            for (EffectType effect : production.getEffects().getEffect()) {
-                productionNode.setProperty(effect.getType(), effect.getProduct().floatValue());
+    public void doWrite(@Observes ProductionType productionType) {
+        WareType parent = (WareType) productionType.getParentElement();
+        PropertyBuilder productionProperties = PropertyBuilder.create(productionType)
+                .add("product", parent.getId())
+                .add("name", productionType.getMethod());
+
+        if (productionType.getEffects() != null) {
+            for (EffectType effect : productionType.getEffects().getEffect()) {
+                productionProperties.add(effect.getType(), effect.getProduct().floatValue());
             }
         }
+        importContext.getService().createNode(productionType, productionProperties);
+        importContext.getService().createRelationship(
+                productionType,
+                parent,
+                PropertyBuilder.create()
+        );
+
+        if (productionType.getPrimary() != null) {
+            productionType.getPrimary().setParentElement(productionType);
+            fire(productionType.getPrimary());
+        }
+        if (productionType.getSecondary() != null) {
+            productionType.getSecondary().setParentElement(productionType);
+            fire(productionType.getSecondary());
+        }
     }
 
+    public void doWrite(@Observes final ProductionType.Primary primary) {
+        for (final ProductionWareType ware : primary.getWare()) {
+            WareType wareElement = createElement(WareType.class);
+            wareElement.setId(ware.getWare());
+            importContext.getService().createRelationship(
+                    wareElement,
+                    primary.getParentElement(),
+                    primary,
+                    PropertyBuilder.create().add("amount", ware.getAmount())
+            );
+        }
+    }
+
+    public void doWrite(@Observes final ProductionType.Secondary secondary) {
+        for (final ProductionWareType ware : secondary.getWare()) {
+            WareType wareElement = createElement(WareType.class);
+            wareElement.setId(ware.getWare());
+            importContext.getService().createRelationship(
+                    wareElement,
+                    secondary.getParentElement(),
+                    secondary,
+                    PropertyBuilder.create().add("amount", ware.getAmount())
+            );
+        }
+    }
 
 
     private void updateWithDefault(WareType ware, DefaultsType defaults) {

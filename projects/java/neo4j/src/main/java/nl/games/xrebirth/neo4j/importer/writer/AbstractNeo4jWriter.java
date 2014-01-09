@@ -1,21 +1,10 @@
 package nl.games.xrebirth.neo4j.importer.writer;
 
 import nl.games.xrebirth.generated.AbstractElement;
-import nl.games.xrebirth.neo4j.cache.NodeCache;
-import nl.games.xrebirth.neo4j.importer.ImportContext;
-import nl.games.xrebirth.neo4j.importer.ImportException;
 import nl.games.xrebirth.neo4j.importer.Neo4jWriter;
-import nl.games.xrebirth.neo4j.importer.TextFormatter;
-import nl.games.xrebirth.neo4j.producers.LabelProducer;
-import nl.games.xrebirth.neo4j.producers.RelationshipTypeProducer;
-import nl.games.xrebirth.neo4j.utils.Utils;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.PropertyContainer;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.xml.bind.annotation.XmlAttribute;
-import java.lang.annotation.Inherited;
-import java.lang.reflect.Field;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,37 +13,27 @@ import java.lang.reflect.Field;
  * Time: 2:08
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AbstractNeo4jWriter<T> implements Neo4jWriter<T> {
+public abstract class AbstractNeo4jWriter<T extends AbstractElement> implements Neo4jWriter<T> {
 
-    protected AbstractNeo4jWriter() {
+    @Inject
+    Event<AbstractElement> elementEvent;
 
+    public void fire(AbstractElement element) {
+        elementEvent.fire(element);
     }
 
-    protected void addAttributeFields(ImportContext context, AbstractElement element, PropertyContainer node) throws ImportException {
+    public <T extends AbstractElement> T createElement(Class<T> clazz, Object id) {
+        T element = createElement(clazz);
+        element.setId(id);
+        return element;
+    }
+
+    public <T extends AbstractElement> T createElement(Class<T> clazz) {
         try {
-            Field[] fields = element.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                if (field.isAnnotationPresent(XmlAttribute.class)) {
-                    XmlAttribute annotation = field.getAnnotation(XmlAttribute.class);
-                    if (!field.isAccessible()) {
-                        field.setAccessible(true);
-                    }
-                    Object value = field.get(element);
-                    if (value != null && value.getClass().getPackage().getName().equals("java.lang")) {
-                        if (value instanceof String) {
-                            String stringValue = ((String) value).trim();
-                            if ("tags".equalsIgnoreCase(annotation.name())) {
-                                value = context.format(stringValue.split(" "));
-                            } else if (stringValue.startsWith("{") && stringValue.endsWith("}") ) {
-                                value = context.format(stringValue);
-                            }
-                        }
-                        node.setProperty(annotation.name(), value);
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw  new ImportException(e);
+            return clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new Neo4jWriterException(e);
         }
     }
+
 }

@@ -1,10 +1,11 @@
 package nl.games.xrebirth.neo4j.importer.importers;
 
-import nl.games.xrebirth.neo4j.importer.*;
+import nl.games.xrebirth.neo4j.importer.Importer;
+import nl.games.xrebirth.neo4j.importer.events.FileEvent;
 
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,65 +14,17 @@ import java.util.List;
  * Time: 1:59
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AbstractImporter<T> implements Importer {
+public abstract class AbstractImporter implements Importer {
 
-    private XmlReader<T> reader;
+    boolean imported = false;
 
-    private Neo4jWriter<T> writer;
+    @Inject
+    Event<FileEvent> fileEventBus;
 
-    private T values;
-
-    private boolean imported = false;
-
-    AbstractImporter() {
+    public Event<FileEvent> getFileEventBus() {
+        return fileEventBus;
     }
 
-    protected AbstractImporter(XmlReader<T> reader, Neo4jWriter<T> writer) {
-        this.reader = reader;
-        this.writer = writer;
-    }
-
-    public abstract Collection<String> doGetFileLocations();
-
-    public XmlReader<T> getReader() {
-        return reader;
-    }
-
-    public Neo4jWriter<T> getWriter() {
-        return writer;
-    }
-
-    @Override
-    public boolean doImport(ImportContext importContext) {
-        for (String s : doGetFileLocations()) {
-            boolean result = doImport(importContext, s);
-            if (!result) {
-                System.err.println("error on:" + s);
-                return false;
-            }
-        }
-        imported = true;
-        return true;
-    }
-
-    protected boolean doImport(ImportContext importContext, String file) {
-        T t = getReader().doRead(importContext, file);
-        if (t != null) {
-            getWriter().doWrite(importContext, t);
-        }
-        this.values = t;
-        return true;
-    }
-
-
-    public T getValues() {
-        if (values == null) {
-            throw new ImportException("objects not imported yet");
-        }
-        T local = values;
-        values = null;
-        return local;
-    }
 
     public boolean isImported() {
         return imported;

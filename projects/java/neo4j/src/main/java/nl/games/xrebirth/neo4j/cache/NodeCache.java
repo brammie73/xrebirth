@@ -3,9 +3,9 @@ package nl.games.xrebirth.neo4j.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import jodd.bean.BeanUtil;
+import jodd.typeconverter.TypeConverterManager;
 import nl.games.xrebirth.generated.AbstractElement;
-import nl.games.xrebirth.generated.components.ComponentType;
-import org.jvnet.jaxb2_commons.lang.EnumValue;
+import nl.games.xrebirth.neo4j.Neo4jException;
 import org.neo4j.graphdb.Node;
 
 import javax.inject.Singleton;
@@ -19,65 +19,64 @@ import javax.inject.Singleton;
 @Singleton
 public class NodeCache {
 
+
     private Cache<CacheKey, CacheValue> cache = CacheBuilder.newBuilder().build();
 
 
-    public void addObject(AbstractElement element, Node node) {
-        cache.put(generateCacheKey(element), generateCacheValue(element, node));
-    }
-
-    public Long getNodeId(AbstractElement element) {
-        CacheValue val = cache.getIfPresent(generateCacheKey(element));
-        if (val != null) {
-            return val.getNodeId();
-        } else {
-            return null;
+    public CacheEntry addObject(AbstractElement element, Node node) {
+        if (node == null || node.getId() < 0) {
+            throw new IllegalArgumentException("node is null");
         }
+        CacheKey cacheKey = generateCacheKey(element);
+        CacheValue cacheValue = generateCacheValue(element, node);
+        cache.put(cacheKey, cacheValue);
+        return new CacheEntry(cacheKey, cacheValue);
     }
 
-    public Long getNodeId(Class<? extends AbstractElement> clazz, String id) {
+    public CacheValue get(CacheKey cacheKey) {
+        return cache.getIfPresent(cacheKey);
+    }
+
+
+    public CacheEntry getCacheEntry(CacheKey cacheKey) {
+        return new CacheEntry(cacheKey, get(cacheKey));
+    }
+
+    public CacheEntry getCacheEntry(AbstractElement element) {
+        CacheKey cacheKey = generateCacheKey(element);
+        return getCacheEntry(cacheKey);
+    }
+
+    public CacheEntry getCacheEntry(Class<? extends AbstractElement> clazz, String id) {
         try {
             AbstractElement obj = clazz.newInstance();
             BeanUtil.setProperty(obj, "id", id);
-            CacheValue val = cache.getIfPresent(generateCacheKey(obj));
-            if (val != null) {
-                return val.getNodeId();
-            } else {
-                return null;
-            }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+            return getCacheEntry(obj);
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;
     }
-    public Long getNodeId(Class<? extends AbstractElement> clazz, EnumValue anEnum) {
-        return getNodeId(clazz, String.valueOf(anEnum.enumValue()));
-    }
 
     private CacheKey generateCacheKey(AbstractElement element) {
-        if (element.getIdString() == null) {
-            throw new NullPointerException("no id found for:" + element.getClass().getName());
-        } else {
-            CacheKey cacheKey = new CacheKey(element.getClass(), "id", element.getIdString());
-            return cacheKey;
-        }
-    }
-
-    private CacheKey generateCacheKey(ComponentType element) {
-        if (element.getIdString() == null) {
-            throw new NullPointerException("no id found for:" + element.getClass().getName());
-        } else {
-            CacheKey cacheKey = new CacheKey(element.getClass(), "id", element.getIdString());
-            return cacheKey;
-        }
+        CacheKey cacheKey = new CacheKey(element.getClass(), "id", getIdString(element));
+        return cacheKey;
     }
 
     private CacheValue generateCacheValue(AbstractElement element, Node node) {
         CacheValue cacheValue = new CacheValue();
         cacheValue.setNodeId(node.getId());
         return cacheValue;
+    }
+
+    private static String getIdString(AbstractElement element) {
+        Object object = element.getId();
+        if (object != null) {
+            return TypeConverterManager.convertType(object, String.class);
+        } else if (BeanUtil.hasDeclaredProperty(element, "name")) {
+            return TypeConverterManager.convertType(BeanUtil.getProperty(element, "name"), String.class);
+        }
+        throw new Neo4jException(String.format("id not generated for:%s, %s", element.getClass().getSimpleName(), element.getXmlFile()));
     }
 
 }

@@ -1,6 +1,6 @@
 package nl.games.xrebirth.neo4j.utils;
 
-import nl.games.xrebirth.neo4j.importer.ImportException;
+import nl.games.xrebirth.neo4j.Neo4jException;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -25,8 +25,7 @@ public class Utils {
         try {
             return clazz.getMethod(method).getDefaultValue();
         } catch (NoSuchMethodException e) {
-            throw new ImportException(e);
+            throw new Neo4jException(e);
         }
     }
-
 }
