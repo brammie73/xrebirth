@@ -38,7 +38,7 @@
 <!--
                         <property><name>common.xsd</name><value>http://xrebirth.egosoft.com/common</value></property>
 -->
-                        <property><name>ccomponents.xsd</name><value>http://xrebirth.egosoft.com/ccomponents</value></property>
+                        <property><name>components.xsd</name><value>http://xrebirth.egosoft.com/components</value></property>
                         <property><name>factions.xsd</name><value>http://xrebirth.egosoft.com/factions</value></property>
 <!--
                         <property><name>globaltypes.xsd</name><value>http://xrebirth.egosoft.com/factions</value></property>
@@ -89,7 +89,7 @@ home made
                     </execution>
                 </executions>
                 <configuration>
-                    <forceRegenerate>true</forceRegenerate>
+                    <forceRegenerate>false</forceRegenerate>
                     <args>
                         <arg>-Xsimplify</arg>
                         <arg>-XtoString</arg>

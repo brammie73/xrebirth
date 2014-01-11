@@ -2,13 +2,25 @@
 <jxb:bindings
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         jxb:version="2.1"
-        xmlns:jxb="http://java.sun.com/xml/ns/jaxb">
-    >
+        xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify"
+        extensionBindingPrefixes="simplify"
+
+        >
 
     <jxb:bindings schemaLocation="components.xsd">
         <jxb:schemaBindings>
             <jxb:package name="nl.games.xrebirth.generated.components"/>
         </jxb:schemaBindings>
+
+        <jxb:bindings node="/xs:schema/xs:complexType[@name='connectionType']/xs:choice">
+            <simplify:as-element-property/>
+        </jxb:bindings>
+
+        <jxb:bindings node="/xs:schema/xs:complexType[@name='lightsType']/xs:choice/xs:element[1]">
+            <simplify:as-element-property/>
+        </jxb:bindings>
+
     </jxb:bindings>
 
     <jxb:bindings schemaLocation="savegame.xsd">

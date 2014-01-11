@@ -1,6 +1,6 @@
 package nl.games.xrebirth.generated;
 
-import nl.games.xrebirth.generated.components.Components;
+import nl.games.xrebirth.generated.components.ComponentsType;
 import nl.games.xrebirth.generated.cutscenes.Cutscene;
 import nl.games.xrebirth.generated.factions.Factions;
 import nl.games.xrebirth.generated.macros.MacrosType;
@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 @Test
 public class ParseFilesTest {
 
-    public static class ComponentsTest extends AbstractXmlTest<Components> {
+    public static class ComponentsTest extends AbstractXmlTest<ComponentsType> {
 
         public ComponentsTest() {
             setValidating(false);

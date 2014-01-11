@@ -62,6 +62,7 @@ public abstract class AbstractElement {
         }
     }
 
+
     public List<String> getTagList() {
         Object obj = null;
         if (BeanUtil.hasProperty(this, "tags")) {

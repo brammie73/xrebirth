@@ -4,13 +4,13 @@ import com.google.common.base.Joiner;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -44,11 +44,10 @@ public class JAXBHelper {
 
 
     private Map<String, String> filtermap;
-    private static JAXBContext jc;
-
+    private JAXBContext jc;
     private boolean validating = false;
     private final Schema schema;
-
+    SAXParserFactory spf = SAXParserFactory.newInstance();
 
 
     public static JAXBHelper get() {
@@ -58,10 +57,12 @@ public class JAXBHelper {
     private JAXBHelper() {
         try {
             this.filtermap = loadEpisodeFile();
-            this.schema  = loadSchema();
+            this.schema = loadSchema();
             Object[] arr = filtermap.keySet().toArray();
             String joined = Joiner.on(":").skipNulls().join(arr);
             jc = JAXBContext.newInstance(joined);
+            spf.setNamespaceAware(true);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -107,6 +108,7 @@ public class JAXBHelper {
         }
     }
 
+
     public <T> T unMarshall(InputStream inputStream, Class<T> clazz) throws Exception {
         //get the filter
         String tns = getFilter(clazz);
@@ -118,30 +120,62 @@ public class JAXBHelper {
             throw new IllegalArgumentException(String.format("%s not configuered in JAXB", clazz.getPackage().getName()));
         }
         InputReaderFixer fixedReader = new InputReaderFixer(inputStream, tns);
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        SAXParser saxParser = spf.newSAXParser();
-        XMLFilterImpl filter = new XMLFilterImpl(saxParser.getXMLReader()) {
-            @Override
-            public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
-                //super.ignorableWhitespace(ch, start, length);
-                System.err.println("skipping");
-            }
-        };
-
-
         InputSource inputSource = new InputSource(fixedReader);
 
-        SAXSource saxSource = new SAXSource(saxParser.getXMLReader(), inputSource);
-        Unmarshaller u = jc.createUnmarshaller();
+        SAXParser saxParser = spf.newSAXParser();
+        XMLReader reader = saxParser.getXMLReader();
+        XMLFilterImpl filter = new XMLFilterImpl() {
 
-        if (isValidating()) {
-            u.setSchema(schema);
-        }
+            private boolean ignore = false;
+            private String prefix = null;
+
+            @Override
+            public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
+            }
+
+            @Override
+            public void startPrefixMapping(String prefix, String uri) throws SAXException {
+                if ("http://xrebirth.egosoft.com/components".equals(uri)) {
+                    ignore = true;
+                    this.prefix = prefix;
+                }
+                getContentHandler().startPrefixMapping(prefix, uri);
+            }
+
+            @Override
+            public void endPrefixMapping(String prefix) throws SAXException {
+                if  (ignore && this.prefix.equals(prefix)) {
+                    ignore = false;
+                    prefix = null;
+                }
+                getContentHandler().endPrefixMapping(prefix);
+            }
+
+            public void characters(char[] ch, int start, int length) throws SAXException {
+                if (!ignore) {
+                    getContentHandler().characters(ch, start, length);
+                }
+            }
+
+
+        };
+        filter.setParent(reader);
+        SAXSource saxSource = new SAXSource(filter, inputSource);
+        Unmarshaller u = createMarsshaler();
         JAXBElement<T> jaxbElement = u.unmarshal(saxSource, clazz);
-
-        //clean up the filter
         return jaxbElement.getValue();
+    }
+
+    Unmarshaller createMarsshaler() {
+        try {
+            Unmarshaller u = jc.createUnmarshaller();
+            if (isValidating()) {
+                u.setSchema(schema);
+            }
+            return u;
+        } catch (JAXBException e) {
+            throw new JAXBHelperException(e);
+        }
     }
 
     Map<String, String> loadEpisodeFile() throws Exception {
