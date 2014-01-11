@@ -41,6 +41,13 @@ public class FileSystem {
 
     public InputStream resolve(String filePath) {
         try {
+            if (filePath.startsWith("assets\\test")) {
+                return null;
+            }
+            if (!filePath.endsWith(".xml")) {
+                filePath = filePath.concat(".xml");
+            }
+            filePath = filePath.replace("!", "%21");
             FileObject fo = getRoot().resolveFile(filePath);
             if (fo.exists() && fo.getContent().getSize() > 1L) {
                 return fo.getContent().getInputStream();

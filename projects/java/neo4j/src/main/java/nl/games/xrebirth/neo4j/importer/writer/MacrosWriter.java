@@ -1,7 +1,10 @@
 package nl.games.xrebirth.neo4j.importer.writer;
 
 import nl.games.xrebirth.generated.macros.*;
+import nl.games.xrebirth.neo4j.importer.ImportContext;
+import nl.games.xrebirth.neo4j.importer.db.PropertyBuilder;
 import nl.games.xrebirth.neo4j.importer.events.Reference;
+import nl.games.xrebirth.neo4j.importer.events.ReferenceHolderEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.neo4j.graphdb.Node;
@@ -17,7 +20,7 @@ import javax.inject.Singleton;
  * Time: 23:27
  */
 @Singleton
-public class MacrosWriter  {
+public class MacrosWriter extends AbstractNeo4jWriter<MacrosType> {
 
     private static Logger log = LogManager.getLogger();
 
@@ -26,9 +29,15 @@ public class MacrosWriter  {
     @Reference
     Event<MacroType> macroEvent;
 
+    @Inject
+    @Reference
+    Event<ReferenceHolderEvent> referenceEvent;
 
 
-    public void doWrite(MacrosType macros) {
+    @Inject
+    ImportContext importContext;
+
+    public void doWrite(@Observes MacrosType macros) {
         for (MacroType macro : macros.getMacro()) {
             importElement(macro);
         }
@@ -37,8 +46,19 @@ public class MacrosWriter  {
 
     private void importElement(MacroType macro) {
         ComponentType componentType = macro.getComponent();
-        PropertiesType propertiesType = macro.getProperties();
         ConnectionsType connectionsType = macro.getConnections();
+        PropertyBuilder propertyBuilder = PropertyBuilder.create(macro)
+                .add("id", macro.getName());
+        updateProperties(macro, propertyBuilder);
+        importContext.getService().createNode(
+                macro,
+                propertyBuilder
+        );
+        if (componentType != null) {
+            ReferenceHolderEvent event = new ReferenceHolderEvent(componentType);
+            referenceEvent.fire(event);
+
+        }
         if (connectionsType != null) {
             for (ConnectionType connectionType : connectionsType.getConnection()) {
                 if (connectionType.getMacro() != null) {
@@ -46,10 +66,27 @@ public class MacrosWriter  {
                     MacroType child = connectionType.getMacro();
                     if (child.getRef() == null) {
                         //inline
+                        PropertyBuilder relation = PropertyBuilder.create();
+                        relation.add("position", connectionType.getPosition());
+                        relation.update(connectionType.getOffset(), true);
+                        importContext.getService().createRelationship(
+                                child,
+                                macro,
+                                relation
+                        );
                         importElement(child);
                     } else {
                         //fire event
-                        macroEvent.fire(child);
+                        //child.setName(child.getRef());
+                        PropertyBuilder relation = PropertyBuilder.create();
+                        relation.add("position", connectionType.getPosition());
+                        relation.update(connectionType.getOffset(), true);
+                        importContext.getService().createRelationship(
+                                child,
+                                macro,
+                                relation
+                        );
+                        this.macroEvent.fire(child);
                     }
                 } else {
                     //inline
@@ -57,6 +94,15 @@ public class MacrosWriter  {
                 }
             }
         }
+    }
+
+    private void updateProperties(MacroType macro, PropertyBuilder propertyBuilder) {
+        PropertiesType propertiesType = macro.getProperties();
+        if (propertiesType == null) {
+            return;
+        }
+        propertyBuilder.update(propertiesType, true);
+
     }
 
 

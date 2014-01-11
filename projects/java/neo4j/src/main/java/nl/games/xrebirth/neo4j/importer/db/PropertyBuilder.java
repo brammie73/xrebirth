@@ -14,6 +14,7 @@ import org.neo4j.graphdb.PropertyContainer;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,15 +43,21 @@ public class PropertyBuilder {
     }
 
     public static PropertyBuilder create(DeferedRelationshipEvent container) {
-        PropertyBuilder  builder =  new PropertyBuilder();
+        PropertyBuilder builder = new PropertyBuilder();
         for (String name : container.getPropertyKeys()) {
             builder.map.put(name, container.getProperty(name));
         }
         return builder;
     }
 
-
     public PropertyBuilder update(AbstractElement element) {
+        return update(element, false);
+    }
+
+    public PropertyBuilder update(AbstractElement element, boolean deep) {
+        if (element == null) {
+            return this;
+        }
         ClassDescriptor classsDescriptor = JoddBean.introspector.lookup(element.getClass());
         PropertyDescriptor[] array = classsDescriptor.getAllPropertyDescriptors();
         for (PropertyDescriptor descriptor : array) {
@@ -59,7 +66,9 @@ public class PropertyBuilder {
             if (value == null) {
                 continue;
             }
-            if (descriptor.getFieldDescriptor() != null && descriptor.getFieldDescriptor().getField() != null ) {
+            if (value instanceof AbstractElement && deep) {
+                update((AbstractElement) value, deep);
+            } else if (descriptor.getFieldDescriptor() != null && descriptor.getFieldDescriptor().getField() != null) {
                 Field field = descriptor.getFieldDescriptor().getField();
                 if (field.isAnnotationPresent(XmlAttribute.class)) {
                     XmlAttribute annotation = field.getAnnotation(XmlAttribute.class);
@@ -88,9 +97,9 @@ public class PropertyBuilder {
             if (value == null) {
                 continue;
             } else if (value instanceof EnumValue) {
-                value = ((EnumValue)value).enumValue();
+                value = ((EnumValue) value).enumValue();
             } else if (value instanceof BigInteger) {
-                value = ((BigInteger)value).longValue();
+                value = ((BigInteger) value).longValue();
             }
             node.setProperty(entry.getKey(), textFormatter.format(value));
         }

@@ -5,11 +5,9 @@ import nl.games.xrebirth.neo4j.Neo4jException;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * Created with IntelliJ IDEA.
  * User: bram
  * Date: 29-12-13
  * Time: 21:47
- * To change this template use File | Settings | File Templates.
  */
 public class Utils {
 

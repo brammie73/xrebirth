@@ -4,6 +4,7 @@ import nl.games.xrebirth.generated.macros.MacroType;
 import nl.games.xrebirth.generated.macros.MacrosType;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.events.FileEvent;
+import nl.games.xrebirth.neo4j.importer.events.Index;
 import nl.games.xrebirth.neo4j.importer.events.Reference;
 
 import javax.enterprise.event.Event;
@@ -29,35 +30,28 @@ public class MacrosImporter extends AbstractImporter {
 
 
     @Inject
-    ImportContext importContext;
+    @Singleton
+    @Index
+    XRIndex xrIndex;
 
     @Inject
     Event<FileEvent> fileEventBus;
 
-    @Override
     public void doImport() {
-
-    }
-
-    public Collection<String> doGetFileLocations() {
-        return null;
-    }
-
-    public boolean doImport(ImportContext importContext) {
-        FileEvent event = new FileEvent(MacrosType.class, galaxy);
-        fileEventBus.fire(event);
-        return true;
-    }
-
-
-    protected boolean doImport(ImportContext importContext, String file) {
-        return true;
+        fileEventBus.fire(new FileEvent(MacrosType.class, galaxy));
+        fileEventBus.fire(new FileEvent(MacrosType.class, clusters));
+        fileEventBus.fire(new FileEvent(MacrosType.class, sectors));
+        fileEventBus.fire(new FileEvent(MacrosType.class, zones));
+        fileEventBus.fire(new FileEvent(MacrosType.class, zonehighways));
     }
 
     public void refererFoundListener(@Observes @Reference MacroType macroType) {
         String ref = macroType.getRef();
-        String file = null; //xRIndex.getMacro(ref);
+        String file = xrIndex.get(MacrosType.class, ref);
         if (file != null) {
+            if (!file.contains("\\") ) {
+                return;
+            }
             FileEvent event = new FileEvent(MacrosType.class, file);
             fileEventBus.fire(event);
         } else {

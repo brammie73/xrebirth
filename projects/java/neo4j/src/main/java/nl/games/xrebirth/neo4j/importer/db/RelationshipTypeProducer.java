@@ -3,6 +3,7 @@ package nl.games.xrebirth.neo4j.importer.db;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 import nl.games.xrebirth.generated.AbstractElement;
+import nl.games.xrebirth.generated.macros.MacroType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -29,9 +30,30 @@ public class RelationshipTypeProducer {
                     .put(nl.games.xrebirth.generated.wares.ProductionType.class, nl.games.xrebirth.generated.wares.WareType.class, "produces")
                     .put(nl.games.xrebirth.generated.wares.WareType.class, nl.games.xrebirth.generated.wares.ProductionType.Primary.class, "primary")
                     .put(nl.games.xrebirth.generated.wares.WareType.class, nl.games.xrebirth.generated.wares.ProductionType.Secondary.class, "secondairy")
+                    .put(nl.games.xrebirth.generated.components.ComponentType.class, nl.games.xrebirth.generated.components.ConnectionType.class, "connection")
                     .build();
 
     public RelationshipType produce(AbstractElement from, AbstractElement to) {
+        if ((from instanceof MacroType) && (to instanceof  MacroType)) {
+            MacroType fromType = (MacroType)from;
+            MacroType toType = (MacroType)to;
+            if (fromType.getClazz() != null && fromType.getClazz().equals(toType.getConnection())) {
+                return DynamicRelationshipType.withName(fromType.getClazz());
+            } else if (toType.getClazz() != null && toType.getClazz().equals(fromType.getConnection())) {
+                return DynamicRelationshipType.withName(toType.getClazz());
+            } else {
+                StringBuilder builder = new StringBuilder();
+                if (fromType.getClazz() != null)
+                    builder.append(fromType.getClazz());
+                if (fromType.getConnection() != null)
+                    builder.append(fromType.getConnection());
+                if (toType.getConnection() != null)
+                    builder.append(toType.getConnection());
+                if (toType.getClazz() != null)
+                    builder.append(toType.getClazz());
+                return DynamicRelationshipType.withName(builder.toString());
+            }
+        }
         String name = table.get(from.getClass(), to.getClass());
         if (name == null) {
             name = "fixme";

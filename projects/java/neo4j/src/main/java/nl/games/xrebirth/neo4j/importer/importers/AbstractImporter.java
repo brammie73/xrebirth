@@ -2,6 +2,7 @@ package nl.games.xrebirth.neo4j.importer.importers;
 
 import nl.games.xrebirth.neo4j.importer.Importer;
 import nl.games.xrebirth.neo4j.importer.events.FileEvent;
+import nl.games.xrebirth.neo4j.importer.events.Reference;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -21,6 +22,11 @@ public abstract class AbstractImporter implements Importer {
     @Inject
     Event<FileEvent> fileEventBus;
 
+    @Inject
+    @Reference
+    Event<FileEvent> referenceEventBus;
+
+
     public Event<FileEvent> getFileEventBus() {
         return fileEventBus;
     }
@@ -28,10 +34,6 @@ public abstract class AbstractImporter implements Importer {
 
     public boolean isImported() {
         return imported;
-    }
-
-    public Class getDeclaredClass() {
-        return (Class) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
 }

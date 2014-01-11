@@ -41,10 +41,16 @@ public class JaxbXmlReader implements XmlReader {
     public void fileEventObserver(@Observes FileEvent event) {
         try {
             if (event != null && event.getFile() != null) {
-                InputStream inputStream = fileSystem.resolve(event.getFile());
+                String file = event.getFile();
+                InputStream inputStream = fileSystem.resolve(file);
+                if (inputStream == null)  {
+                    log.debug("skipping:{}", file);
+                    return;
+                }
                 Object result = JAXBHelper.get().unMarshall(inputStream, event.getClazz());
                 AbstractElement element = (AbstractElement) result;
                 element.setXmlFile(event.getFile());
+                event.setObject(element);
                 unmarshallEventBus.fire(element);
             } else {
                 log.error("file not found for:{}", event.getFile());

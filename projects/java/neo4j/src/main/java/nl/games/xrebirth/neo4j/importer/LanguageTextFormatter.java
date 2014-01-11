@@ -13,6 +13,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,6 +70,8 @@ public class LanguageTextFormatter implements TextFormatter {
     public Object format(Object in) {
         if (in == null) {
             return null;
+        } else if (in instanceof BigDecimal) {
+            return ((BigDecimal) in).longValue();
         } else if (in instanceof String) {
             return format((String) in);
         } else if (in instanceof String[]) {
