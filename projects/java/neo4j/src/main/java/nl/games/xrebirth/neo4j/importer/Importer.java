@@ -11,7 +11,4 @@ public interface Importer {
 
     public void doImport();
 
-
-    public boolean isImported();
-
 }

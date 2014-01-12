@@ -23,7 +23,6 @@ public class RacesWriter extends AbstractNeo4jWriter<Races> {
     @Inject
     ImportContext importContext;
 
-    @Override
     public void doWrite(@Observes Races races) {
         for (Race race : races.getRace()) {
             importContext.getService().createNode(

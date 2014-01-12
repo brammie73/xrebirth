@@ -30,7 +30,7 @@ public class XRFileSystem extends AbstractFileSystem implements FileSystem {
     }
 
     @Override
-    public void init() throws FileSystemException {
+    public synchronized void init() throws FileSystemException {
         super.init();
 
         //todo:sort by name?

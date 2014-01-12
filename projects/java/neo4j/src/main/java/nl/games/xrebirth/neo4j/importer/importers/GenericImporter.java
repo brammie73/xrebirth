@@ -9,6 +9,7 @@ import nl.games.xrebirth.generated.wares.WaresType;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.events.FileEvent;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -32,17 +33,17 @@ public class GenericImporter extends  AbstractImporter {
     @Inject
     ImportContext importContext;
 
+    @Inject
+    Event<FileEvent> fileEventBus;
+
+
     @Override
     public void doImport() {
         for (Class<? extends AbstractElement> clazz : map.keySet()) {
             for (String file : map.get(clazz)) {
-                getFileEventBus().fire(new FileEvent(clazz, file));
+                fileEventBus.fire(new FileEvent(clazz, file));
             }
         }
     }
 
-    @Override
-    public boolean isImported() {
-        return false;
-    }
 }

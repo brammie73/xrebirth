@@ -11,6 +11,7 @@ public class FileEvent {
 
     private final Class<? extends AbstractElement> clazz;
     private final String file;
+    private String name;
     private Object object;
 
     public FileEvent(Class<? extends AbstractElement> clazz, String file) {
@@ -32,5 +33,13 @@ public class FileEvent {
 
     public void setObject(Object object) {
         this.object = object;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

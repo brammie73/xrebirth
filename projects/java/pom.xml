@@ -85,6 +85,7 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>12.0</version>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
@@ -165,6 +166,7 @@
                 <version>${deltaspike.version}</version>
                 <scope>runtime</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.deltaspike.cdictrl</groupId>
                 <artifactId>deltaspike-cdictrl-api</artifactId>
@@ -187,6 +189,19 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-servlet-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-servlet-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.openwebbeans</groupId>
                 <artifactId>openwebbeans-spi</artifactId>
                 <version>${owb.version}</version>
@@ -198,6 +213,13 @@
                 <artifactId>openwebbeans-impl</artifactId>
                 <version>${owb.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <!-- specs -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>

@@ -50,7 +50,6 @@ public class JaxbXmlReader implements XmlReader {
                 Object result = JAXBHelper.get().unMarshall(inputStream, event.getClazz());
                 AbstractElement element = (AbstractElement) result;
                 element.setXmlFile(event.getFile());
-                event.setObject(element);
                 unmarshallEventBus.fire(element);
             } else {
                 log.error("file not found for:{}", event.getFile());

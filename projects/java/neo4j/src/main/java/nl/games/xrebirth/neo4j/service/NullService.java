@@ -13,14 +13,12 @@ import org.apache.deltaspike.cdise.api.ContextControl;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.servlet.api.literal.InitializedLiteral;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.unsafe.batchinsert.BatchInserters;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Singleton;
 import java.io.File;
-import java.util.List;
 
 /**
  * Author: bram
@@ -64,6 +62,8 @@ public class NullService {
     public void onStart(@Observes ImportContext importContext) {
         //List<Importer> importers = BeanProvider.getContextualReferences(Importer.class, true);
         Importer importer = BeanProvider.getContextualReference(GenericImporter.class);
+        //importer.doImport();
+        importer = BeanProvider.getContextualReference(ComponentsImporter.class);
         //importer.doImport();
         importer = BeanProvider.getContextualReference(MacrosImporter.class);
         importer.doImport();

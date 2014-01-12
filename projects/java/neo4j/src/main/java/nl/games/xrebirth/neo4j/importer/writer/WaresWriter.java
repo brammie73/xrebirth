@@ -29,7 +29,6 @@ public class WaresWriter extends AbstractNeo4jWriter<WaresType> {
     @Inject
     ImportContext importContext;
 
-    @Override
     public void doWrite(@Observes WaresType wares) {
         DefaultsType defaultWare = wares.getDefaults();
         for (WareType ware : wares.getWare()) {

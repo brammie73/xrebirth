@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        jxb:version="2.1" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify"
+        jxb:extensionBindingPrefixes="simplify"
+        targetNamespace="http://xrebirth.egosoft.com/components"
+        xmlns="http://xrebirth.egosoft.com/components"
+        elementFormDefault="qualified"
+        >
+
+    <xs:element name="components">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="component" maxOccurs="unbounded" type="componentType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="componentType">
+        <xs:all>
+            <xs:element name="connections" type="connectionsType"/>
+            <xs:element name="properties" minOccurs="0" type="propertiesType"/>
+            <xs:element name="layers" minOccurs="0" type="layersType"/>
+            <xs:element name="layer" minOccurs="0" type="layerType"/>
+            <xs:element name="offset" minOccurs="0" type="offsetType"/>
+            <xs:element name="source" minOccurs="0" type="sourceType"/>
+            <xs:element name="model" minOccurs="0" type="modelType"/>
+            <xs:element name="size" minOccurs="0" type="sizeType"/>
+        </xs:all>
+        <xs:attribute name="name" use="required" type="xs:string"/>
+        <xs:attribute name="class" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="connectionsType">
+        <xs:choice>
+            <xs:element name="connection" minOccurs="0" maxOccurs="unbounded" type="connectionType"/>
+        </xs:choice>
+    </xs:complexType>
+
+
+    <xs:complexType name="modelType">
+        <xs:attribute name="name" use="required" type="xs:string"/>
+        <xs:attribute name="type" use="required" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="sourceType">
+        <xs:attribute name="geometry" use="required" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="offsetType">
+        <xs:sequence>
+            <xs:element name="position" minOccurs="0"/>
+            <xs:element name="quaternion" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="soundsType">
+        <xs:sequence>
+            <xs:element name="sound" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="lightsType" mixed="true">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="box" type="lightType">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <simplify:as-reference-property/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="spot" type="lightType"/>
+            <xs:element name="omni" type="lightType"/>
+            <xs:element name="ambient" type="lightType"/>
+        </xs:choice>
+    </xs:complexType>
+
+
+    <xs:complexType name="lightType">
+        <xs:sequence minOccurs="0">
+            <xs:element name="size" minOccurs="0"/>
+            <xs:element name="animations" minOccurs="0"/>
+            <xs:element name="lightanimations" minOccurs="0"/>
+            <xs:element name="offset"/>
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:string"/>
+        <xs:attribute name="r" use="required" type="xs:double"/>
+        <xs:attribute name="g" use="required" type="xs:double"/>
+        <xs:attribute name="b" use="required" type="xs:double"/>
+        <xs:attribute name="intensity" use="required" type="xs:double"/>
+        <xs:attribute name="lighteffect" use="optional" type="xs:int"/>
+        <xs:attribute name="shadow" use="optional" type="xs:int"/>
+        <xs:attribute name="trigger" use="optional" type="xs:int"/>
+        <xs:attribute name="shadowrange" use="optional" type="xs:double"/>
+        <xs:attribute name="range" use="optional" type="xs:double"/>
+        <xs:attribute name="lenseffect" use="optional" type="xs:string"/>
+        <xs:attribute name="angle" use="optional" type="xs:int"/>
+    </xs:complexType>
+
+    <xs:complexType name="sizeType">
+        <xs:sequence>
+            <xs:element name="max" type="pointType"/>
+            <xs:element name="center" minOccurs="0" type="pointType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="pointType">
+        <xs:attribute name="x" use="required" type="xs:double"/>
+        <xs:attribute name="y" use="required" type="xs:double"/>
+        <xs:attribute name="z" use="required" type="xs:double"/>
+    </xs:complexType>
+
+    <xs:complexType name="partsType">
+        <xs:sequence>
+            <xs:element name="part" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="size" type="sizeType"/>
+                        <xs:element name="lights" minOccurs="0" type="lightsType"/>
+                        <xs:element name="lods" minOccurs="0" type="lodsType"/>
+                        <xs:element name="offset" minOccurs="0" type="offsetType"/>
+                        <xs:element name="pivot" minOccurs="0" type="pivotType"/>
+                        <xs:element name="size_raw" minOccurs="0" type="sizeType"/>
+                        <xs:element name="sounds" minOccurs="0" type="soundsType"/>
+                        <xs:element name="uv_animations" minOccurs="0" type="uv_animationsType"/>
+                        <xs:element name="effectemitters" minOccurs="0" type="effectemittersType"/>
+                        <xs:element name="particleemitters" minOccurs="0" type="particleemittersType"/>
+                        <xs:element name="trailemitters" minOccurs="0" type="trailemittersType"/>
+                    </xs:all>
+                    <xs:attribute name="name" use="required" type="xs:string"/>
+                    <xs:attribute name="wreck" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="lodsType">
+        <xs:sequence>
+            <xs:element name="lod" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="pivotType">
+        <xs:sequence>
+            <xs:element name="offset"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="layersType">
+        <xs:sequence>
+            <xs:element name="layer" type="layerType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="layerType">
+        <xs:all>
+            <xs:element name="effectemitters" minOccurs="0" type="effectemittersType"/>
+            <xs:element name="lights" minOccurs="0" type="lightsType"/>
+            <xs:element name="particleemitters" minOccurs="0" type="particleemittersType"/>
+            <xs:element name="size" minOccurs="0" type="sizeType"/>
+            <xs:element name="sounds" minOccurs="0" type="soundsType"/>
+            <xs:element name="trailemitters" minOccurs="0" type="trailemittersType"/>
+            <xs:element name="waypoints" minOccurs="0" type="waypointsType"/>
+        </xs:all>
+        <xs:attribute name="lod" type="xs:int"/>
+        <xs:attribute name="geometry" type="xs:string"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="cameraType">
+        <xs:sequence>
+            <xs:element name="offset" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="fov" use="required" type="xs:double"/>
+        <xs:attribute name="name" use="required" type="xs:string"/>
+        <xs:attribute name="focus" type="xs:int"/>
+    </xs:complexType>
+
+    <xs:complexType name="waypointsType">
+        <xs:sequence>
+            <xs:element name="waypoint" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="animationsType">
+        <xs:sequence>
+            <xs:element name="animation" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="propertiesType">
+        <xs:all>
+            <xs:element name="animations" minOccurs="0"/>
+            <xs:element name="cargo" minOccurs="0"/>
+            <xs:element name="boneroot" minOccurs="0"/>
+            <xs:element name="hull" minOccurs="0"/>
+            <xs:element name="sound_environment" minOccurs="0"/>
+            <xs:element name="events" minOccurs="0"/>
+            <xs:element name="effects" minOccurs="0"/>
+            <xs:element name="scanner" minOccurs="0"/>
+            <xs:element name="sequences" minOccurs="0"/>
+            <xs:element name="border" minOccurs="0"/>
+            <xs:element name="dock" minOccurs="0"/>
+            <xs:element name="skeleton" minOccurs="0"/>
+            <xs:element name="recharge" minOccurs="0"/>
+            <xs:element name="undock" minOccurs="0"/>
+            <xs:element name="emotions" minOccurs="0"/>
+            <xs:element name="model" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="connectionType" mixed="true">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="animations" minOccurs="0" maxOccurs="1" type="animationsType"/>
+            <xs:element name="camera" minOccurs="0" maxOccurs="1" type="cameraType"/>
+            <xs:element name="offset" minOccurs="0" maxOccurs="2" type="offsetType"/>
+            <!--viewer cocpit error ....-->
+            <xs:element name="parts" minOccurs="0" maxOccurs="1" type="partsType"/>
+            <xs:element name="restrictions" minOccurs="0" maxOccurs="1" type="restrictionsType"/>
+            <xs:element name="waypoints" minOccurs="0" maxOccurs="1" type="waypointsType"/>
+        </xs:choice>
+        <xs:attribute name="name" use="required" type="xs:string"/>
+        <xs:attribute name="tags" type="xs:string"/>
+        <xs:attribute name="group" type="xs:string"/>
+        <xs:attribute name="value" type="xs:int"/>
+        <xs:attribute name="groups" type="xs:string"/>
+        <xs:attribute name="parent" type="xs:string"/>
+        <xs:attribute name="optional" type="xs:int"/>
+    </xs:complexType>
+
+    <xs:complexType name="restrictionsType">
+        <xs:sequence>
+            <xs:element name="restriction"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="uv_animationsType">
+        <xs:sequence>
+            <xs:element name="uv_animation" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="trailemittersType" mixed="true">
+        <xs:sequence>
+            <xs:element name="emitter" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="effectemittersType">
+        <xs:sequence>
+            <xs:element name="emitter" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="lightanimationType">
+        <xs:sequence>
+            <xs:element name="key" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:string"/>
+        <xs:attribute name="controller" use="required" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="lightanimationsType">
+        <xs:sequence>
+            <xs:element name="lightanimation" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="particleemittersType">
+        <xs:sequence>
+            <xs:element name="emitter" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

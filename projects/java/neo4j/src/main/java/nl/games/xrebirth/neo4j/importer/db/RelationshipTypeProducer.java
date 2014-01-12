@@ -31,6 +31,7 @@ public class RelationshipTypeProducer {
                     .put(nl.games.xrebirth.generated.wares.WareType.class, nl.games.xrebirth.generated.wares.ProductionType.Primary.class, "primary")
                     .put(nl.games.xrebirth.generated.wares.WareType.class, nl.games.xrebirth.generated.wares.ProductionType.Secondary.class, "secondairy")
                     .put(nl.games.xrebirth.generated.components.ComponentType.class, nl.games.xrebirth.generated.components.ConnectionType.class, "connection")
+                    .put(nl.games.xrebirth.generated.macros.MacroType.class, nl.games.xrebirth.generated.macros.ConnectionType.class, "connection")
                     .build();
 
     public RelationshipType produce(AbstractElement from, AbstractElement to) {

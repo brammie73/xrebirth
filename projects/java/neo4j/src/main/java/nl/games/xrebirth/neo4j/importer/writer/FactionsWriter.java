@@ -24,7 +24,6 @@ public class FactionsWriter extends AbstractNeo4jWriter<Factions> {
     @Inject
     ImportContext importContext;
 
-    @Override
     public void doWrite(@Observes Factions factions) {
         for (Faction faction : factions.getFaction()) {
             importContext.getService().createNode(

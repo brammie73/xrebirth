@@ -2,8 +2,6 @@ package nl.games.xrebirth.neo4j.importer;
 
 import nl.games.xrebirth.generated.AbstractElement;
 
-import javax.enterprise.event.Observes;
-
 /**
  * Created with IntelliJ IDEA.
  * User: bram
@@ -13,6 +11,6 @@ import javax.enterprise.event.Observes;
  */
 public interface Neo4jWriter<T extends AbstractElement> {
 
-    public void doWrite(@Observes T element);
+    //public void doWrite(@Observes T element);
 
 }

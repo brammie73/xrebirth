@@ -7,7 +7,12 @@ import nl.games.xrebirth.neo4j.cache.NodeCache;
 import nl.games.xrebirth.neo4j.importer.TextFormatter;
 import nl.games.xrebirth.neo4j.importer.events.DeferedRelationshipEvent;
 import nl.games.xrebirth.neo4j.importer.events.NodeEvent;
-import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Label;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.Transaction;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;

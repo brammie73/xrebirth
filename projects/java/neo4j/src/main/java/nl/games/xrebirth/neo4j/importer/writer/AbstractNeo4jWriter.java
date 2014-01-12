@@ -2,6 +2,8 @@ package nl.games.xrebirth.neo4j.importer.writer;
 
 import nl.games.xrebirth.generated.AbstractElement;
 import nl.games.xrebirth.neo4j.importer.Neo4jWriter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -14,6 +16,9 @@ import javax.inject.Inject;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class AbstractNeo4jWriter<T extends AbstractElement> implements Neo4jWriter<T> {
+
+    static Logger log = LogManager.getLogger();
+
 
     @Inject
     Event<AbstractElement> elementEvent;

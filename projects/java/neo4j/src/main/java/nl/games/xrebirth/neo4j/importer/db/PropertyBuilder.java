@@ -5,6 +5,7 @@ import jodd.bean.BeanUtil;
 import jodd.introspector.ClassDescriptor;
 import jodd.introspector.PropertyDescriptor;
 import nl.games.xrebirth.generated.AbstractElement;
+import nl.games.xrebirth.generated.macros.BuildType;
 import nl.games.xrebirth.neo4j.importer.TextFormatter;
 import nl.games.xrebirth.neo4j.importer.events.DeferedRelationshipEvent;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,6 @@ import org.neo4j.graphdb.PropertyContainer;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,16 +45,24 @@ public class PropertyBuilder {
     public static PropertyBuilder create(DeferedRelationshipEvent container) {
         PropertyBuilder builder = new PropertyBuilder();
         for (String name : container.getPropertyKeys()) {
-            builder.map.put(name, container.getProperty(name));
+            Object value = container.getProperty(name);
+            if (value instanceof BuildType) {
+                System.err.println("halt");
+            }
+            builder.map.put(name, value);
         }
         return builder;
     }
 
     public PropertyBuilder update(AbstractElement element) {
-        return update(element, false);
+        return update(element, false, false);
     }
 
     public PropertyBuilder update(AbstractElement element, boolean deep) {
+        return update(element, deep, false);
+    }
+
+    public PropertyBuilder update(AbstractElement element, boolean deep, boolean prefixed) {
         if (element == null) {
             return this;
         }
@@ -72,7 +80,12 @@ public class PropertyBuilder {
                 Field field = descriptor.getFieldDescriptor().getField();
                 if (field.isAnnotationPresent(XmlAttribute.class)) {
                     XmlAttribute annotation = field.getAnnotation(XmlAttribute.class);
-                    this.map.put(annotation.name(), value);
+                    String propName = annotation.name();
+                    if (prefixed) {
+
+                        propName = element.getClass().getName().toLowerCase().concat("-").concat(propName);
+                    }
+                    this.map.put(propName, value);
                 }
             } else if (value instanceof String) {
                 this.map.put(name, value);

@@ -1,19 +1,21 @@
 package nl.games.xrebirth.neo4j.importer.importers;
 
-import nl.games.xrebirth.generated.AbstractElement;
 import nl.games.xrebirth.generated.components.ComponentType;
 import nl.games.xrebirth.generated.components.ComponentsType;
-import nl.games.xrebirth.generated.macros.MacrosType;
-import nl.games.xrebirth.neo4j.importer.ImportContext;
+import nl.games.xrebirth.neo4j.importer.annotation.Index;
+import nl.games.xrebirth.neo4j.importer.annotation.Load;
+import nl.games.xrebirth.neo4j.importer.annotation.LoadComplete;
 import nl.games.xrebirth.neo4j.importer.events.FileEvent;
-import nl.games.xrebirth.neo4j.importer.events.Index;
-import nl.games.xrebirth.neo4j.importer.events.Reference;
-import nl.games.xrebirth.neo4j.importer.events.ReferenceHolderEvent;
+import nl.games.xrebirth.neo4j.importer.events.MacroEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,62 +27,77 @@ import java.util.concurrent.ConcurrentHashMap;
 @Singleton
 public class ComponentsImporter extends AbstractImporter {
 
-    @Inject
-    ImportContext context;
+    Logger log = LogManager.getLogger();
 
     @Inject
-    @Singleton
-    @Index
+    @Index(ComponentsType.class)
     XRIndex xrIndex;
 
-    ConcurrentHashMap<String, Boolean> importedFiles = new ConcurrentHashMap<>();
+
+    @Inject
+    Event<FileEvent> fileEventBus;
+
+
+    @Inject
+    @LoadComplete
+    Event<MacroEvent> loadCompleteEventBus;
+
+    @PostConstruct
+    void initialize() {
+        this.xrIndex.add("playercargobay", "libraries/component"); //not in indexx ...
+    }
+
 
 
     @Override
     public void doImport() {
-        for (XRIndex.Key key : xrIndex.keySet()) {
-            if (key.getClazz() == ComponentsType.class) {
-                String file = xrIndex.get(key.getClazz(), key.getName());
-                if (!importedFiles.containsKey(file)) {
-                    FileEvent fileEvent = new FileEvent(ComponentsType.class, file);
-                    getFileEventBus().fire(fileEvent);
-                    importedFiles.putIfAbsent(file, Boolean.TRUE);
-                }
+    }
+
+    private ConcurrentLinkedQueue<MacroEvent> macroEventQueue = new ConcurrentLinkedQueue<>();
+
+    public void macroEventListener(@Observes @Load MacroEvent macroEvent) {
+        String ref = macroEvent.getMacroType().getComponent().getRef();
+        macroEventQueue.add(macroEvent);
+        ComponentType component = getComponentType(ref);
+        if (component != null) {
+            macroEvent.setComponent(component);
+            macroEventQueue.remove(macroEvent);
+            loadCompleteEventBus.fire(macroEvent);
+        }
+    }
+
+    public ComponentType getComponentType(String name) {
+        XRIndex.Value v = xrIndex.get(name);
+        if (v != null) {
+            ComponentType component =  (ComponentType)v.getElement();
+            if (component ==  null) {
+                FileEvent fileEvent = new FileEvent(ComponentsType.class, v.getFile());
+                fileEventBus.fire(fileEvent);
+                return  null;
+            } else {
+                return component;
             }
         }
+        log.error("getComponentType: should not happen");
+        throw new IllegalArgumentException(name);
     }
 
     public void componentsListener(@Observes ComponentsType components) {
         for (ComponentType componentType : components.getComponent()) {
-            xrIndex.setElement(componentType);
-        }
-    }
-
-
-    public void referenceFoundListener(@Observes @Reference ReferenceHolderEvent referenceHolderEvent) {
-        if (!referenceHolderEvent.getReferenceType().getClass().getSimpleName().startsWith("Component")) {
-            return;
-        }
-        String ref = referenceHolderEvent.getReferenceType().getRef();
-        if (ref.endsWith("macro"))  {
-            System.err.println(ref);
-        }
-        String file = xrIndex.get(ComponentsType.class, ref);
-        AbstractElement element = xrIndex.getElement(ComponentsType.class, ref);
-        if (element != null) {
-            referenceHolderEvent.setElement(element);
-            return;
-        }
-        if (file != null) {
-            if (!file.contains("\\")) {
-                return;
+            XRIndex.Value v = xrIndex.get(componentType.getName());
+            if (v == null) {
+                log.error("componentsListener: should not happen");
+                throw new IllegalArgumentException(componentType.getName());
+            } else {
+                v.setElement(componentType);
             }
-            FileEvent event = new FileEvent(ComponentsType.class, file);
-            event.setObject(referenceHolderEvent);
-            fileEventBus.fire(event);
-            referenceHolderEvent.setElement((ComponentsType) event.getObject());
-        } else {
-            System.err.println("file not found in index:" + ref);
+            for (MacroEvent macroEvent : macroEventQueue) {
+                if (componentType.getName().equals(macroEvent.getMacroType().getComponent().getRef())) {
+                    macroEvent.setComponent(componentType);
+                    macroEventQueue.remove(macroEvent);
+                    loadCompleteEventBus.fire(macroEvent);
+                }
+            }
         }
     }
 }
