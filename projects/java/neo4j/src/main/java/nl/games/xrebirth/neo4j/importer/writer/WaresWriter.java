@@ -1,11 +1,19 @@
 package nl.games.xrebirth.neo4j.importer.writer;
 
-import nl.games.xrebirth.generated.wares.*;
+import nl.games.xrebirth.generated.AbstractElement;
+import nl.games.xrebirth.generated.wares.DefaultsType;
+import nl.games.xrebirth.generated.wares.EffectType;
+import nl.games.xrebirth.generated.wares.ProductionType;
+import nl.games.xrebirth.generated.wares.ProductionWareType;
+import nl.games.xrebirth.generated.wares.WareType;
+import nl.games.xrebirth.generated.wares.WaresType;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.ImportException;
+import nl.games.xrebirth.neo4j.importer.annotation.Reference;
 import nl.games.xrebirth.neo4j.importer.db.PropertyBuilder;
 import nl.games.xrebirth.neo4j.utils.Utils;
 
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -29,6 +37,11 @@ public class WaresWriter extends AbstractNeo4jWriter<WaresType> {
     @Inject
     ImportContext importContext;
 
+    @Inject
+    @Reference
+    Event<AbstractElement> refEvent;
+
+
     public void doWrite(@Observes WaresType wares) {
         DefaultsType defaultWare = wares.getDefaults();
         for (WareType ware : wares.getWare()) {
@@ -40,15 +53,17 @@ public class WaresWriter extends AbstractNeo4jWriter<WaresType> {
                     .add("price-avarage", ware.getPrice().getAverage().longValue())
                     .add("price-max", ware.getPrice().getMax().longValue());
             importContext.getService().createNode(ware, wareProperties);
-            if ("cutcrystals".equals(ware.getId())) {
-                System.err.println("stop");
+            if (ware.getComponent() != null) {
+                AbstractElement ref = TypeLookup.find(ware.getComponent());
+                refEvent.fire(ref);
+                importContext.getService().createRelationship(ware, ref, PropertyBuilder.create().add("amount",  ware.getComponent().getAmount()));
             }
             //todo: component ref's
             for (ProductionType productionType : ware.getProduction()) {
                 if (productionType != null) {
                     productionType.setParentElement(ware);
                     productionType.setId(String.format("%s - %s", ware.getId(), productionType.getName()));
-                    fire(productionType);
+                    doWrite(productionType);
                 }
             }
         }
@@ -62,7 +77,7 @@ public class WaresWriter extends AbstractNeo4jWriter<WaresType> {
                 .add("name", productionType.getMethod());
 
         if (productionType.getEffects() != null) {
-            for (EffectType effect : productionType.getEffects().getEffect()) {
+            for (EffectType effect : productionType.getEffects()) {
                 productionProperties.add(effect.getType(), effect.getProduct().floatValue());
             }
         }
@@ -73,14 +88,16 @@ public class WaresWriter extends AbstractNeo4jWriter<WaresType> {
                 PropertyBuilder.create()
         );
 
+/*
         if (productionType.getPrimary() != null) {
             productionType.getPrimary().setParentElement(productionType);
-            fire(productionType.getPrimary());
+            doWrite(productionType.getPrimary());
         }
         if (productionType.getSecondary() != null) {
             productionType.getSecondary().setParentElement(productionType);
-            fire(productionType.getSecondary());
+            doWrite(productionType.getSecondary());
         }
+*/
     }
 
     public void doWrite(@Observes final ProductionType.Primary primary) {

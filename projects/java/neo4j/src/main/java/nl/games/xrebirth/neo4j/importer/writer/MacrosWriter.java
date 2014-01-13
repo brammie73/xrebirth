@@ -60,7 +60,7 @@ public class MacrosWriter extends AbstractNeo4jWriter<MacrosType> {
                 propertyBuilder
         );
         if (macro.getConnections() != null)  {
-            List<ConnectionType> ct =  macro.getConnections().getConnection();
+            List<ConnectionType> ct =  macro.getConnections();
             for (ConnectionType connectionType : ct) {
                 MacroType child = connectionType.getMacro();
                 if (child == null) {

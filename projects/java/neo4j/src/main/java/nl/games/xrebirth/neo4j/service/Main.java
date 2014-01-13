@@ -3,9 +3,7 @@ package nl.games.xrebirth.neo4j.service;
 import nl.games.xrebirth.neo4j.importer.ImportContext;
 import nl.games.xrebirth.neo4j.importer.Importer;
 import nl.games.xrebirth.neo4j.importer.db.Neo4jService;
-import nl.games.xrebirth.neo4j.importer.importers.ComponentsImporter;
 import nl.games.xrebirth.neo4j.importer.importers.GenericImporter;
-import nl.games.xrebirth.neo4j.importer.importers.MacrosImporter;
 import org.apache.commons.io.FileUtils;
 import org.apache.deltaspike.cdise.api.CdiContainer;
 import org.apache.deltaspike.cdise.api.CdiContainerLoader;
@@ -27,11 +25,11 @@ import java.io.File;
  */
 
 @Singleton
-public class NullService {
+public class Main {
 
     private static final String DB_PATH = "neo4j-store";
 
-    public NullService() {
+    public Main() {
         super();
     }
 
@@ -63,9 +61,9 @@ public class NullService {
         //List<Importer> importers = BeanProvider.getContextualReferences(Importer.class, true);
         Importer importer = BeanProvider.getContextualReference(GenericImporter.class);
         //importer.doImport();
-        importer = BeanProvider.getContextualReference(ComponentsImporter.class);
+        //importer = BeanProvider.getContextualReference(ComponentsImporter.class);
         //importer.doImport();
-        importer = BeanProvider.getContextualReference(MacrosImporter.class);
+        //importer = BeanProvider.getContextualReference(MacrosImporter.class);
         importer.doImport();
     }
 

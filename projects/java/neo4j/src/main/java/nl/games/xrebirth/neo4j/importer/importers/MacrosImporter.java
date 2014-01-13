@@ -44,11 +44,6 @@ public class MacrosImporter extends AbstractImporter {
     Event<FileEvent> fileEventBus;
 
     @Inject
-    @Reference
-    Event<FileEvent> referenceEventBus;
-
-
-    @Inject
     @Load
     Event<MacroEvent> loadMacroEventBus;
 

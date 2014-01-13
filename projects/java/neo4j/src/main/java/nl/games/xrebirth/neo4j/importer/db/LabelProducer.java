@@ -21,12 +21,8 @@ public class LabelProducer {
     public Label[] getLabels(AbstractElement element) {
         List<String> list = new LinkedList<>();
         List<String> tmp = element.getClassNames();
-        if (tmp.contains("unkown, fix me")) {
-
-        } else {
-            if (tmp != null) {
-                list.addAll(tmp);
-            }
+        if (tmp != null && !tmp.contains("unkown, fix me")) {
+            list.addAll(tmp);
         }
 
         String elementClass = element.getClass().getSimpleName().toLowerCase();

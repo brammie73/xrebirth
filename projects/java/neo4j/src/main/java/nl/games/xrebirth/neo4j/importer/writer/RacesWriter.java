@@ -30,7 +30,7 @@ public class RacesWriter extends AbstractNeo4jWriter<Races> {
                     PropertyBuilder.create(race)
             );
             if (race.getRelations() != null) {
-                for (Relation relation : race.getRelations().getRelation()) {
+                for (Relation relation : race.getRelations()) {
                     Race toRace = createElement(Race.class);
                     toRace.setId(relation.getRace().enumValue());
                     importContext.getService().createRelationship(

@@ -91,6 +91,8 @@ home made
                 <configuration>
                     <forceRegenerate>false</forceRegenerate>
                     <args>
+                        <arg>-Xxew</arg>
+                        <arg>-Xxew:instantiate early</arg>
                         <arg>-Xsimplify</arg>
                         <arg>-XtoString</arg>
                         <arg>-XenumValue</arg>
@@ -104,6 +106,7 @@ home made
                             <artifactId>jaxb2-basics</artifactId>
                             <version>0.6.4</version>
                         </plugin>
+
                     </plugins>
                     <schemaDirectory>target/generated-sources/xsd</schemaDirectory>
                     <schemaExcludes>
@@ -112,6 +115,13 @@ home made
                         <exclude>racelookup.xsd</exclude>
                     </schemaExcludes>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.jaxb-xew-plugin</groupId>
+                        <artifactId>jaxb-xew-plugin</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
