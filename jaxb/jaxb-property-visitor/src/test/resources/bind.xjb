@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jxb:bindings
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        jxb:version="2.1"
+        xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify"
+        extensionBindingPrefixes="simplify"
+        >
+    <jxb:bindings schemaLocation="collections.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="collections"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="text.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="text"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="mixed.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="mixed"/>
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="simplify.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="simplify"/>
+        </jxb:schemaBindings>
+        <jxb:bindings node="/xs:schema/xs:complexType[@name='mixed']/xs:choice">
+<!--
+            <simplify:as-reference-property/>
+-->
+        </jxb:bindings>
+    </jxb:bindings>
+
+
+    <jxb:bindings schemaLocation="index.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="index"/>
+        </jxb:schemaBindings>
+        <jxb:bindings
+                node="//xs:element[@name='entry']/xs:complexType/xs:attribute[@name='name']">
+            <jxb:property name="myNameAttribute"/>
+        </jxb:bindings>
+        <jxb:bindings
+                node="//xs:element[@name='entry']/xs:complexType/xs:attribute[@name='value']">
+            <jxb:property name="myValueAttribute"/>
+        </jxb:bindings>
+    </jxb:bindings>
+
+</jxb:bindings>

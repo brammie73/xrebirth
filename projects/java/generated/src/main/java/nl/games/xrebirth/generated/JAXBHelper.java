@@ -10,7 +10,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
-import javax.xml.bind.*;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -24,7 +29,12 @@ import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -124,49 +134,25 @@ public class JAXBHelper {
 
         SAXParser saxParser = spf.newSAXParser();
         XMLReader reader = saxParser.getXMLReader();
-        XMLFilterImpl filter = new XMLFilterImpl() {
+        //todo: use xmlstream
+        final MyXMLFilterImpl filter = new MyXMLFilterImpl();
 
-            private boolean ignore = false;
-            private String prefix = null;
-
-            @Override
-            public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
-            }
-
-            @Override
-            public void startPrefixMapping(String prefix, String uri) throws SAXException {
-                if ("http://xrebirth.egosoft.com/components".equals(uri)) {
-                    ignore = true;
-                    this.prefix = prefix;
-                }
-                getContentHandler().startPrefixMapping(prefix, uri);
-            }
-
-            @Override
-            public void endPrefixMapping(String prefix) throws SAXException {
-                if  (ignore && this.prefix.equals(prefix)) {
-                    ignore = false;
-                    prefix = null;
-                }
-                getContentHandler().endPrefixMapping(prefix);
-            }
-
-            public void characters(char[] ch, int start, int length) throws SAXException {
-                if (!ignore) {
-                    getContentHandler().characters(ch, start, length);
-                }
-            }
-
-
-        };
         filter.setParent(reader);
         SAXSource saxSource = new SAXSource(filter, inputSource);
-        Unmarshaller u = createMarsshaler();
+        Unmarshaller u = createUnmarshaller();
+        u.setListener(new Unmarshaller.Listener() {
+            @Override
+            public void beforeUnmarshal(Object target, Object parent) {
+                if (target instanceof AbstractElement) {
+                ((AbstractElement)target).setQName(filter.getqName());
+                }
+            }
+        });
         JAXBElement<T> jaxbElement = u.unmarshal(saxSource, clazz);
         return jaxbElement.getValue();
     }
 
-    Unmarshaller createMarsshaler() {
+    Unmarshaller createUnmarshaller() {
         try {
             Unmarshaller u = jc.createUnmarshaller();
             if (isValidating()) {
@@ -177,6 +163,16 @@ public class JAXBHelper {
             throw new JAXBHelperException(e);
         }
     }
+
+    public Marshaller createMarshaller() {
+        try {
+            Marshaller u = jc.createMarshaller();
+            return u;
+        } catch (JAXBException e) {
+            throw new JAXBHelperException(e);
+        }
+    }
+
 
     Map<String, String> loadEpisodeFile() throws Exception {
         Map<String, String> map = new HashMap<>();
@@ -201,4 +197,50 @@ public class JAXBHelper {
         return Collections.unmodifiableMap(map);
     }
 
+    private static class MyXMLFilterImpl extends XMLFilterImpl {
+
+        private boolean ignore = false;
+        private String prefix = null;
+
+        @Override
+        public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
+        }
+
+        @Override
+        public void startPrefixMapping(String prefix, String uri) throws SAXException {
+            if ("http://xrebirth.egosoft.com/components".equals(uri)) {
+                ignore = true;
+                this.prefix = prefix;
+            }
+            getContentHandler().startPrefixMapping(prefix, uri);
+        }
+
+        @Override
+        public void endPrefixMapping(String prefix) throws SAXException {
+            if  (ignore && this.prefix.equals(prefix)) {
+                ignore = false;
+                prefix = null;
+            }
+            getContentHandler().endPrefixMapping(prefix);
+            this.qName = null;
+        }
+
+        public void characters(char[] ch, int start, int length) throws SAXException {
+            if (!ignore) {
+                getContentHandler().characters(ch, start, length);
+            }
+        }
+
+        QName qName;
+
+        public QName getqName() {
+            return qName;
+        }
+
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+            this.qName = new QName(uri, localName, qName);
+            getContentHandler().startElement(uri, localName, qName, atts);
+        }
+    }
 }

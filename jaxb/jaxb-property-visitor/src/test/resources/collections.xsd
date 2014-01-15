@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://xrebirth.egosoft.com/collections"
+           xmlns="http://xrebirth.egosoft.com/collections"
+           elementFormDefault="qualified"
+        >
+    <xs:element name="root" type="rootType"/>
+
+
+    <xs:complexType name="rootType">
+        <xs:sequence>
+            <xs:element name="collection" type="collectionType"/>
+            <xs:element name="jo">
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="entry" maxOccurs="unbounded" type="entryType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="single" type="singleEntryType"/>
+        </xs:sequence>
+        <xs:attribute name="location" type="locations"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="collectionType">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="entry" maxOccurs="unbounded" type="entryType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="entryType">
+        <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="singleEntryType">
+        <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+
+    <xs:simpleType name="locations">
+        <xs:annotation>
+            <xs:documentation>
+                Possible location types. Specify multiple separated by space. Allows all if omitted
+            </xs:documentation>
+        </xs:annotation>
+        <xs:list>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="infopoint"/>
+                    <xs:enumeration value="missionoffer"/>
+                    <xs:enumeration value="platform"/>
+                    <xs:enumeration value="tradeoffer"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:list>
+    </xs:simpleType>
+
+</xs:schema>

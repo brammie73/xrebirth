@@ -128,6 +128,7 @@
         </jxb:schemaBindings>
     </jxb:bindings>
 
+<!--
     <jxb:bindings schemaLocation="md.xsd">
         <jxb:schemaBindings>
             <jxb:package name="nl.games.xrebirth.generated.missionsdirector"/>
@@ -139,6 +140,7 @@
             <jxb:property name="exitPosition"/>
         </jxb:bindings>
     </jxb:bindings>
+-->
 
     <jxb:bindings schemaLocation="parameters.xsd">
         <jxb:schemaBindings>

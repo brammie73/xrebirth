@@ -45,6 +45,9 @@ public class ComponentIndexTest extends AbstractXmlTest<Index> {
             if (fo != null && (fo.getContent() != null) && fo.getType() == FileType.FILE && (fo.getContent().getSize() > 2) ) {
                 try {
                     ComponentsType result =  helper.unMarshall(fo.getContent().getInputStream(), ComponentsType.class);
+                    if  (result != null) {
+                        assertNotNull(result.toString());
+                    }
                     assertNotNull(result);
                 } catch (FileSystemException e) {
                     //ignore

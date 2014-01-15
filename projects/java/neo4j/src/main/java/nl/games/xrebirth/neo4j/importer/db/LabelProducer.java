@@ -20,7 +20,7 @@ public class LabelProducer {
 
     public Label[] getLabels(AbstractElement element) {
         List<String> list = new LinkedList<>();
-        List<String> tmp = element.getClassNames();
+        List<String> tmp = element.classNames();
         if (tmp != null && !tmp.contains("unkown, fix me")) {
             list.addAll(tmp);
         }

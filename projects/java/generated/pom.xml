@@ -89,16 +89,17 @@ home made
                     </execution>
                 </executions>
                 <configuration>
-                    <forceRegenerate>false</forceRegenerate>
+                    <forceRegenerate>true</forceRegenerate>
                     <args>
                         <arg>-Xxew</arg>
                         <arg>-Xxew:instantiate early</arg>
                         <arg>-Xsimplify</arg>
-                        <arg>-XtoString</arg>
                         <arg>-XenumValue</arg>
                         <arg>-XautoInheritance</arg>
                         <arg>-XautoInheritance-xmlRootElementsExtend=nl.games.xrebirth.generated.AbstractElement</arg>
                         <arg>-XautoInheritance-xmlTypesExtend=nl.games.xrebirth.generated.AbstractElement</arg>
+                        <arg>-Xpv</arg>
+                        <arg>-Xpvpackage:nl.games.xrebirth.generated</arg>
                     </args>
                     <plugins>
                         <plugin>
@@ -106,16 +107,27 @@ home made
                             <artifactId>jaxb2-basics</artifactId>
                             <version>0.6.4</version>
                         </plugin>
-
                     </plugins>
                     <schemaDirectory>target/generated-sources/xsd</schemaDirectory>
                     <schemaExcludes>
                         <exclude>aiscripts.xsd</exclude>
                         <exclude>common.xsd</exclude>
                         <exclude>racelookup.xsd</exclude>
+                        <exclude>md.xsd</exclude>
                     </schemaExcludes>
                 </configuration>
                 <dependencies>
+                    <dependency>
+                        <groupId>nl.games.xrebirth.jaxb</groupId>
+                        <artifactId>jaxb-property-visitor</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>com.sun.xml.bind</groupId>
+                                <artifactId>jaxb-xjc</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
                     <dependency>
                         <groupId>com.github.jaxb-xew-plugin</groupId>
                         <artifactId>jaxb-xew-plugin</artifactId>

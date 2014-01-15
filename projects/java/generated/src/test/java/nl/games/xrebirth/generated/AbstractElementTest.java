@@ -19,6 +19,12 @@ public class AbstractElementTest {
 
     public void testBeansImplementing() {
         AbstractElement elm = new AbstractElement() {
+
+            @Override
+            public void accept(PropertyVisitor aVisitor, String name) {
+
+            }
+
             public String getId() {
                 return "id";
             }
@@ -30,23 +36,27 @@ public class AbstractElementTest {
             }
         };
 
-        assertEquals(Arrays.asList("clazz"), elm.getClassNames());
-        assertEquals(Arrays.asList("tag", "tag"), elm.getTagList());
+        assertEquals(Arrays.asList("clazz"), elm.classNames());
+        assertEquals(Arrays.asList("tag", "tag"), elm.tagList());
     }
 
     public void testBeansnotImplementing() {
         AbstractElement elm = new AbstractElement() {
+            @Override
+            public void accept(PropertyVisitor aVisitor, String name) {
+
+            }
         };
 
-        assertEquals(null, elm.getClassNames());
-        assertEquals(null, elm.getTagList());
+        assertEquals(null, elm.classNames());
+        assertEquals(null, elm.tagList());
     }
 
     public void testSomeInstance() {
         Language elm = new Language();
         elm.setId(123);
-        assertEquals(null, elm.getClassNames());
-        assertEquals(null, elm.getTagList());
+        assertEquals(null, elm.classNames());
+        assertEquals(null, elm.tagList());
     }
 
 }
